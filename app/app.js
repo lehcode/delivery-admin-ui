@@ -1,14 +1,26 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-angular.module('myApp', [
-  'ngRoute',
-  'myApp.view1',
-  'myApp.view2',
-  'myApp.version'
-]).
-config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
-  $locationProvider.hashPrefix('!');
+/***
+ App Main Script
+ ***/
 
-  $routeProvider.otherwise({redirectTo: '/view1'});
-}]);
+/* Metronic App */
+var AdminApp = angular.module("AdminApp", [
+  "ui.router",
+  "ngSanitize",
+  'ngResource',
+  'ngRoute',
+  'ngMaterial',
+  'ngMdIcons',
+  //'ui.grid',
+  //'ui.grid.edit',
+  //'ui.grid.treeView',
+  //'ui.grid.resizeColumns',
+  //'ui.grid.selection',
+  //'ui.grid.expandable',
+  //'ui.grid.pinning',
+  //'ui.grid.cellNav',
+  //'ui.grid.rowEdit',
+]);
+
