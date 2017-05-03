@@ -9,10 +9,11 @@
                ng-model="user.email"
                name="email"
                required
-               md-minlength="3">
-        <div ng-messages="loginForm.user.email.$error">
+               md-minlength="5">
+        <!--<div ng-messages="loginForm.user.email.$error">
           <div ng-message="required">Email is required!</div>
-        </div>
+          <div ng-message="min-length">Email is too short!</div>
+        </div>-->
       </md-input-container>
 
       <md-input-container>
@@ -21,9 +22,9 @@
                ng-model="user.phone"
                name="phone"
                required>
-        <div ng-messages="loginForm.user.phone.$error">
+        <!--<div ng-messages="loginForm.user.phone.$error">
           <div ng-message="required">Phone is required!</div>
-        </div>
+        </div>-->
       </md-input-container>
 
       <md-input-container>
@@ -32,9 +33,9 @@
                ng-model="user.password"
                name="password"
                required>
-        <div ng-messages="loginForm.user.password.$error">
+        <!--<div ng-messages="loginForm.user.password.$error">
           <div ng-message="required">Password is required!</div>
-        </div>
+        </div>-->
       </md-input-container>
 
       <md-button class="md-primary md-accent"

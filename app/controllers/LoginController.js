@@ -11,12 +11,14 @@ angular.module('AdminApp')
       '$mdDialog',
       '$q',
       '$http',
+      'settings',
 
       function ($scope,
                 $rootScope,
                 $state,
                 $q,
-                $http) {
+                $http,
+                settings) {
 
         console.log("Initializing LoginController");
 
@@ -38,20 +40,39 @@ angular.module('AdminApp')
           if (this.loginForm.$valid) {
             var req = {
               method: 'POST',
-              url: settings.apiHost + '/api/admin/' + settings.apiVersion + '/authenticate',
+              url: settings.apiHost + 'api/admin/' + settings.apiVersion + '/authenticate',
               data: $scope.user,
               headers: {"content-type": "application/json"}
             };
 
             $http(req)
-              .then(function loginCallback(response) {
-                localStorage.setItem('token', response.data.data.attributes.token);
+              .then(function loginCallback(loginResponse) {
 
-                $http(req)
-                  .then(function userDataCallback(response) {
+                if (loginResponse.status === 200) {
+                  if (loginResponse.data.status === 'success') {
 
-                  });
+                    try {
+                      localStorage.setItem('token', loginResponse.data.data.data.attributes.token);
+                    } catch (error) {
+                      console.error(error.message);
+                      return;
+                    }
 
+                    Object.assign(req, {
+                      method: 'POST',
+                      url: settings.apiHost + 'api/admin/' + settings.apiVersion + '/user/me',
+                      headers: {
+                        "content-type": "application/json",
+                        "authorization": "Bearer " + localStorage.getItem('token')
+                      }
+                    });
+
+                    $http(req)
+                      .then(function userDataCallback(userDataResponse) {
+                        debugger;
+                      });
+                  }
+                }
               });
           } else {
             this.loginForm.$setDirty();

@@ -101,9 +101,9 @@ AdminApp.config(['$locationProvider', '$routeProvider', function ($locationProvi
  */
 AdminApp.config(function ($mdThemingProvider) {
   var customBlueMap = $mdThemingProvider.extendPalette('blue', {
-    contrastDefaultColor: 'light',
+    contrastDefaultColor: 'dark',
     contrastDarkColors: ['50'],
-    '50': 'ffffff'
+    '50': '000000'
   });
   $mdThemingProvider.definePalette('customBlue', customBlueMap);
   $mdThemingProvider.theme('default')
