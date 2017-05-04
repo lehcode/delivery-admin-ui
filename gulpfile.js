@@ -186,8 +186,8 @@ gulp.task('concat:js:app', function () {
 
   var appJs = [
     config.appDir + "/app.js",
-    config.appDir + "/config.js",
     config.appDir + "/state.js",
+    config.appDir + "/config.js",
     config.appDir + "/run.js",
     config.appDir + "/components/version/interpolate-filter.js",
     config.appDir + "/components/version/version-directive.js",

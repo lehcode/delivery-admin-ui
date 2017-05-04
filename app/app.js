@@ -22,5 +22,6 @@ var AdminApp = angular.module("AdminApp", [
   //'ui.grid.pinning',
   //'ui.grid.cellNav',
   //'ui.grid.rowEdit',
+  'LocalStorageModule'
 ]);
 

@@ -12,13 +12,17 @@ angular.module('AdminApp')
       '$q',
       '$http',
       'settings',
+      '$window',
+      '$location',
 
       function ($scope,
                 $rootScope,
                 $state,
                 $q,
                 $http,
-                settings) {
+                settings,
+                $window,
+                $location) {
 
         console.log("Initializing LoginController");
 
@@ -58,18 +62,50 @@ angular.module('AdminApp')
                       return;
                     }
 
+                    var authHeaders = {
+                      "content-type": "application/json",
+                      "authorization": "Bearer " + localStorage.getItem('token')
+                    };
+
                     Object.assign(req, {
                       method: 'POST',
                       url: settings.apiHost + 'api/admin/' + settings.apiVersion + '/user/me',
-                      headers: {
-                        "content-type": "application/json",
-                        "authorization": "Bearer " + localStorage.getItem('token')
-                      }
+                      data: null,
+                      headers: authHeaders
                     });
 
                     $http(req)
                       .then(function userDataCallback(userDataResponse) {
-                        debugger;
+                        if (userDataResponse.status === 200) {
+                          if (userDataResponse.data.status == 'success') {
+                            localStorage.setItem('user', userDataResponse.data.data.data[0]);
+                            $rootScope.setUserData();
+
+                            Object.assign(req, {
+                              method: 'GET',
+                              url: settings.apiHost + 'api/admin/' + settings.apiVersion + '/user/navigation',
+                              data: null,
+                              headers: authHeaders
+                            });
+
+                            $http(req)
+                              .then(function userDataCallback(userNavResponse) {
+                                switch (userNavResponse.status) {
+                                  case 200:
+                                    if (userNavResponse.data.status == 'success') {
+                                      try{
+                                        $rootScope.setUserNav(userNavResponse.data.data);
+                                        $location.path('/dashboard');
+                                        //$location.hash('dashboard');
+                                      } catch (err){
+                                        console.error(err);
+                                      }
+                                    }
+                                    break;
+                                }
+                              });
+                          }
+                        }
                       });
                   }
                 }

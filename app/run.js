@@ -3,13 +3,15 @@
  */
 
 /* Init global settings and run the app */
-AdminApp.run(['$rootScope',"settings", "$state","$location",
-  function ($rootScope, settings, $state,$location ) {
+AdminApp.run(['$rootScope', 'settings', '$state', '$location', 'localStorageService',
+  function ($rootScope, settings, $state, $location, localStorageService) {
 
-    $rootScope.$state = $state; // state to be accessed from view
-    $rootScope.$settings = settings; // state to be accessed from view
+    $rootScope.$state = $state;
+    $rootScope.$settings = settings;
 
-    if(!localStorage.getItem('token')){
+    console.log(localStorageService.get('token'));
+
+    if (!localStorage.getItem('token')) {
       $location.path('/');
     }
   }

@@ -39,7 +39,7 @@ AdminApp.config([
      * Add API states to app
      */
     angular.forEach(pages, function (props, alias) {
-      $stateProvider.state(alias, Object.assign({resolve: {}}, props))
+      $stateProvider.state(alias, Object.assign({resolve: {}}, props));
     });
 
   }]);

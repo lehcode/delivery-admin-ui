@@ -92,9 +92,18 @@ AdminApp.factory('settings', [
   }]);
 
 AdminApp.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
+  //$locationProvider.html5Mode(true);
   $locationProvider.hashPrefix('!');
-  $routeProvider.otherwise({redirectTo: '/login'});
+  //$routeProvider.otherwise('login');
 }]);
+
+AdminApp.config(function (localStorageServiceProvider) {
+  localStorageServiceProvider
+    .setPrefix('AdminApp')
+    .setStorageType('sessionStorage')
+    .setDefaultToCookie(false)
+    .setNotify(true, true);
+});
 
 /**
  * Angular Material theme configuration

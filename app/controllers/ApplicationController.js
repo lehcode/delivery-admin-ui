@@ -12,6 +12,7 @@ angular.module('AdminApp')
       '$q',
       '$http',
       'settings',
+      'localStorageService',
 
       function ($scope,
                 $rootScope,
@@ -19,7 +20,8 @@ angular.module('AdminApp')
                 $state,
                 $q,
                 $http,
-                settings) {
+                settings,
+                localStorageService) {
 
         $scope.state = $state;
 
@@ -34,7 +36,7 @@ angular.module('AdminApp')
         /**
          * Set user data
          */
-        $scope.token = localStorage.getItem('token');
+        $scope.token = localStorageService.get('token');
 
         /**
          * @type {Array}
@@ -56,7 +58,7 @@ angular.module('AdminApp')
          * Set application language
          * @type {string}
          */
-        $scope.lang = localStorage.getItem('lang') == null ? 'EN' : localStorage.getItem('lang');
+        $scope.lang = localStorageService.get('lang') == null ? 'EN' : localStorageService.get('lang');
 
         /**
          * Globally available API version variable
@@ -133,27 +135,27 @@ angular.module('AdminApp')
          * Get auth token
          */
         $rootScope.getToken = function () {
-          //console.debug("Token: ", localStorage.getItem('token'));
-          if (!!localStorage.getItem('token') === true) {
-            return localStorage.getItem('token');
+          //console.debug("Token: ", localStorageService.get('token'));
+          if (!!localStorageService.get('token') === true) {
+            return localStorageService.get('token');
           }
           return false;
         };
 
 
-        // /**
-        //  * Get user data and set $scope variable
-        //  */
-        // ($rootScope.setUserData = function () {
-        //   erpApi.get('management/user')
-        //     .then(function (response) {
-        //       if (response.status === 200) {
-        //         $rootScope.$emit('rootScope:setUserData', {data: response.data});
-        //         $scope.userData = response.data;
-        //       } else
-        //         throw response.statusText;
-        //     });
-        // })();
+        /**
+         * Get user data and set $scope variable
+         */
+        $rootScope.setUserData = function () {
+          $scope.authUser = JSON.stringify(localStorageService.get('user'));
+        };
+
+        /**
+         * Set user navigation items
+         */
+        $rootScope.setUserNav = function(){
+
+        };
 
         /**
          * Close alert
