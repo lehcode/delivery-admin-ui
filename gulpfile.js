@@ -115,6 +115,7 @@ gulp.task('concat:js:vendor', function () {
     config.bowerDir + '/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js',
     config.bowerDir + '/svg-morpheus/compile/unminified/svg-morpheus.js',
     config.bowerDir + '/toastr/toastr.js',
+    config.bowerDir + '/angular-local-storage/dist/angular-local-storage.js',
   ];
 
   return gulp.src(vendorScripts)
@@ -192,6 +193,7 @@ gulp.task('concat:js:app', function () {
     config.appDir + "/components/version/version-directive.js",
     config.appDir + "/components/version/version.js",
     config.appDir + "/controllers/**/*.js",
+    config.appDir + "/widgets/**/*.js",
   ];
 
   var path = process.cwd() + "/" + config.pub + config.jsDest;
