@@ -59,6 +59,7 @@ gulp.task('build', function () {
   //gulp.start('copy:images:datatable');
   //gulp.start('copy:images:angular-grid');
   gulp.start('copy:app:fonts');
+  gulp.start('copy:ng:icons');
 });
 
 /*
@@ -93,6 +94,15 @@ gulp.task('copy:app:fonts', function () {
     .pipe(gulp.dest(config.pub + '/fonts'));
 });
 
+gulp.task('copy:ng:icons', function () {
+  return gulp.src([
+    config.bowerDir + '/material-design-icons/sprites/svg-sprite/*.svg',
+    config.assetsDir + '/images/material-design-icons/*.svg',
+  ])
+    .pipe(debug({title: "copy:ng:icons ", showFiles: true}))
+    .pipe(gulp.dest(config.pub + '/img/material-design-icons'));
+});
+
 /*
  * Concatenate vendor JS files
  */
@@ -116,6 +126,10 @@ gulp.task('concat:js:vendor', function () {
     config.bowerDir + '/svg-morpheus/compile/unminified/svg-morpheus.js',
     config.bowerDir + '/toastr/toastr.js',
     config.bowerDir + '/angular-local-storage/dist/angular-local-storage.js',
+    config.bowerDir + '/angular-slimscroll/angular-slimscroll.js',
+    config.bowerDir + '/jquery/dist/jquery.js',
+    config.bowerDir + '/slimScroll/jquery.slimscroll.js',
+    //config.bowerDir + '/angular-bootstrap/ui-bootstrap.js',
   ];
 
   return gulp.src(vendorScripts)

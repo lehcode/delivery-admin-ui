@@ -1,10 +1,11 @@
 body {
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 md-content {
-  overflow: hidden;
+  //overflow: hidden;
 }
 
 // Colors
@@ -80,3 +81,10 @@ md-list-item.md-3-line {
   }
 }
 
+.slimScrollDiv{
+  width: 320px !important;
+  transition: width .25s;
+  &.collapse{
+    width: 0 !important;
+  }
+}

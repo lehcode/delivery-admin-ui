@@ -6,11 +6,17 @@ angular.module('AdminApp')
   .controller('DashboardController', [
     '$scope',
     '$rootScope',
+    'localStorageService',
 
     function ($scope,
-              $rootScope) {
+              $rootScope,
+              localStorageService) {
 
       console.log("Initializing DashboardController");
+
+      $scope.$on('$viewContentLoaded', function () {
+
+      });
 
     }
   ]);

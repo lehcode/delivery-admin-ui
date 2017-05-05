@@ -11,7 +11,7 @@ AdminApp.run(['$rootScope', 'settings', '$state', '$location', 'localStorageServ
 
     console.log(localStorageService.get('token'));
 
-    if (!localStorage.getItem('token')) {
+    if (!localStorageService.get('token')) {
       $location.path('/');
     }
   }

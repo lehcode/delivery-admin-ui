@@ -13,6 +13,7 @@ var AdminApp = angular.module("AdminApp", [
   'ngRoute',
   'ngMaterial',
   'ngMdIcons',
+  //'ui-bootstrap',
   //'ui.grid',
   //'ui.grid.edit',
   //'ui.grid.treeView',
@@ -22,6 +23,8 @@ var AdminApp = angular.module("AdminApp", [
   //'ui.grid.pinning',
   //'ui.grid.cellNav',
   //'ui.grid.rowEdit',
-  'LocalStorageModule'
+  'LocalStorageModule',
+  //'kinvey',
+  'ui.slimscroll'
 ]);
 

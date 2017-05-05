@@ -13,6 +13,9 @@ angular.module('AdminApp')
       '$http',
       'settings',
       'localStorageService',
+      '$location',
+      '$mdSidenav',
+      '$mdPanel',
 
       function ($scope,
                 $rootScope,
@@ -21,7 +24,10 @@ angular.module('AdminApp')
                 $q,
                 $http,
                 settings,
-                localStorageService) {
+                localStorageService,
+                $location,
+                $mdSidenav,
+                $mdPanel) {
 
         $scope.state = $state;
 
@@ -73,6 +79,26 @@ angular.module('AdminApp')
          */
         $scope.appVersion = $rootScope.settings.appVersion;
         console.info("Application version: %s", $scope.appVersion);
+
+
+        $scope.$on('$viewContentLoaded', function () {
+
+          var token = localStorageService.get('token');
+          if (!!token === false) {
+            $location.path('/login');
+          }
+
+          $scope.moreMenu = {
+            name: 'more',
+            items: [
+              'Account',
+              'Sign Out'
+            ]
+          };
+
+        });
+
+
 
         /**
          *
@@ -147,14 +173,7 @@ angular.module('AdminApp')
          * Get user data and set $scope variable
          */
         $rootScope.setUserData = function () {
-          $scope.authUser = JSON.stringify(localStorageService.get('user'));
-        };
-
-        /**
-         * Set user navigation items
-         */
-        $rootScope.setUserNav = function(){
-
+          $scope.authUser = JSON.parse(localStorageService.get('user'));
         };
 
         /**
@@ -164,6 +183,132 @@ angular.module('AdminApp')
         $rootScope.closePageAlert = function (index, scope) {
           scope.pageAlerts.splice(index, 1);
           return scope;
+        };
+
+        /**
+         * Get navigation items for user per his permissions
+         */
+        $scope.getNavigation = function () {
+
+          var req = {
+            method: 'GET',
+            url: settings.apiHost + 'api/admin/' + settings.apiVersion + '/user/navigation',
+            data: null,
+            headers: {
+              "content-type": "application/json",
+              "authorization": "Bearer " + localStorageService.get('token')
+            }
+          };
+
+          $http(req)
+            .then(function successCallback(response) {
+              if (response.data.status == 'success') {
+                try {
+                  $scope.navigation = response.data.data.data;
+                  $location.path('/dashboard');
+                } catch (err) {
+                  console.error(err);
+                }
+              }
+            }, function errorCallback(response) {
+              console.warn(response.data);
+              switch (response.status) {
+                case 500:
+                  console.error(response);
+                  return;
+              }
+
+              try {
+                $location.path('/login');
+              } catch (err) {
+                console.error(err);
+              }
+
+            });
+        };
+
+        /**
+         * Process "getNavigation" call from child scopes
+         */
+        $scope.$on("getNavigation", function () {
+          if (!!$scope.navigation === false) {
+            $scope.getNavigation();
+          }
+        });
+
+        /**
+         * Toggle sidebar navigation
+         */
+        $scope.toggleSidenav = function (menuId) {
+          var el = $('.slimScrollDiv');
+          if (el.hasClass('collapse')) {
+            el.removeClass('collapse');
+          } else {
+            el.addClass('collapse');
+          }
+          $mdSidenav(menuId).toggle();
+        };
+
+
+
+        $scope.showToolbarMenu = function ($event, menu) {
+
+          var template = '' +
+            '<div class="menu-panel" md-whiteframe="4">' +
+            '  <div class="menu-content">' +
+            '    <div class="menu-item" ng-repeat="item in ctrl.items">' +
+            '      <button class="md-button">' +
+            '        <span>{{item}}</span>' +
+            '      </button>' +
+            '    </div>' +
+            '    <md-divider></md-divider>' +
+            '    <div class="menu-item">' +
+            '      <button class="md-button" ng-click="closeMenu()">' +
+            '        <span>Close Menu</span>' +
+            '      </button>' +
+            '    </div>' +
+            '  </div>' +
+            '</div>';
+
+          var position = $mdPanel.newPanelPosition()
+            .relativeTo($event.srcElement)
+            .addPanelPosition(
+              $mdPanel.xPosition.ALIGN_START,
+              $mdPanel.yPosition.BELOW
+            );
+
+          var config = {
+            id: 'toolbar_' + menu.name,
+            attachTo: angular.element(document.body),
+            controller: 'ApplicationController',
+            controllerAs: 'ctrl',
+            template: template,
+            position: position,
+            panelClass: 'menu-panel-container',
+            locals: {
+              items: menu.items
+            },
+            openFrom: $event,
+            focusOnOpen: false,
+            zIndex: 100,
+            propagateContainerEvents: true,
+            groupName: ['toolbar', 'menus']
+          };
+
+          try{
+            $mdPanel.open(config);
+          } catch (err){
+            console.error(err);
+          }
+        };
+
+        $scope.closeMenu = function() {
+          try{
+            mdPanelRef && mdPanelRef.close();
+          } catch(err){
+            console.error(err);
+          }
+
         }
 
       }

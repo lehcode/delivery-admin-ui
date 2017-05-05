@@ -126,3 +126,30 @@ AdminApp.config(function ($mdThemingProvider) {
 AdminApp.config(['$qProvider', function ($qProvider) {
   $qProvider.errorOnUnhandledRejections(false);
 }]);
+
+
+AdminApp.config(function ($mdIconProvider) {
+  $mdIconProvider
+  // linking to https://github.com/google/material-design-icons/tree/master/sprites/svg-sprite
+  //
+    .iconSet('action', 'img/material-design-icons/svg-sprite-action.svg', 24)
+    .iconSet('alert', 'img/material-design-icons/svg-sprite-alert.svg', 24)
+    .iconSet('av', 'img/material-design-icons/svg-sprite-av.svg', 24)
+    .iconSet('communication', 'img/material-design-icons/svg-sprite-communication.svg', 24)
+    .iconSet('content', 'img/material-design-icons/svg-sprite-content.svg', 24)
+    .iconSet('device', 'img/material-design-icons/svg-sprite-device.svg', 24)
+    .iconSet('editor', 'img/material-design-icons/svg-sprite-editor.svg', 24)
+    .iconSet('file', 'img/material-design-icons/svg-sprite-file.svg', 24)
+    .iconSet('hardware', 'img/material-design-icons/svg-sprite-hardware.svg', 24)
+    .iconSet('image', 'img/material-design-icons/svg-sprite-image.svg', 24)
+    .iconSet('maps', 'img/material-design-icons/svg-sprite-maps.svg', 24)
+    .iconSet('navigation', 'img/material-design-icons/svg-sprite-navigation.svg', 24)
+    .iconSet('notification', 'img/material-design-icons/svg-sprite-notification.svg', 24)
+    .iconSet('social', 'img/material-design-icons/svg-sprite-social.svg', 24)
+    .iconSet('toggle', 'img/material-design-icons/svg-sprite-toggle.svg', 24)
+    //.iconSet('cars', 'img/material-design-icons/taxi.svg', 24)
+
+    // Illustrated user icons used in the docs https://material.angularjs.org/latest/#/demo/material.components.gridList
+    .iconSet('avatars', 'https://raw.githubusercontent.com/angular/material/master/docs/app/icons/avatar-icons.svg', 24)
+    .defaultIconSet('img/material-design-icons/svg-sprite-action.svg', 24);
+});

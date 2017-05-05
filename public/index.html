@@ -14,24 +14,52 @@
   <title>BarQ Admin</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!--<link rel="stylesheet" href="/css/vendor.sass.css">-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="/css/vendor.sass.css">
   <link rel="stylesheet" href="/css/vendor.css">
   <link rel="stylesheet" href="/css/app.sass.css">
   <link rel="stylesheet" href="/css/app.css">
 </head>
-<body layout="row"
+<body layout="column"
+      layout-fill
       ng-controller="ApplicationController"
       ng-class="{ loggedIn: authUser  }">
 
 <!--[if lt IE 7]>
-<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+  your browser</a> to improve your experience.</p>
 <![endif]-->
 
-<md-content flex>
-  <ui-view layout="column" layout-align="center center" layout-padding></ui-view>
-</md-content>
 
-<div ng-show="!!authUser === true">Angular seed app: v<span app-version></span></div>
+<!--<md-toolbar layout="row">
+  <button ng-click="toggleSidenav('left')" hide-gt-sm class="menuBtn">
+    <span class="visually-hidden">Menu</span>
+  </button>
+  <h1 class="md-toolbar-tools" layout-align-gt-sm="center">BarQ v<span app-version></span> Admin</h1>
+</md-toolbar>-->
+
+<ng-include src="'tpl/widgets/toolbar.html'" ng-show="!!authUser === true"></ng-include>
+
+<section layout="row" flex>
+
+  <div layout="column"
+       ng-include="'tpl/widgets/sidenav.html'"
+       ng-show="!!authUser === true"
+       ng-controller="NavigationController">
+  </div>
+
+  <div layout="column" class="relative" layout-fill role="main">
+
+    <!--<md-button class="md-fab md-fab-bottom-right" aria-label="Add" ng-click="showAdd($event)">
+      <md-icon md-svg-icon="content:ic_add_24px" aria-label="Plus"></md-icon>
+    </md-button>-->
+
+    <div flex layout="row" class="md-padding">
+      <ui-view></ui-view>
+    </div>
+  </div>
+
+</section>
 
 <script src="js/vendor.js"></script>
 <script src="js/app.js"></script>

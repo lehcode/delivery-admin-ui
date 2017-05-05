@@ -8,12 +8,13 @@ angular.module('AdminApp')
     [
       '$scope',
       '$rootScope',
-      '$mdDialog',
+      '$state',
       '$q',
       '$http',
       'settings',
       '$window',
       '$location',
+      'localStorageService',
 
       function ($scope,
                 $rootScope,
@@ -22,7 +23,8 @@ angular.module('AdminApp')
                 $http,
                 settings,
                 $window,
-                $location) {
+                $location,
+                localStorageService) {
 
         console.log("Initializing LoginController");
 
@@ -35,6 +37,19 @@ angular.module('AdminApp')
          * @type {{}}
          */
         $scope.user = {};
+
+        /**
+         * Authorized user container
+         * @type {{}}
+         */
+        $scope.authUser = null;
+
+        // (function(){
+        //   var token = localStorageService.get('token');
+        //   if (!!token === true){
+        //     $location.path('/dashboard');
+        //   }
+        // })();
 
         /**
          * Process user login
@@ -56,54 +71,32 @@ angular.module('AdminApp')
                   if (loginResponse.data.status === 'success') {
 
                     try {
-                      localStorage.setItem('token', loginResponse.data.data.data.attributes.token);
+                      localStorageService.set('token', loginResponse.data.data.data.attributes.token);
                     } catch (error) {
                       console.error(error.message);
                       return;
                     }
 
-                    var authHeaders = {
-                      "content-type": "application/json",
-                      "authorization": "Bearer " + localStorage.getItem('token')
-                    };
-
                     Object.assign(req, {
                       method: 'POST',
                       url: settings.apiHost + 'api/admin/' + settings.apiVersion + '/user/me',
                       data: null,
-                      headers: authHeaders
+                      headers: {
+                        "content-type": "application/json",
+                        "authorization": "Bearer " + localStorageService.get('token')
+                      }
                     });
 
                     $http(req)
                       .then(function userDataCallback(userDataResponse) {
                         if (userDataResponse.status === 200) {
                           if (userDataResponse.data.status == 'success') {
-                            localStorage.setItem('user', userDataResponse.data.data.data[0]);
+
+                            var userJson = JSON.stringify(userDataResponse.data.data.data[0]);
+                            localStorageService.set('user', userJson);
                             $rootScope.setUserData();
-
-                            Object.assign(req, {
-                              method: 'GET',
-                              url: settings.apiHost + 'api/admin/' + settings.apiVersion + '/user/navigation',
-                              data: null,
-                              headers: authHeaders
-                            });
-
-                            $http(req)
-                              .then(function userDataCallback(userNavResponse) {
-                                switch (userNavResponse.status) {
-                                  case 200:
-                                    if (userNavResponse.data.status == 'success') {
-                                      try{
-                                        $rootScope.setUserNav(userNavResponse.data.data);
-                                        $location.path('/dashboard');
-                                        //$location.hash('dashboard');
-                                      } catch (err){
-                                        console.error(err);
-                                      }
-                                    }
-                                    break;
-                                }
-                              });
+                            $scope.getNavigation();
+                            $state.go('dashboard');
                           }
                         }
                       });
