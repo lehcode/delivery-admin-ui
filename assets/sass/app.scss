@@ -1,3 +1,5 @@
+@import "variables";
+
 body {
   margin: 0;
   padding: 0;
@@ -8,9 +10,6 @@ md-content {
   //overflow: hidden;
 }
 
-// Colors
-$gray: #eee;
-
 // Angular
 [ng-click] {
   &:hover {
@@ -20,36 +19,56 @@ $gray: #eee;
 
 // Main content bg color
 md-content.md-default-theme {
-  background-color: $gray;
-}
-
-// Navigation drawer pattern: https://www.google.com/design/spec/patterns/navigation-drawer.html#navigation-drawer-specs
-md-sidenav {
-  & > md-toolbar {
-    padding: 15px;
-    height: 150px;
-    max-height: 150px;
-  }
-  & md-list-item.md-2-line .md-list-item-text {
-    padding-top: 14px;
-    padding-bottom: 12px;
-  }
-  & md-divider {
-    margin-top: 4px;
-    margin-bottom: 4px;
-  }
+  background-color: $colorGray;
 }
 
 // White svg icons in toolbar and fab
 
 md-sidenav {
+
+  & > md-toolbar {
+    padding: 15px;
+    height: 150px;
+    max-height: 150px;
+  }
+
+  md-list-item.md-2-line .md-list-item-text {
+    padding-top: 14px;
+    padding-bottom: 12px;
+  }
+
+  md-divider {
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+
+  md-list-item {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
   md-icon {
-    fill: #737373;
+    padding-top: 7px;
+    fill: $colorGray;
     position: relative;
+
+    svg path {
+      fill: $colorGray;
+    }
+
   }
   .md-avatar {
     height: 64px;
     width: 64px;
+  }
+}
+
+md-toolbar.toolbarTop{
+  md-icon{
+    svg path {
+      fill: white;
+    }
   }
 }
 
@@ -81,10 +100,11 @@ md-list-item.md-3-line {
   }
 }
 
-.slimScrollDiv{
-  width: 320px !important;
+.slimScrollDiv {
+  width: 220px !important;
   transition: width .25s;
-  &.collapse{
+
+  &.collapse {
     width: 0 !important;
   }
 }
