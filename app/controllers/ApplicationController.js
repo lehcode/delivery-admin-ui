@@ -204,7 +204,7 @@ angular.module('AdminApp')
             .then(function successCallback(response) {
               if (response.data.status == 'success') {
                 try {
-                  $scope.navigation = response.data.data.data;
+                  $scope.navigation = response.data.data;
                   $location.path('/dashboard');
                 } catch (err) {
                   console.error(err);

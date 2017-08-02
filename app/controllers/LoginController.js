@@ -71,7 +71,7 @@ angular.module('AdminApp')
                   if (loginResponse.data.status === 'success') {
 
                     try {
-                      localStorageService.set('token', loginResponse.data.data.data.attributes.token);
+                      localStorageService.set('token', loginResponse.data.data.attributes.token);
                     } catch (error) {
                       console.error(error.message);
                       return;
@@ -92,7 +92,7 @@ angular.module('AdminApp')
                         if (userDataResponse.status === 200) {
                           if (userDataResponse.data.status == 'success') {
 
-                            var userJson = JSON.stringify(userDataResponse.data.data.data[0]);
+                            var userJson = JSON.stringify(userDataResponse.data.data[0]);
                             localStorageService.set('user', userJson);
                             $rootScope.setUserData();
                             $scope.getNavigation();
