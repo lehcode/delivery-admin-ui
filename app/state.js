@@ -14,24 +14,31 @@ AdminApp.config([
     /**
      * Redirect on any unmatched url
      */
-    $urlRouterProvider.otherwise("login");
+    $urlRouterProvider.when("/", "/login");
+    $urlRouterProvider.otherwise("/under-construction");
 
     /**
      * API configuration
      * @type {}
      */
     var pages = {
-      login: {
+      "login": {
         url: "/login",
         controller: "LoginController",
         templateUrl: "views/login.html",
         data: {pageTitle: 'Log In'},
       },
-      dashboard: {
+      "dashboard": {
         url: "/dashboard",
         controller: "DashboardController",
         templateUrl: "views/dashboard.html",
         data: {pageTitle: 'Dashboard'},
+      },
+      "carriers": {
+        url: "/carriers",
+        controller: "CarriersController",
+        templateUrl: "views/carriers.html",
+        data: {pageTitle: 'Carriers Management'},
       },
     };
 
