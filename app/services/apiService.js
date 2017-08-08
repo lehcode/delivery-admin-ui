@@ -12,12 +12,14 @@ angular.module('AdminApp')
       'settings',
       '$location',
       '$q',
+      'localStorageService',
 
       function ($rootScope,
                 $http,
                 settings,
                 $location,
-                $q) {
+                $q,
+                localStorageService) {
 
         /**
          * Exposed variable
@@ -37,10 +39,10 @@ angular.module('AdminApp')
             "async": true,
             "crossDomain": true,
             method: method,
-            url: $rootScope.settings.apiHost + '/' + url,
+            url: $rootScope.settings.apiHost + '/api/admin/' + $rootScope.settings.apiVersion + '/' + url,
             data: data,
             headers: {
-              "Authorization": localStorage['token'],
+              "Authorization": "Bearer " + localStorageService.get('token'),
               "Content-Type": "application/json"
             }
           };
