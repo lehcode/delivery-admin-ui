@@ -1,0 +1,27 @@
+<div class="form-body" layout="column">
+  <!--
+    Email*
+    Phone number
+    First name
+    Last name*
+    Password*
+    Password confirmation
+    Home address*
+    PersonalPhoto*
+    Birthday Date
+    Nationality
+    National ID/passport number*
+    National ID/Passport scan*
+  -->
+  <md-list layout="row">
+    <md-list-item flex="50" flex-gt-sm>
+      <md-input-container class="md-block">
+        <label class="checkbox-label">Email</label>
+        <input type="email"
+               ng-model="newCarrier.email"
+               aria-label="New Carrier email"
+               name="email">
+      </md-input-container>
+    </md-list-item>
+  </md-list>
+</div>
