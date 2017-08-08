@@ -14,5 +14,11 @@ AdminApp.run(['$rootScope', 'settings', '$state', '$location', 'localStorageServ
     if (!localStorageService.get('token')) {
       $location.path('/');
     }
+
+    // Redirect to old page on browser refresh
+    $rootScope.$on('$stateChangeSuccess', function (event, toState) {
+      localStorage.setItem('__stateName', toState.name);
+    });
+
   }
 ]);

@@ -40,6 +40,84 @@ AdminApp.config([
         templateUrl: "views/carriers.html",
         data: {pageTitle: 'Carriers Management'},
       },
+      "carriers.create": {
+        url: "/create",
+        controller: "CarrierController",
+        templateUrl: "views/carrier/edit.html",
+        data: {pageTitle: 'Add Carrier', message: "Create new Carrier user account"},
+      },
+      "carriers.edit": {
+        url: "/edit/:id",
+        controller: "CarrierController",
+        templateUrl: "views/carrier/edit.html",
+        data: {pageTitle: 'Edit Carrier', message: "Edit Carrier user account"},
+      },
+      "customers": {
+        url: "/customers",
+        controller: "OrdersController",
+        templateUrl: "views/default.html",
+        data: {pageTitle: 'Customers Management', message: "Under Construction"},
+      },
+      "orders": {
+        url: "/orders",
+        controller: "CustomersController",
+        templateUrl: "views/default.html",
+        data: {pageTitle: 'Customers Management', message: "Under Construction"},
+      },
+      "trips": {
+        url: "/trips",
+        controller: "TripsController",
+        templateUrl: "views/default.html",
+        data: {pageTitle: 'Trips Management', message: "Under Construction"},
+      },
+      "shipments": {
+        url: "/shipments",
+        controller: "ShipmentsController",
+        templateUrl: "views/default.html",
+        data: {pageTitle: 'Shipments Management', message: "Under Construction"},
+      },
+      "cities": {
+        url: "/cities",
+        controller: "CitiesController",
+        templateUrl: "views/default.html",
+        data: {pageTitle: 'Cities Management', message: "Under Construction"},
+      },
+      "admins": {
+        url: "/administrators",
+        controller: "AdminsController",
+        templateUrl: "views/default.html",
+        data: {pageTitle: 'Administrators Management', message: "Under Construction"},
+      },
+      "audit": {
+        url: "/audit",
+        controller: "AuditController",
+        templateUrl: "views/default.html",
+        data: {pageTitle: 'Audits', message: "Under Construction"},
+      },
+      "payments": {
+        url: "/payments",
+        controller: "PaymentsController",
+        templateUrl: "views/default.html",
+        data: {pageTitle: 'Payments Management', message: "Under Construction"},
+      },
+      "reports": {
+        url: "/reports",
+        controller: "ReportsController",
+        templateUrl: "views/default.html",
+        data: {pageTitle: 'Reports', message: "Under Construction"},
+      },
+      "notifications": {
+        url: "/notifications",
+        controller: "NotificationsController",
+        templateUrl: "views/default.html",
+        data: {pageTitle: 'Notifications', message: "Under Construction"},
+      },
+      "settings": {
+        url: "/settings",
+        controller: "SettingsController",
+        templateUrl: "views/default.html",
+        data: {pageTitle: 'System Settings', message: "Under Construction"},
+      },
     };
 
     /**

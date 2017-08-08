@@ -44,7 +44,7 @@
 
   <div layout="column"
        ng-include="'tpl/widgets/sidenav.html'"
-       ng-show="!!authUser === true"
+       ng-if="authUser"
        ng-controller="NavigationController">
   </div>
 
@@ -54,7 +54,7 @@
       <md-icon md-svg-icon="content:ic_add_24px" aria-label="Plus"></md-icon>
     </md-button>-->
 
-    <div flex layout="row" class="md-padding">
+    <div flex layout="row" class="">
       <ui-view style="width: 100%;"></ui-view>
     </div>
   </div>

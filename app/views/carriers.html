@@ -1,6 +1,54 @@
-<div id="carriers" ng-controller="CarriersController">
-  <h1>{{ $state.current.data.pageTitle }}</h1>
+<div id="carriers">
 
-    <div ui-grid="{ data: gridData }" class="grid"></div>
+  <md-toolbar class="md-accent" id="carriersToolbar">
 
+    <div class="md-toolbar-tools">
+      <h1>{{ $state.current.data.pageTitle }}</h1>
+      <span flex></span>
+      <md-button
+        class="md-fab md-primary"
+        aria-label="Tools"
+        ng-click="openFormDialog($event, 'create')">
+        <ng-md-icon icon="add"></ng-md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-content flex layout-padding
+              class="grid-container"
+              id="carriersGridContainer">
+
+    <div ui-grid="gridOptions"
+         ui-grid-selection
+         ng-if="gridOptions.data"
+         class="grid"></div>
+  </md-content>
+
+</div>
+
+<div style="visibility: hidden">
+  <div class="md-dialog-container" id="createCarrierDialogContainer">
+    <md-dialog aria-label="Create Carrier account dialog" layout-padding>
+      <md-dialog-title>
+        <h3>Create new Carrier</h3>
+      </md-dialog-title>
+
+      <md-dialog-content layout="column" class="form">
+
+        <form name="createCarrierForm"
+              role="form"
+              class="">
+          <div ng-include="'tpl/forms/carrier.html'"></div>
+        </form>
+
+      </md-dialog-content>
+      <md-dialog-actions>
+        <md-button ng-click="saveCarrier()"
+                   class="md-primary"
+                   ng-disabled="ajaxLoading">Save
+        </md-button>
+        <md-button ng-click="closeFormDialog('create')">Cancel</md-button>
+      </md-dialog-actions>
+    </md-dialog>
+  </div>
 </div>

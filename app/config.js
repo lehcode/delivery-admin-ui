@@ -28,55 +28,57 @@ AdminApp.factory('settings', [
      * @type {{apiHost: string, apiVersion: string, appVersion: string, grid: {defaults: {data: null, headerRowHeight: number, rowHeight: number, idRowWidth: string, excludeProperties: string[], enableColumnResizing: boolean, enableSorting: boolean, enableHorizontalScrollbar: boolean, showGridFooter: boolean, enableFiltering: boolean, enableRowSelection: boolean, enableRowHeaderSelection: boolean, enableSelectAll: boolean, multiSelect: boolean, modifierKeysToMultiSelect: boolean, enableColumnMenus: boolean, onRegisterApi: settings.grid.defaults.onRegisterApi}}}}
      */
     var settings = {
-        apiHost: 'http://back.barq.zee.lan/',
-        apiVersion: 'v1',
-        appVersion: '0.0.1',
-        grid: {
-          defaults: {
-            data: null,
-            headerRowHeight: 60,
-            rowHeight: gridRowHeight,
-            idRowWidth: "6%",
-            excludeProperties: ['treeLevel', '$$treeLevel'],
-            enableColumnResizing: true,
-            enableSorting: true,
-            enableHorizontalScrollbar: false,
-            showGridFooter: false,
-            enableFiltering: true,
-            enableRowSelection: true,
-            enableRowHeaderSelection: true,
-            enableSelectAll: false,
-            multiSelect: false,
-            modifierKeysToMultiSelect: false,
-            enableColumnMenus: false,
-            /**
-             *
-             * @param gridApi
-             */
-            onRegisterApi: function (gridApi) {
-              console.info(gridApi);
-            }
+      apiHost: 'http://back.barq.zee.lan',
+      apiVersion: 'v1',
+      appVersion: '0.0.1',
+      apiRoot: null,
+      grid: {
+        defaults: {
+          data: null,
+          headerRowHeight: 60,
+          rowHeight: gridRowHeight,
+          idRowWidth: "6%",
+          excludeProperties: ['treeLevel', '$$treeLevel'],
+          enableColumnResizing: true,
+          enableSorting: true,
+          enableHorizontalScrollbar: false,
+          showGridFooter: false,
+          enableFiltering: true,
+          enableRowSelection: true,
+          enableRowHeaderSelection: true,
+          enableSelectAll: false,
+          multiSelect: false,
+          modifierKeysToMultiSelect: false,
+          enableColumnMenus: false,
+          /**
+           *
+           * @param gridApi
+           */
+          onRegisterApi: function (gridApi) {
+            console.info(gridApi);
           }
-        },
-        toastr: {
-          closeButton: false,
-          debug: false,
-          newestOnTop: false,
-          progressBar: false,
-          positionClass: "toast-top-center",
-          preventDuplicates: true,
-          onclick: null,
-          showDuration: 300,
-          hideDuration: 1000,
-          timeOut: 5000,
-          extendedTimeOut: 1000,
-          showEasing: "swing",
-          hideEasing: "linear",
-          showMethod: "fadeIn",
-          hideMethod: "fadeOut"
         }
+      },
+      toastr: {
+        closeButton: false,
+        debug: false,
+        newestOnTop: false,
+        progressBar: false,
+        positionClass: "toast-top-center",
+        preventDuplicates: true,
+        onclick: null,
+        showDuration: 300,
+        hideDuration: 1000,
+        timeOut: 5000,
+        extendedTimeOut: 1000,
+        showEasing: "swing",
+        hideEasing: "linear",
+        showMethod: "fadeIn",
+        hideMethod: "fadeOut"
       }
-      ;
+    };
+
+    settings.apiRoot = settings.apiHost + '/api/admin/' + settings.apiVersion;
 
     $rootScope.settings = settings;
 
