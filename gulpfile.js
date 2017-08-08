@@ -58,7 +58,8 @@ gulp.task('build', function () {
   gulp.start('copy:ng:views');
   //gulp.start('copy:images:datatable');
   //gulp.start('copy:images:angular-grid');
-  gulp.start('copy:app:fonts');
+  gulp.start('copy:default:fonts');
+  gulp.start('copy:ui-grid:fonts');
   gulp.start('copy:ng:icons');
 });
 
@@ -81,17 +82,25 @@ gulp.task('copy:ng:templates', function () {
 });
 
 gulp.task('copy:images:assets', function () {
-  return gulp.src([
-    config.assetsDir + '/images/**/*.(jpg|png|svg|gif)',
-  ])
-    .pipe(debug({title: "copy:images:assets ", showFiles: true}))
+  return gulp.src(config.assetsDir + '/images/**/*.(jpg|png|svg|gif)')
+    .pipe(debug({title: "copy:images:assets ", showFiles: false}))
     .pipe(gulp.dest(config.pub + '/img'));
 });
 
-gulp.task('copy:app:fonts', function () {
+gulp.task('copy:default:fonts', function () {
   return gulp.src(config.assetsDir + '/fonts/**.*')
-    .pipe(debug({title: "copy:app:fonts", showFiles: true}))
+    .pipe(debug({title: "copy:default:fonts", showFiles: false}))
     .pipe(gulp.dest(config.pub + '/fonts'));
+});
+
+gulp.task('copy:ui-grid:fonts', function () {
+  return gulp.src([
+    config.bowerDir + '/angular-ui-grid/ui-grid.eot',
+    config.bowerDir + '/angular-ui-grid/ui-grid.ttf',
+    config.bowerDir + '/angular-ui-grid/ui-grid.woff',
+  ])
+    .pipe(debug({title: "copy:ui-grid:fonts", showFiles: false}))
+    .pipe(gulp.dest(config.pub + '/css'));
 });
 
 gulp.task('copy:ng:icons', function () {
@@ -99,7 +108,7 @@ gulp.task('copy:ng:icons', function () {
     config.bowerDir + '/material-design-icons/sprites/svg-sprite/*.svg',
     config.assetsDir + '/images/material-design-icons/*.svg',
   ])
-    .pipe(debug({title: "copy:ng:icons ", showFiles: true}))
+    .pipe(debug({title: "copy:ng:icons ", showFiles: false}))
     .pipe(gulp.dest(config.pub + '/img/material-design-icons'));
 });
 
@@ -129,6 +138,7 @@ gulp.task('concat:js:vendor', function () {
     config.bowerDir + '/angular-slimscroll/angular-slimscroll.js',
     config.bowerDir + '/jquery/dist/jquery.js',
     config.bowerDir + '/slimScroll/jquery.slimscroll.js',
+    config.bowerDir + '/angular-ui-grid/ui-grid.js',
     //config.bowerDir + '/angular-bootstrap/ui-bootstrap.js',
   ];
 
@@ -151,6 +161,7 @@ gulp.task("concat:css:vendor", function () {
     config.bowerDir + '/angular-material-icons/angular-material-icons.css',
     config.bowerDir + '/toastr/toastr.css',
     config.bowerDir + '/angular-bootstrap/ui-bootstrap-csp.css',
+    config.bowerDir + '/angular-ui-grid/ui-grid.css',
   ];
 
   return gulp.src(files)
@@ -206,6 +217,8 @@ gulp.task('concat:js:app', function () {
     config.appDir + "/components/version/interpolate-filter.js",
     config.appDir + "/components/version/version-directive.js",
     config.appDir + "/components/version/version.js",
+    config.appDir + "/resources/**/*.js",
+    config.appDir + "/services/**/*.js",
     config.appDir + "/controllers/**/*.js",
     config.appDir + "/widgets/**/*.js",
   ];
