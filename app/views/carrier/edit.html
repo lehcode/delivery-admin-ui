@@ -1,0 +1,32 @@
+<div id="editCarrier">
+  <h1>{{ $state.current.data.pageTitle }}</h1>
+  <p>{{ $state.current.data.message }}</p>
+
+  <div>
+    <div class="md-dialog-container" id="createArticleDialogContainer">
+      <md-dialog aria-label="Create Carrier account dialog" layout-padding>
+        <md-dialog-title>
+          <h3>Create new Carrier</h3>
+        </md-dialog-title>
+
+        <md-dialog-content layout="column" class="form">
+
+          <form name="createCarrierForm"
+                role="form"
+                class="">
+            <div ng-include="'tpl/forms/carrier.html'"></div>
+          </form>
+
+        </md-dialog-content>
+        <md-dialog-actions>
+          <md-button ng-click="saveCarrier()"
+                     class="md-primary"
+                     ng-disabled="ajaxLoading">Save
+          </md-button>
+          <md-button ng-click="closeFormDialog('create')">Cancel</md-button>
+        </md-dialog-actions>
+      </md-dialog>
+    </div>
+  </div>
+</div>
+
