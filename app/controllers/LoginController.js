@@ -28,6 +28,8 @@ angular.module('AdminApp')
 
         console.log("Initializing LoginController");
 
+        //$rootScope.redirectIfAuthenticated();
+
         $scope.$on('$viewContentLoaded', function () {
 
         });
@@ -59,7 +61,7 @@ angular.module('AdminApp')
           if (this.loginForm.$valid) {
             var req = {
               method: 'POST',
-              url: settings.apiHost + 'api/admin/' + settings.apiVersion + '/authenticate',
+              url: 'authenticate',
               data: $scope.user,
               headers: {"content-type": "application/json"}
             };
@@ -79,7 +81,7 @@ angular.module('AdminApp')
 
                     Object.assign(req, {
                       method: 'POST',
-                      url: settings.apiHost + 'api/admin/' + settings.apiVersion + '/user/me',
+                      url: 'user/me',
                       data: null,
                       headers: {
                         "content-type": "application/json",

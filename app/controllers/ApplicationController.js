@@ -40,6 +40,69 @@ angular.module('AdminApp')
         };
 
         /**
+         * Get navigation items for user per his permissions
+         */
+        $scope.getNavigation = function () {
+
+          var req = {
+            method: 'GET',
+            url: settings.apiHost + '/api/admin/' + settings.apiVersion + '/user/navigation',
+            data: null,
+            headers: {
+              "content-type": "application/json",
+              "authorization": "Bearer " + localStorageService.get('token')
+            }
+          };
+
+          $http(req)
+            .then(function successCallback(response) {
+              if (response.data.status == 'success') {
+                try {
+                  $scope.navigation = response.data.data;
+                  //$location.path('/dashboard');
+                } catch (err) {
+                  console.error(err);
+                }
+              }
+            }, function errorCallback(response) {
+              console.warn(response.data);
+              switch (response.status) {
+                case 500:
+                  console.error(response);
+                  return;
+              }
+
+              try {
+                $location.path('/login');
+              } catch (err) {
+                console.error(err);
+              }
+
+            });
+        };
+
+        /**
+         * Get user data and set $scope variable
+         */
+        $rootScope.setUserData = function () {
+          $scope.authUser = JSON.parse(localStorageService.get('user'));
+        };
+
+        /**
+         * Redirect to dashboard on refresh
+         */
+        $rootScope.redirectIfAuthenticated = function () {
+          if (!!localStorageService.get('user') !== true) {
+            $location.path('/login');
+          } else {
+            $rootScope.setUserData();
+            $scope.getNavigation();
+            //$location.path('/dashboard');
+          }
+        };
+        $rootScope.redirectIfAuthenticated();
+
+        /**
          * Set user data
          */
         $scope.token = localStorageService.get('token');
@@ -80,6 +143,11 @@ angular.module('AdminApp')
         $scope.appVersion = $rootScope.settings.appVersion;
         console.info("Application version: %s", $scope.appVersion);
 
+        /**
+         * API Root
+         * @type {string}
+         */
+        $scope.apiRoot = 'api/admin/' + $rootScope.settings.apiVersion;
 
         $scope.$on('$viewContentLoaded', function () {
 
@@ -97,7 +165,6 @@ angular.module('AdminApp')
           };
 
         });
-
 
 
         /**
@@ -170,61 +237,12 @@ angular.module('AdminApp')
 
 
         /**
-         * Get user data and set $scope variable
-         */
-        $rootScope.setUserData = function () {
-          $scope.authUser = JSON.parse(localStorageService.get('user'));
-        };
-
-        /**
          * Close alert
          * @param index
          */
         $rootScope.closePageAlert = function (index, scope) {
           scope.pageAlerts.splice(index, 1);
           return scope;
-        };
-
-        /**
-         * Get navigation items for user per his permissions
-         */
-        $scope.getNavigation = function () {
-
-          var req = {
-            method: 'GET',
-            url: settings.apiHost + 'api/admin/' + settings.apiVersion + '/user/navigation',
-            data: null,
-            headers: {
-              "content-type": "application/json",
-              "authorization": "Bearer " + localStorageService.get('token')
-            }
-          };
-
-          $http(req)
-            .then(function successCallback(response) {
-              if (response.data.status == 'success') {
-                try {
-                  $scope.navigation = response.data.data;
-                  $location.path('/dashboard');
-                } catch (err) {
-                  console.error(err);
-                }
-              }
-            }, function errorCallback(response) {
-              console.warn(response.data);
-              switch (response.status) {
-                case 500:
-                  console.error(response);
-                  return;
-              }
-
-              try {
-                $location.path('/login');
-              } catch (err) {
-                console.error(err);
-              }
-
-            });
         };
 
         /**
@@ -250,15 +268,14 @@ angular.module('AdminApp')
         };
 
 
-
         $scope.showToolbarMenu = function ($event, menu) {
-
+          debugger;
           var template = '' +
             '<div class="menu-panel" md-whiteframe="4">' +
             '  <div class="menu-content">' +
             '    <div class="menu-item" ng-repeat="item in ctrl.items">' +
             '      <button class="md-button">' +
-            '        <span>{{item}}</span>' +
+            '        <span>{{item.name}}</span>' +
             '      </button>' +
             '    </div>' +
             '    <md-divider></md-divider>' +
@@ -295,20 +312,104 @@ angular.module('AdminApp')
             groupName: ['toolbar', 'menus']
           };
 
-          try{
+          try {
             $mdPanel.open(config);
-          } catch (err){
+          } catch (err) {
             console.error(err);
           }
         };
 
-        $scope.closeMenu = function() {
-          try{
+        $scope.closeMenu = function () {
+          try {
             mdPanelRef && mdPanelRef.close();
-          } catch(err){
+          } catch (err) {
             console.error(err);
           }
 
+        };
+
+        var menuTemplate = '' +
+          '<div class="menu-panel" md-whiteframe="4">' +
+          '  <div class="menu-content">' +
+          '    <div class="menu-item" ng-repeat="item in ctrl.items">' +
+          '      <button class="md-button">' +
+          '        <span>{{item}}</span>' +
+          '      </button>' +
+          '    </div>' +
+          '    <md-divider></md-divider>' +
+          '    <div class="menu-item">' +
+          '      <button class="md-button" ng-click="ctrl.closeMenu()">' +
+          '        <span>Close Menu</span>' +
+          '      </button>' +
+          '    </div>' +
+          '  </div>' +
+          '</div>';
+
+        /**
+         * Open page toolbar menu
+         *
+         * @param $event
+         * @param menu
+         */
+        $scope.showToolbarMenu = function ($event, menu) {
+          debugger;
+
+          var template = menuTemplate;
+
+          var position = $mdPanel.newPanelPosition()
+            .relativeTo($event.srcElement)
+            .addPanelPosition(
+              $mdPanel.xPosition.ALIGN_START,
+              $mdPanel.yPosition.BELOW
+            );
+
+          var config = {
+            id: 'toolbar_' + menu.name,
+            attachTo: angular.element(document.getElementById('carriers')),
+            controller: PanelMenuCtrl,
+            controllerAs: 'ctrl',
+            template: template,
+            position: position,
+            panelClass: 'menu-panel-container',
+            locals: {
+              items: menu.items
+            },
+            openFrom: $event,
+            focusOnOpen: false,
+            zIndex: 100,
+            propagateContainerEvents: true,
+            groupName: ['toolbar', 'menus']
+          };
+
+          $mdPanel.open(config);
+
+        };
+
+        function PanelMenuCtrl(mdPanelRef) {
+          $scope.closeMenu = function () {
+            mdPanelRef && mdPanelRef.close();
+          }
+        }
+
+        /**
+         *
+         * @param action String
+         * @param element String
+         */
+        $rootScope.showDialog = function (action, aclObjectName) {
+          debugger;
+          var elId = "#" + action.ucfirst() + aclObjectName.ucfirst() + 'Container';
+          $mdDialog.show({
+            contentElement: document.querySelector(elId),
+            parent: angular.element(document.body)
+          });
+        }
+
+        /**
+         * Close dialog pane
+         */
+        $rootScope.hideDialog = function () {
+          $mdDialog.hide();
         }
 
       }
