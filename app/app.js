@@ -13,18 +13,19 @@ var AdminApp = angular.module("AdminApp", [
   'ngRoute',
   'ngMaterial',
   'ngMdIcons',
-  //'ui-bootstrap',
   'ui.grid',
   'ui.grid.edit',
+  'ui.grid.rowEdit',
   'ui.grid.treeView',
   'ui.grid.resizeColumns',
   'ui.grid.selection',
   'ui.grid.expandable',
   'ui.grid.pinning',
   'ui.grid.cellNav',
-  'ui.grid.rowEdit',
   'LocalStorageModule',
+  'ui.slimscroll',
+  'lfNgMdFileInput'
   //'kinvey',
-  'ui.slimscroll'
+  //'ui-bootstrap',
 ]);
 
