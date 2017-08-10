@@ -61,7 +61,7 @@ angular.module('AdminApp')
           if (this.loginForm.$valid) {
             var req = {
               method: 'POST',
-              url: 'authenticate',
+              url: settings.apiHost + '/' + $scope.apiRoot + '/authenticate',
               data: $scope.user,
               headers: {"content-type": "application/json"}
             };
@@ -81,7 +81,7 @@ angular.module('AdminApp')
 
                     Object.assign(req, {
                       method: 'POST',
-                      url: 'user/me',
+                      url: settings.apiHost + '/' + $scope.apiRoot + '/user/me',
                       data: null,
                       headers: {
                         "content-type": "application/json",
