@@ -27,6 +27,12 @@ angular.module('AdminApp')
          */
         var api = {};
 
+        var httpHeaders = {
+          "Content-Type": "application/json"
+        };
+
+        var authToken = localStorageService.get('token');
+
         /**
          * Make XHR request
          * @param method
@@ -35,16 +41,16 @@ angular.module('AdminApp')
          * @returns {*}
          */
         var call = function (method, url, data) {
+
           var params = {
             "async": true,
             "crossDomain": true,
             method: method,
             url: $rootScope.settings.apiHost + '/api/admin/' + $rootScope.settings.apiVersion + '/' + url,
             data: data,
-            headers: {
-              "Authorization": "Bearer " + localStorageService.get('token'),
-              "Content-Type": "application/json"
-            }
+            headers: Object.assign(httpHeaders, {
+              "Authorization": "Bearer " + authToken,
+            })
           };
 
           console.debug("Request: ", params);
@@ -114,7 +120,8 @@ angular.module('AdminApp')
          */
         api.put = function (url, data) {
           return $q(function (resolve, reject) {
-            call('PUT', url, data)
+            data._method = "PUT";
+            call('POST', url, data)
               .then(function (response) {
                 if (response.status === 500) {
                   console.error(response);
@@ -122,6 +129,16 @@ angular.module('AdminApp')
                 resolve(response);
               });
           });
+        };
+
+        /**
+         * Set Content-Type header
+         * @param value
+         * @returns {api}
+         */
+        api.setContentType = function(value){
+          httpHeaders["Content-Type"] = value;
+          return this;
         }
 
         return api;
