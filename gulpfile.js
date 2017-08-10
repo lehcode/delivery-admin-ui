@@ -139,7 +139,7 @@ gulp.task('concat:js:vendor', function () {
     config.bowerDir + '/jquery/dist/jquery.js',
     config.bowerDir + '/slimScroll/jquery.slimscroll.js',
     config.bowerDir + '/angular-ui-grid/ui-grid.js',
-    //config.bowerDir + '/angular-bootstrap/ui-bootstrap.js',
+    config.bowerDir + '/lf-ng-md-file-input/dist/lf-ng-md-file-input.js',
   ];
 
   return gulp.src(vendorScripts)
@@ -162,6 +162,7 @@ gulp.task("concat:css:vendor", function () {
     config.bowerDir + '/toastr/toastr.css',
     config.bowerDir + '/angular-bootstrap/ui-bootstrap-csp.css',
     config.bowerDir + '/angular-ui-grid/ui-grid.css',
+    config.bowerDir + '/lf-ng-md-file-input/dist/lf-ng-md-file-input.css',
   ];
 
   return gulp.src(files)
@@ -218,6 +219,7 @@ gulp.task('concat:js:app', function () {
     config.appDir + "/components/version/version-directive.js",
     config.appDir + "/components/version/version.js",
     config.appDir + "/resources/**/*.js",
+    config.appDir + "/directives/**/*.js",
     config.appDir + "/services/**/*.js",
     config.appDir + "/controllers/**/*.js",
     config.appDir + "/widgets/**/*.js",
