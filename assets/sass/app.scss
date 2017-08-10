@@ -124,3 +124,15 @@ md-list-item.md-3-line {
   height: 48px;
   line-height: 48px;
 }
+
+.form-image {
+  width: 120px;
+  height: 160px;
+  overflow: hidden;
+  min-height: 160px !important;
+}
+
+.file-input{
+  position: relative;
+  top: -15px;
+}

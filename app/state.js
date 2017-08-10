@@ -40,18 +40,6 @@ AdminApp.config([
         templateUrl: "views/carriers.html",
         data: {pageTitle: 'Carriers Management'},
       },
-      "carriers.create": {
-        url: "/create",
-        controller: "CarrierController",
-        templateUrl: "views/carrier/edit.html",
-        data: {pageTitle: 'Add Carrier', message: "Create new Carrier user account"},
-      },
-      "carriers.edit": {
-        url: "/edit/:id",
-        controller: "CarrierController",
-        templateUrl: "views/carrier/edit.html",
-        data: {pageTitle: 'Edit Carrier', message: "Edit Carrier user account"},
-      },
       "customers": {
         url: "/customers",
         controller: "OrdersController",
