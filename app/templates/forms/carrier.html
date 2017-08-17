@@ -16,7 +16,7 @@
   <md-list layout="row">
     <md-list-item flex="50" flex-gt-sm>
       <md-input-container class="md-block">
-        <label class="checkbox-label">Email</label>
+        <label class="">Email</label>
         <input type="email"
                data-ng-model="carrier.attributes.email"
                aria-label="Carrier email"
@@ -26,7 +26,7 @@
     </md-list-item>
     <md-list-item flex="50" flex-gt-sm>
       <md-input-container class="md-block">
-        <label class="checkbox-label">Phone number</label>
+        <label class="">Phone number</label>
         <input type="text"
                data-ng-model="carrier.attributes.phone"
                aria-label="Carrier phone number"
@@ -36,9 +36,9 @@
   </md-list>
 
   <md-list layout="row">
-    <md-list-item flex="100" flex-gt-sm>
+    <md-list-item flex-gt-sm>
       <md-input-container class="md-block">
-        <label class="checkbox-label">Full name</label>
+        <label class="">Full name</label>
         <input type="text"
                data-ng-model="carrier.attributes.name"
                aria-label="Carrier full name"
@@ -46,22 +46,30 @@
                required>
       </md-input-container>
     </md-list-item>
-    <md-list-item flex="100" flex-gt-sm>
+    <md-list-item flex-gt-sm>
       <md-input-container class="md-block">
-        <label class="checkbox-label">Username</label>
+        <label class="">Username</label>
         <input type="text"
                data-ng-model="carrier.attributes.username"
                aria-label="Carrier username"
                name="username"
-               required>
+               required
+               ng-if="dialogAction.hash === 'create'">
+        <input type="text"
+               data-ng-model="carrier.attributes.username"
+               aria-label="Carrier username"
+               name="username"
+               required
+               disabled
+               ng-if="dialogAction.hash === 'edit'">
       </md-input-container>
     </md-list-item>
   </md-list>
 
-  <md-list layout="row">
+  <md-list layout="row" ng-if="dialogAction.hash === 'create'">
     <md-list-item flex="50" flex-gt-sm>
       <md-input-container class="md-block">
-        <label class="checkbox-label">Password</label>
+        <label class="">Password</label>
         <input type="password"
                data-ng-model="carrier.attributes.password"
                aria-label="Password"
@@ -71,12 +79,24 @@
     </md-list-item>
     <md-list-item flex="50" flex-gt-sm>
       <md-input-container class="md-block">
-        <label class="checkbox-label">Password confirmation</label>
+        <label class="">Password confirmation</label>
         <input type="password"
                data-ng-model="carrier.attributes.password_confirmation"
                aria-label="Password confirmation"
-               name="email"
+               name="password_confirmation"
                required>
+      </md-input-container>
+    </md-list-item>
+  </md-list>
+
+  <md-list layout="row" ng-if="dialogAction.hash === 'edit'">
+    <md-list-item flex="50" flex-gt-sm>
+      <md-input-container class="md-block">
+        <md-button type="button"
+                   class="md-warn md-raised md-hue-2"
+                   aria-label="Reset password"
+                   name="reset_password">Reset password
+        </md-button>
       </md-input-container>
     </md-list-item>
   </md-list>
@@ -84,7 +104,7 @@
   <md-list layout="row">
     <md-list-item flex="50" flex-gt-sm>
       <md-input-container class="md-block">
-        <label class="checkbox-label">Home address</label>
+        <label class="">Home address</label>
         <input type="text"
                data-ng-model="carrier.attributes.default_address"
                aria-label="Home address"
@@ -151,7 +171,7 @@
   <md-list layout="row">
     <md-list-item flex flex-gt-sm>
       <md-input-container class="md-block">
-        <label class="checkbox-label">Nationality</label>
+        <label class="">Nationality</label>
         <input type="text"
                data-ng-model="carrier.attributes.nationality"
                aria-label="Carrier's nationality"
@@ -161,7 +181,7 @@
     </md-list-item>
     <md-list-item flex flex-gt-sm>
       <md-input-container class="md-block">
-        <label class="checkbox-label">National ID #</label>
+        <label class="">National ID #</label>
         <input type="text"
                data-ng-model="carrier.attributes.id_number"
                aria-label="Carrier's national ID number"

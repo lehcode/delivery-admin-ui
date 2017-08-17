@@ -70,11 +70,11 @@ AdminApp.config([
         templateUrl: "views/default.html",
         data: {pageTitle: 'Cities Management', message: "Under Construction"},
       },
-      "admins": {
+      "administrators": {
         url: "/administrators",
         controller: "AdminsController",
-        templateUrl: "views/default.html",
-        data: {pageTitle: 'Administrators Management', message: "Under Construction"},
+        templateUrl: "views/admins.html",
+        data: {pageTitle: 'Administrators Management', message: null},
       },
       "audit": {
         url: "/audit",

@@ -219,8 +219,8 @@ gulp.task('concat:js:app', function () {
     config.appDir + "/components/version/version-directive.js",
     config.appDir + "/components/version/version.js",
     config.appDir + "/resources/**/*.js",
-    config.appDir + "/directives/**/*.js",
     config.appDir + "/services/**/*.js",
+    config.appDir + "/directives/**/*.js",
     config.appDir + "/controllers/**/*.js",
     config.appDir + "/widgets/**/*.js",
   ];

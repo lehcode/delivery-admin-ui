@@ -47,9 +47,13 @@ angular.module('AdminApp')
          */
         $scope.carriers = [];
 
-        $scope.dialogAction = 'Create new';
+        $scope.dialogAction = 'Create new ';
 
         $scope.formErrors = [];
+
+        $scope.confirmations = [];
+
+        $scope.allowUsernameEdit = true;
 
         $scope.rowEntity;
 
@@ -91,7 +95,7 @@ angular.module('AdminApp')
                 cellTemplate: '<div class="ui-grid-cell-contents" title="TOOLTIP"><md-input-container md-no-ink><md-checkbox aria-label="Is article item active?" ng-model="row.entity.attributes.is_online" ng-disabled="true"></md-checkbox></md-input-container></div>',
                 enableCellEdit: false,
               },
-              {field: 'id'},
+              //{field: 'id'},
               {field: "attributes.name", name: "Full Name"},
               {field: "attributes.current_city.name", name: "City"},
               {field: "attributes.current_city.country.alpha2_code", name: "Country"},
@@ -123,20 +127,12 @@ angular.module('AdminApp')
 
         }
 
+        /**
+         * Fetch Carriers list from backend
+         */
         function getCarriers() {
           carriersService.getList()
             .then(function (d) {
-
-              // d.forEach(function (item, idx) {
-              //   if (!!item.attributes.birthday.date) {
-              //     try {
-              //       d[idx]['attributes']['birthday']['date'] = item.attributes.birthday.date.match(/^\d{4}-\d{2}-\d{2}/)[0];
-              //     } catch (err) {
-              //       console.error(err);
-              //     }
-              //   }
-              // });
-
               $scope.carriers = d;
               $scope.gridOptions = Object.assign($scope.gridOptions, {data: $scope.carriers});
             });
@@ -150,10 +146,12 @@ angular.module('AdminApp')
 
           switch (action) {
             default:
-              $scope.dialogAction = 'Edit ';
+              $scope.dialogAction = { hash: 'edit', string: 'Edit ' };
+              $scope.allowUsernameEdit = false;
               break;
             case 'create':
-              $scope.dialogAction = 'Add new ';
+              $scope.dialogAction = { hash: 'create', string: 'Add new ' };
+              $scope.allowUsernameEdit = true;
               break;
           }
 
@@ -205,8 +203,6 @@ angular.module('AdminApp')
          */
         $scope.saveCarrier = function (event) {
 
-          //event.preventDefault();
-          //event.stopPropagation();
           $scope.formErrors = [];
 
           var formData = new FormData();
@@ -230,11 +226,6 @@ angular.module('AdminApp')
             angular.forEach(fillable, function (attr) {
               if (key === attr) {
                 switch (key) {
-                  // case 'password':
-                  // case 'password_confirmation':
-                  //   debugger;
-                  //   formData.append(key, value);
-                  //   break;
                   case 'id_scan':
                   case 'photo':
                     if (value instanceof Object) {
@@ -258,7 +249,7 @@ angular.module('AdminApp')
           delete $scope.rowEntity;
 
           if (!!$scope.carrier.id === true) {
-            carriersService.update($scope.carrier.id, formData, $scope.rowEntity)
+            carriersService.update($scope.carrier.id, formData)
               .then(function (data) {
                 processSaveResponse(data);
               });
@@ -293,7 +284,6 @@ angular.module('AdminApp')
                   });
                   items.unshift(resolved.data);
                   $scope.gridOptions.data = items;
-                  //$scope.gridApi.core.queueGridRefresh();
                 }
               } catch (err) {
                 console.error(err);
