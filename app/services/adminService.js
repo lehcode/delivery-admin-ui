@@ -24,15 +24,16 @@ angular.module('AdminApp')
           });
         },
         get: function (id) {
-          api.get('admins/' + id)
-            .then(function (response) {
-              debugger;
-              if (response.status === 200) {
-                resolve(response.data.data);
-              } else {
-                console.error(response);
-              }
-            });
+          return $q(function(resolve, reject){
+            api.get('admins/' + id)
+              .then(function (response) {
+                if (response.status === 200) {
+                  resolve(response.data.data[0]);
+                } else {
+                  throw new Error(response.errorText);
+                }
+              });
+          });
         },
         create: function (formData) {
           return $q(function (resolve, reject) {
@@ -69,6 +70,26 @@ angular.module('AdminApp')
                   });
                 } else {
                   resolve({
+                    messages: response.data.message,
+                    status: response.statusText,
+                    statusCode: response.status,
+                  });
+                }
+              });
+          });
+        },
+        resetAccountPassword: function(id){
+          return $q(function(resolve, reject){
+            api.setContentType('application/json')
+              .get('user/reset-password/' + id)
+              .then(function (response) {
+                if (response.status === 200) {
+                  resolve({
+                    statusCode: 200,
+                    data: response.data.data,
+                  });
+                } else {
+                  reject({
                     messages: response.data.message,
                     status: response.statusText,
                     statusCode: response.status,

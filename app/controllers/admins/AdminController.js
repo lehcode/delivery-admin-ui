@@ -11,13 +11,15 @@ angular.module('AdminApp')
       'adminService',
       'formService',
       '$mdDialog',
+      'uiGridConstants',
 
       function ($scope,
                 $rootScope,
                 $state,
                 adminService,
                 formService,
-                $mdDialog) {
+                $mdDialog,
+                uiGridConstants) {
 
         console.log("Initializing AdminsController");
 
@@ -61,6 +63,15 @@ angular.module('AdminApp')
         $scope.admins = [];
 
         /**
+         * Dialog action flags
+         *
+         * @type {{hash: {String}, string: {String}}}
+         */
+        $scope.dialogAction = {hash: null, string: null};
+
+        $scope.passwordReset = false;
+
+        /**
          * Initialize controller
          */
         (function () {
@@ -80,16 +91,14 @@ angular.module('AdminApp')
             rowHeight: 46,
             enableRowSelection: true,
             enableRowHeaderSelection: false,
-            noUnselect: true,
+            noUnselect: false,
             enableFiltering: true,
             columnDefs: [
-              {field: "id", name: "ID"},
-              {field: "attributes.username", name: "E-mail"},
+              //   //{field: "id", name: "ID"},
               {
-                field: "attributes.is_enabled",
-                name: "Active",
-                cellTemplate: '<div class="ui-grid-cell-contents" title="TOOLTIP"><md-input-container md-no-ink><md-checkbox aria-label="Carrier is enabled?" ng-model="row.entity.attributes.is_enabled"></md-checkbox></md-input-container></div>',
-                enableCellEdit: false,
+                field: "attributes.username",
+                name: "Username",
+                width: "25%",
               },
               {field: "attributes.name", name: "Name"},
               {
@@ -97,7 +106,24 @@ angular.module('AdminApp')
                 name: "Last login",
                 type: "date",
                 cellFilter: 'date',
-                filterCellFiltered: true
+                filterCellFiltered: true,
+              },
+              {
+                field: "attributes.is_enabled",
+                name: "Active",
+                width: "7%",
+                cellTemplate: '<div class="ui-grid-cell-contents" title="TOOLTIP"><md-input-container md-no-ink>' +
+                '<md-checkbox aria-label="Carrier is enabled?" ng-model="row.entity.attributes.is_enabled"></md-checkbox>' +
+                '</md-input-container></div>',
+                enableCellEdit: false,
+                disableCancelFilterButton: true,
+                filter: {
+                  term: null,
+                  type: uiGridConstants.filter.SELECT,
+                  selectOptions: [{value: true, label: 'Enabled'}, {value: false, label: 'Disabled'}]
+                },
+                cellFilter: 'mapEnabled',
+                filterCellFiltered: true,
               },
             ]
           });
@@ -147,6 +173,8 @@ angular.module('AdminApp')
          */
         $scope.openFormDialog = function ($event, formAction) {
 
+          $scope.passwordReset = false;
+
           switch (formAction) {
             default:
               $scope.dialogAction = {hash: 'edit', string: 'Edit '};
@@ -169,9 +197,9 @@ angular.module('AdminApp')
          * Close dialog pane
          */
         $scope.closeFormDialog = function () {
-          $mdDialog.hide();
           $scope.admin = {id: null, attributes: null};
           formService.resetForm($scope.adminForm);
+          $mdDialog.hide();
         };
 
         /**
@@ -181,7 +209,6 @@ angular.module('AdminApp')
          */
         $scope.saveAdmin = function (event) {
 
-          $scope.formErrors = [];
           var formData = new FormData();
 
           var fillable = [
@@ -209,7 +236,7 @@ angular.module('AdminApp')
                     }
                     break;
                   case 'role':
-                    formData.append(key, value.toLowerCase());
+                    formData.append(key, value.display_name.toLowerCase());
                     break;
                 }
               }
@@ -259,11 +286,12 @@ angular.module('AdminApp')
                 console.error(err);
               }
 
-              $scope.closeFormDialog();
               formService.resetForm($scope.adminForm);
+              $scope.closeFormDialog();
+
               break;
             case 422:
-              formService.processFormErrors($scope.adminForm, resolved.messages);
+              formService.showServerErrors($scope.adminForm, resolved.messages);
               break;
             default:
               console.error("Server Error");
@@ -271,6 +299,37 @@ angular.module('AdminApp')
           }
         };
 
+        /**
+         * Reset user password
+         */
+        $scope.resetPassword = function (event) {
+          adminService.resetAccountPassword($scope.admin.id)
+            .then(function (response) {
+              switch (response.statusCode) {
+                case 200:
+                  if (response.data.updated === true){
+                    $scope.passwordReset = true;
+                  }
+                  break;
+              }
+            })
+        };
+
       }
     ]
-  );
+  )
+  .filter('mapEnabled', function () {
+    var hash = {
+      false: "Disabled",
+      true: "Enabled",
+    };
+
+    return function (input) {
+      if (!input) {
+        return '';
+      } else {
+        return hash[input];
+      }
+    };
+
+  });

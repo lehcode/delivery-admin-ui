@@ -8,8 +8,8 @@ describe('adminApp.dashboard module', function() {
 
     it('should ....', inject(function($controller) {
       //spec body
-      var dashboardCtrl = $controller('DashboardCtrl');
-      expect(dashboardCtrl).toBeDefined();
+      var DashboardController = $controller('DashboardController');
+      expect(DashboardController).toBeDefined();
     }));
 
   });

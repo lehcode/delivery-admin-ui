@@ -5,7 +5,7 @@
 'use strict';
 
 angular.module('AdminApp')
-  .directive('uniqueUsername', function ($q,
+  .directive('uniquePhone', function ($q,
                                         api,
                                         formService) {
 
@@ -22,16 +22,16 @@ angular.module('AdminApp')
         }
 
         return $q(function (resolve, reject) {
-          api.get('user/exists/' + viewValue)
+          api.get('user/phone/exists/' + viewValue)
             .then(function (response) {
               switch (response.status) {
                 case 200:
                   if (response.data.result === true) {
-                    ctrl.$setValidity('uniqueUsername', false);
+                    ctrl.$setValidity('uniquePhone', false);
                     formService.setDirtyTouched(ctrl);
                     reject();
                   } else {
-                    ctrl.$setValidity('uniqueUsername', true);
+                    ctrl.$setValidity('uniquePhone', true);
                     resolve(true);
                   }
                   break;

@@ -1,6 +1,7 @@
 'use strict';
 
 describe('AdminApp.version module', function() {
+	
   beforeEach(module('AdminApp.version'));
 
   describe('interpolate filter', function() {

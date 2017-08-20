@@ -140,6 +140,7 @@ gulp.task('concat:js:vendor', function () {
     config.bowerDir + '/slimScroll/jquery.slimscroll.js',
     config.bowerDir + '/angular-ui-grid/ui-grid.js',
     config.bowerDir + '/lf-ng-md-file-input/dist/lf-ng-md-file-input.js',
+    config.bowerDir + '/moment/moment.js',
   ];
 
   return gulp.src(vendorScripts)

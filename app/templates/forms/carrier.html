@@ -16,21 +16,39 @@
   <md-list layout="row">
     <md-list-item flex="50" flex-gt-sm>
       <md-input-container class="md-block">
-        <label class="">Email</label>
+        <label for="carrierEmailInput">Email</label>
         <input type="email"
+               id="carrierEmailInput"
                data-ng-model="carrier.attributes.email"
                aria-label="Carrier email"
                name="email"
-               required>
+               required
+               unique-email>
+        <div ng-messages="carrierForm.email.$error">
+          <div ng-message="required" ng-show="carrierForm.email.$error.required">User email is required</div>
+          <div ng-message="email" ng-show="carrierForm.email.$error.email">Email format is wrong</div>
+          <div ng-message="unique-email" ng-show="carrierForm.email.$pending">Checking if this e-mail is available&hellip;
+          </div>
+        </div>
       </md-input-container>
     </md-list-item>
     <md-list-item flex="50" flex-gt-sm>
       <md-input-container class="md-block">
-        <label class="">Phone number</label>
+        <label for="carrierPhoneNumberInput">Phone number</label>
         <input type="text"
+               id="carrierPhoneNumberInput"
                data-ng-model="carrier.attributes.phone"
                aria-label="Carrier phone number"
-               name="phone">
+               name="phone"
+               unique-phone>
+        <div ng-messages="carrierForm.phone.$error">
+          <div ng-message="unique-phone" ng-show="carrierForm.phone.$error.required">Phone number is required</div>
+          <div ng-message="unique-phone" ng-show="carrierForm.phone.$error.unique">Phone number is already registered in
+            the system
+          </div>
+          <div ng-message="unique-phone" ng-show="carrierForm.phone.$pending">Checking if this phone number is
+            taken&hellip;</div>
+        </div>
       </md-input-container>
     </md-list-item>
   </md-list>
@@ -38,30 +56,38 @@
   <md-list layout="row">
     <md-list-item flex-gt-sm>
       <md-input-container class="md-block">
-        <label class="">Full name</label>
+        <label for="carrierFullNameInput">Full name</label>
         <input type="text"
+               id="carrierFullNameInput"
                data-ng-model="carrier.attributes.name"
                aria-label="Carrier full name"
                name="name"
-               required>
+               required
+               ng-minlength="5">
+        <div ng-messages="carrierForm.name.$error" ng-show="carrierForm.$valid">
+          <div ng-message="required" ng-show="carrierForm.name.$error.required">Carrier's full name is required</div>
+          <div ng-message="minlength" ng-show="carrierForm.name.$error.minlength">Name is too short</div>
+        </div>
       </md-input-container>
     </md-list-item>
     <md-list-item flex-gt-sm>
       <md-input-container class="md-block">
-        <label class="">Username</label>
+        <label for="carrierUsernameInput">Username</label>
         <input type="text"
+               id="carrierUsernameInput"
                data-ng-model="carrier.attributes.username"
                aria-label="Carrier username"
                name="username"
                required
-               ng-if="dialogAction.hash === 'create'">
-        <input type="text"
-               data-ng-model="carrier.attributes.username"
-               aria-label="Carrier username"
-               name="username"
-               required
-               disabled
-               ng-if="dialogAction.hash === 'edit'">
+               unique-username
+               ng-model-options="{ debounce: 150 }"
+               ng-disabled="!allowUsernameEdit">
+        <div ng-messages="carrierForm.username.$error">
+          <div ng-message="required" ng-show="carrierForm.username.$error.required">Login username is required</div>
+          <div ng-message="unique-username" ng-show="carrierForm.username.$error.unique">Username already taken</div>
+          <div ng-message="unique-username" ng-show="carrierForm.username.$pending.required">Checking if this username
+            is available&hellip;</div>
+        </div>
       </md-input-container>
     </md-list-item>
   </md-list>
@@ -69,34 +95,55 @@
   <md-list layout="row" ng-if="dialogAction.hash === 'create'">
     <md-list-item flex="50" flex-gt-sm>
       <md-input-container class="md-block">
-        <label class="">Password</label>
+        <label for="carrierPasswordInput">Password</label>
         <input type="password"
+               id="carrierPasswordInput"
                data-ng-model="carrier.attributes.password"
                aria-label="Password"
                name="password"
-               required>
+               required
+               ng-minlength="6">
+        <div ng-messages="carrierForm.password.$error">
+          <div ng-message="required" ng-show="carrierForm.password.$error.required">Password is required</div>
+          <div ng-message="minlength" ng-show="carrierForm.password.$error.minlength">Value is too short</div>
+        </div>
       </md-input-container>
     </md-list-item>
     <md-list-item flex="50" flex-gt-sm>
       <md-input-container class="md-block">
-        <label class="">Password confirmation</label>
+        <label for="carrierPasswordConfirmationInput">Password confirmation</label>
         <input type="password"
+               id="carrierPasswordConfirmationInput"
                data-ng-model="carrier.attributes.password_confirmation"
                aria-label="Password confirmation"
                name="password_confirmation"
-               required>
+               required/>
+        <div ng-messages="carrierForm.password_confirmation.$error">
+          <div ng-message="required" ng-show="carrierForm.password_confirmation.$error.required">Password confirmation
+            is required
+          </div>
+          <div ng-message="" ng-show="passwordConfirmed === false">Passwords do not match</div>
+        </div>
       </md-input-container>
     </md-list-item>
   </md-list>
 
   <md-list layout="row" ng-if="dialogAction.hash === 'edit'">
-    <md-list-item flex="50" flex-gt-sm>
+    <md-list-item flex-gt-sm>
       <md-input-container class="md-block">
-        <md-button type="button"
+        <md-button ng-click="resetPassword()"
                    class="md-warn md-raised md-hue-2"
                    aria-label="Reset password"
-                   name="reset_password">Reset password
+                   id="resetPasswordButton">Reset password
         </md-button>
+        <div ng-messages ng-show="passwordReset">
+          <div ng-message=""
+               class="hint"
+               md-colors="{color: 'green'}"
+               md-colors-watch="false"
+               ng-show="passwordReset">Password was reset. New password sent to user by preferred communication channel.
+          </div>
+        </div>
       </md-input-container>
     </md-list-item>
   </md-list>
@@ -104,28 +151,37 @@
   <md-list layout="row">
     <md-list-item flex="50" flex-gt-sm>
       <md-input-container class="md-block">
-        <label class="">Home address</label>
+        <label for="carrierHomeAddressInput">Home address</label>
         <input type="text"
+               id="carrierHomeAddressInput"
                data-ng-model="carrier.attributes.default_address"
                aria-label="Home address"
                name="address"
                required
-               style="width:100%">
+               ng-minlength="5">
+        <div ng-messages="carrierForm.address.$error">
+          <div ng-message="required" ng-show="carrierForm.address.$error.required">Carrier home address is required
+          </div>
+          <div ng-message="minlength" ng-show="carrierForm.address.$error.minlength">Value is too short</div>
+        </div>
       </md-input-container>
     </md-list-item>
     <md-list-item flex="50" flex-gt-sm>
       <md-input-container>
-        <label>Birthday Date</label>
+        <label for="carrierBirthdayInput">Birthday Date</label>
         <md-datepicker data-ng-model="carrier.attributes.birthday.date"
+                       id="carrierBirthdayInput"
                        name="birthday"
+                       aria-label="Carrier birthday date"
                        md-min-date="minBirthdayDate"
-                       md-max-date="maxBirthdayDate">
+                       md-max-date="maxBirthdayDate"
+                       md-current-view="year">
         </md-datepicker>
-        <div ng-messages="createCarrierForm.birthday_date.$error">
-          <div ng-message="valid">The entered value is not a date!</div>
-          <div ng-message="required">This date is required!</div>
-          <div ng-message="mindate">Date is too early!</div>
-          <div ng-message="maxdate">Date is too late!</div>
+        <div ng-messages="createCarrierForm.birthday.$error">
+          <div ng-message="valid" ng-show="carrierForm.birthday.$error.valid">The entered value is not a date!</div>
+          <div ng-message="required" ng-show="carrierForm.birthday.$error.required">This date is required!</div>
+          <div ng-message="mindate" ng-show="carrierForm.birthday.$error.mindate">Date is too early!</div>
+          <div ng-message="maxdate" ng-show="carrierForm.birthday.$error.maxdate">Date is too late!</div>
         </div>
       </md-input-container>
     </md-list-item>
@@ -171,8 +227,9 @@
   <md-list layout="row">
     <md-list-item flex flex-gt-sm>
       <md-input-container class="md-block">
-        <label class="">Nationality</label>
+        <label for="carrierNationalityInput">Nationality</label>
         <input type="text"
+               id="carrierNationalityInput"
                data-ng-model="carrier.attributes.nationality"
                aria-label="Carrier's nationality"
                name="nationality"
@@ -181,8 +238,9 @@
     </md-list-item>
     <md-list-item flex flex-gt-sm>
       <md-input-container class="md-block">
-        <label class="">National ID #</label>
+        <label for="carrierIdNumber">National ID #</label>
         <input type="text"
+               id="carrierIdNumber"
                data-ng-model="carrier.attributes.id_number"
                aria-label="Carrier's national ID number"
                name="id_number"

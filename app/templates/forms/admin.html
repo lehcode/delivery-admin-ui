@@ -11,26 +11,33 @@
 
     <md-list-item flex-gt-sm flex="50">
 
-      <md-input-container class="md-block" layout="column" layout-align="start center">
+      <md-input-container class="md-block"
+                          layout="column"
+                          layout-align="start center"
+                          ng-class="{'has-error':adminForm.username.$touched && adminForm.username.$invalid}">
         <label class="">Login e-mail</label>
         <input type="email"
                ng-model="admin.attributes.username"
                aria-label="User login email"
                name="username"
                required
-               admin-username>
-        <div ng-messages="adminForm.username.$error">
+               unique-username
+               ng-model-options="{ debounce: 150 }"
+               ng-disabled="!allowUsernameEdit">
+        <div ng-messages="adminForm.username.$error" ng-show="allowUsernameEdit && !adminForm.username.$error">
           <div ng-message="required"
                ng-show="adminForm.username.$error.required">Login e-mail is required
           </div>
-          <div ng-message="admin-username"
+          <div ng-message="unique-username"
                ng-show="adminForm.username.$error.adminUsername">Username already taken
           </div>
           <div ng-message="email"
                ng-show="adminForm.username.$error.email">Username must be an email
           </div>
         </div>
-        <div ng-message="admin-username" class="message" ng-show="adminForm.username.$pending">Checking if this name is available...</div>
+        <div ng-message="unique-username" class="message" ng-show="adminForm.username.$pending">Checking if this name is
+          available...
+        </div>
       </md-input-container>
     </md-list-item>
 
@@ -64,7 +71,7 @@
         <md-select name="role"
                    required
                    admin-role
-                   ng-model="admin.attributes.role"
+                   ng-model="admin.attributes.role.display_name"
                    placeholder="-- Select --">
           <md-optgroup label="Role">
             <md-option ng-value="userType" ng-repeat="userType in userTypes">{{userType}}</md-option>
@@ -79,7 +86,7 @@
 
     <md-list-item flex-gt-sm flex="50">
       <md-input-container class="md-block" layout="column" layout-align="start center">
-        <md-checkbox aria-label="Is account is enabled?"
+        <md-checkbox aria-label="Set account enabled"
                      ng-model="admin.attributes.is_enabled"
                      name="is_enabled">Enable account
         </md-checkbox>
@@ -117,8 +124,28 @@
                name="password_confirmation"
                required>
         <div ng-messages="adminForm.password_confirmation.$error">
-          <div ng-message="required"
-               ng-show="adminForm.password_confirmation.$error.required">Password confirmation is required
+          <div ng-message="required">Password confirmation is required
+          </div>
+        </div>
+      </md-input-container>
+    </md-list-item>
+  </md-list>
+
+  <md-list layout="row" ng-if="dialogAction.hash === 'edit'">
+    <md-list-item flex-gt-sm>
+      <md-input-container class="md-block">
+        <md-button type="button"
+                   class="md-warn md-raised md-hue-2"
+                   aria-label="Reset password"
+                   name="reset_password"
+                    ng-click="resetPassword($event)">Reset password
+        </md-button>
+        <div ng-messages ng-show="passwordReset">
+          <div ng-message=""
+               class="hint"
+               md-colors="{color: 'green'}"
+               md-colors-watch="false"
+               ng-show="passwordReset">Password was reset. New password sent to user by preferred communication channel.
           </div>
         </div>
       </md-input-container>

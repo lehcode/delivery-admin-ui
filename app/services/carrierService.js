@@ -5,7 +5,7 @@
 'use strict';
 
 angular.module('AdminApp')
-  .factory('carriersService',
+  .factory('carrierService',
     [
       'api',
       'settings',
@@ -28,6 +28,12 @@ angular.module('AdminApp')
                 });
             });
           },
+          /**
+           *
+           *
+           * @param id
+           * @returns {*}
+           */
           get: function (id) {
             return $q(function (resolve, reject) {
               api.get('carriers/' + id)
@@ -40,6 +46,12 @@ angular.module('AdminApp')
                 });
             });
           },
+          /**
+           * XHR call to add new Carrier account
+           *
+           * @param formData
+           * @returns {*}
+           */
           create: function (formData) {
             return $q(function (resolve, reject) {
               api.setContentType(undefined)
@@ -61,6 +73,13 @@ angular.module('AdminApp')
             });
 
           },
+          /**
+           * XHR call to update existing Carrier account properties
+           *
+           * @param id {String}
+           * @param formData {Object}
+           * @returns {*}
+           */
           update: function (id, formData) {
             return $q(function (resolve, reject) {
               formData.append('_method', "PUT");
@@ -82,7 +101,7 @@ angular.module('AdminApp')
                   }
                 });
             });
-          }
+          },
         };
       }]
   );

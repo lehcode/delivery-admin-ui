@@ -35,14 +35,14 @@
         <p ng-if="carrier.id">{{ carrier.id }}</p>
       </md-dialog-title>
 
-      <md-list flex ng-show="formErrors.length">
+      <!--<md-list flex ng-show="formErrors.length">
         <md-subheader class="md-no-sticky md-accent"
                       md-colors="{background: 'red'}"
                       md-colors-watch="false">Validation errors</md-subheader>
         <md-list-item class="md-1-line" ng-repeat="err in formErrors">
           <p><em>{{ err }}</em></p>
         </md-list-item>
-      </md-list>
+      </md-list>-->
 
       <md-list flex ng-show="confirmations.length">
         <md-subheader class="md-no-sticky md-accent"
@@ -55,7 +55,7 @@
 
       <md-dialog-content layout="column" class="form">
 
-        <form name="createCarrierForm" role="form">
+        <form name="carrierForm" role="form">
           <ng-include src="'tpl/forms/carrier.html'"></ng-include>
         </form>
 
@@ -63,7 +63,7 @@
       <md-dialog-actions>
         <md-button ng-click="saveCarrier($event)"
                    class="md-primary"
-                   ng-disabled="ajaxLoading"
+                   ng-disabled="carrierForm.$invalid || carrierForm.$pending"
                    type="submit">Save
         </md-button>
         <md-button ng-click="closeFormDialog()">Close</md-button>

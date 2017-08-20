@@ -93,10 +93,23 @@ AdminApp.factory('settings', [
     return settings;
   }]);
 
-AdminApp.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
+AdminApp.config([
+  '$locationProvider',
+  '$routeProvider',
+  '$mdDateLocaleProvider',
+
+  function ($locationProvider,
+            $routeProvider,
+            $mdDateLocaleProvider) {
+
   //$locationProvider.html5Mode(true);
   $locationProvider.hashPrefix('!');
   //$routeProvider.otherwise('login');
+
+  // $mdDateLocaleProvider.formatDate = function(date) {
+  //   return moment(date).format('YYYY-MM-DD');
+  // };
+
 }]);
 
 AdminApp.config(function (localStorageServiceProvider) {

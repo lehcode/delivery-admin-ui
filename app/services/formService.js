@@ -33,11 +33,11 @@ angular.module('AdminApp')
             result = msg.match(/^The selected ([\w\s]+) (is invalid)\.$/);
           }
 
-          if (!!result === false){
+          if (!!result === false) {
             result = msg.match(/^The ([\w\s]+) has already been (taken)\.$/);
           }
 
-          if (!!result === false){
+          if (!!result === false) {
             result = msg.match(/^The ([\w\s]+) (must be at least) 8 characters\.$/);
           }
 
@@ -45,32 +45,37 @@ angular.module('AdminApp')
             console.error('Unknown validation error: "' + msg + '"');
           }
 
-          if (result instanceof Array){
+          if (result instanceof Array) {
             return {type: result[2], field: result[1].replace(' ', '_'),};
           }
 
           return false;
 
         },
-        resetForm: function(form){
+        /**
+         * Reset form and custom set form errors
+         *
+         * @param form
+         */
+        resetForm: function (form) {
           form.$setPristine();
           form.$setUntouched();
-          form.username.$setUntouched();
-          form.username.$setPristine();
-          //form.username.$setValidity('adminUsername', true);
         },
         /**
          *
          * @param form {Object}
          * @param messages {Array}
          */
-        processFormErrors: function(form, messages){
+        showServerErrors: function (form, messages) {
 
           var errors = [];
           var field;
 
-          messages.forEach(function (msg) {
+          messages.forEach(function (msg, idx) {
             field = this.resolveFieldFromServerMessage(msg);
+            if (field === false) {
+              throw new Error('Unknown server validation error "' + msg + '"');
+            }
             errors.push(Object.assign(field, {text: msg}));
           });
 
@@ -86,7 +91,7 @@ angular.module('AdminApp')
                 el.$setValidity('adminRole', false);
                 break;
               case 'taken':
-                el.$setValidity('adminUsername', false);
+                el.$setValidity('unique', false);
                 break;
               case 'must be at least':
                 el.$setValidity('minlength', false);

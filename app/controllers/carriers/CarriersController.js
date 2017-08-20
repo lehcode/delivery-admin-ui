@@ -10,20 +10,24 @@ angular.module('AdminApp')
       '$state',
       'settings',
       '$mdDialog',
-      'carriersService',
+      'carrierService',
       'animationService',
       'uiGridService',
       'uiGridConstants',
+      'formService',
+      'adminService',
 
       function ($scope,
                 $rootScope,
                 $state,
                 settings,
                 $mdDialog,
-                carriersService,
+                carrierService,
                 animationService,
                 uiGridService,
-                uiGridConstants) {
+                uiGridConstants,
+                formService,
+                adminService) {
 
         console.log("Initializing CarriersController");
 
@@ -47,15 +51,35 @@ angular.module('AdminApp')
          */
         $scope.carriers = [];
 
-        $scope.dialogAction = 'Create new ';
+        /**
+         * Dialog action placeholder
+         *
+         * @type {{hash: {String}, string: {String}}}
+         */
+        $scope.dialogAction = {hash: null, string: null};
 
         $scope.formErrors = [];
 
         $scope.confirmations = [];
 
+        /**
+         * Boolean
+         *
+         * @type {boolean}
+         */
         $scope.allowUsernameEdit = true;
 
-        $scope.rowEntity;
+        /**
+         *
+         * @type {Object}
+         */
+        $scope.rowEntity = null;
+
+        /**
+         *
+         * @type {boolean}
+         */
+        $scope.passwordReset = false;
 
         /**
          * Initialize controller
@@ -110,7 +134,7 @@ angular.module('AdminApp')
 
             $scope.gridApi.selection.on.rowSelectionChanged($scope, function (row) {
               $scope.rowEntity = row;
-              carriersService.get(row.entity.id)
+              carrierService.get(row.entity.id)
                 .then(function (data) {
                   try {
                     $scope.carrier = data;
@@ -131,7 +155,7 @@ angular.module('AdminApp')
          * Fetch Carriers list from backend
          */
         function getCarriers() {
-          carriersService.getList()
+          carrierService.getList()
             .then(function (d) {
               $scope.carriers = d;
               $scope.gridOptions = Object.assign($scope.gridOptions, {data: $scope.carriers});
@@ -142,15 +166,17 @@ angular.module('AdminApp')
          * Open dialog with create/edit form
          * @param action
          */
-        $scope.openFormDialog = function (action) {
+        $scope.openFormDialog = function (formAction) {
 
-          switch (action) {
+          $scope.passwordReset = false;
+
+          switch (formAction) {
             default:
-              $scope.dialogAction = { hash: 'edit', string: 'Edit ' };
+              $scope.dialogAction = {hash: 'edit', string: 'Edit '};
               $scope.allowUsernameEdit = false;
               break;
             case 'create':
-              $scope.dialogAction = { hash: 'create', string: 'Add new ' };
+              $scope.dialogAction = {hash: 'create', string: 'Add new '};
               $scope.allowUsernameEdit = true;
               break;
           }
@@ -160,8 +186,8 @@ angular.module('AdminApp')
             parent: angular.element(document.body)
           });
 
-          var idScanImageContainer = document.getElementById('idScanImageContainer');
-          var userPhotoImageContainer = document.getElementById('userPhotoImageContainer');
+          var idScanImageContainer = document.querySelector('#idScanImageContainer');
+          var userPhotoImageContainer = document.querySelector('#userPhotoImageContainer');
 
           if (!!$scope.carrier.attributes === true) {
 
@@ -190,10 +216,9 @@ angular.module('AdminApp')
          * Close dialog pane
          */
         $scope.closeFormDialog = function () {
-          //$('.modal').hide();
-          $mdDialog.hide();
           $scope.carrier = {id: null, attributes: null};
-          $scope.formErrors = [];
+          formService.resetForm($scope.carrierForm);
+          $mdDialog.hide();
         };
 
         /**
@@ -235,7 +260,24 @@ angular.module('AdminApp')
                     }
                     break;
                   case 'birthday':
-                    var dateString = value.getFullYear() + '-' + value.getMonth() + '-' + value.getDate();
+                    var dateString;
+                    if (value instanceof String) {
+                      dateString = value;
+                    } else if (value instanceof Date) {
+                      dateString = value.getFullYear() + '-' + value.getMonth() + '-' + value.getDate();
+                    } else if (value instanceof Object) {
+                      if (value.hasOwnProperty('date')) {
+                        var dd = value.date;
+                        //var dd = new Date(value.toString());
+                        var GMDate = new Date(dd.toGMTString());
+                        dateString = moment(GMDate).format('YYYY-MM-DD');
+                      } else {
+                        throw new Error('Unknown date', value);
+                      }
+                    } else {
+                      throw new Error('Unknown date', value);
+                    }
+
                     formData.append(key, dateString);
                     break;
                   default:
@@ -249,12 +291,12 @@ angular.module('AdminApp')
           delete $scope.rowEntity;
 
           if (!!$scope.carrier.id === true) {
-            carriersService.update($scope.carrier.id, formData)
+            carrierService.update($scope.carrier.id, formData)
               .then(function (data) {
                 processSaveResponse(data);
               });
           } else {
-            carriersService.create(formData)
+            carrierService.create(formData)
               .then(function (data) {
                 processSaveResponse(data);
               });
@@ -289,10 +331,12 @@ angular.module('AdminApp')
                 console.error(err);
               }
 
+              formService.resetForm($scope.carrierForm);
               $scope.closeFormDialog();
+
               break;
             case 422:
-              $scope.formErrors = resolved.messages;
+              formService.showServerErrors($scope.carrierForm, resolved.messages);
               break;
             default:
               console.error("Server Error");
@@ -329,6 +373,28 @@ angular.module('AdminApp')
           now.getDate()
         );
 
+        /**
+         * Reset user password
+         */
+        $scope.resetPassword = function () {
+          adminService.resetAccountPassword($scope.carrier.id)
+            .then(function (response) {
+              switch (response.statusCode) {
+                case 200:
+                  if (response.data.updated === true){
+                    $scope.passwordReset = true;
+                  }
+                  break;
+              }
+            })
+        };
+
       }
     ]
-  );
+  )
+// .config(function($mdDateLocaleProvider) {
+//   $mdDateLocaleProvider.formatDate = function(date) {
+//     return date;
+//   };
+// })
+;
