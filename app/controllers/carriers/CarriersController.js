@@ -100,9 +100,9 @@ angular.module('AdminApp')
 
           $scope.gridOptions = Object.assign(gridDefaults, {
             rowHeight: 46,
-            enableRowSelection: true,
-            enableRowHeaderSelection: false,
-            noUnselect: true,
+            enableRowSelection: false,
+            enableRowHeaderSelection: true,
+            noUnselect: false,
             columnDefs: [
               {field: "attributes.username", name: "Username", pinnedLeft: true},
               {
@@ -129,6 +129,8 @@ angular.module('AdminApp')
             ]
           });
 
+          $scope.gridOptions.data = {};
+
           $scope.gridOptions.onRegisterApi = function (gridApi) {
             $scope.gridApi = gridApi;
 
@@ -149,7 +151,7 @@ angular.module('AdminApp')
 
           };
 
-        }
+        };
 
         /**
          * Fetch Carriers list from backend

@@ -32,12 +32,15 @@ angular.module('AdminApp')
         $scope.state = $state;
 
         /**
-         * XHR loading flag
+         * AJAX flag
+         *
          * @type {boolean}
          */
-        $rootScope.isLoading = function () {
-          return $http.pendingRequests.length !== 0;
-        };
+        //$scope.processing = false;
+
+        // $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
+        //   debugger;
+        // });
 
         /**
          * Get navigation items for user per his permissions

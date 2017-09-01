@@ -10,11 +10,16 @@
                aria-label="Menu"></md-icon>
     </md-button>
 
-    <h1>BarQ Admin App v
-      <app-version></app-version>
+    <h1>BarQ Admin App v<app-version></app-version>
     </h1>
 
     <span flex></span>
+
+    <md-button class="md-icon-button"
+               aria-label="Logout"
+               ng-click="logout($event)">
+      <ng-md-icon icon="exit_to_app"></ng-md-icon>
+    </md-button>
 
     <!--<md-button class="md-icon-button"
                aria-label="Search"
@@ -23,12 +28,12 @@
                aria-label="Search"></md-icon>
     </md-button>-->
 
-    <md-button class="md-icon-button"
+    <!--<md-button class="md-icon-button"
                aria-label="Open Settings"
                ng-click="showToolbarMenu($event, moreMenu)">
       <md-icon md-svg-icon="navigation:ic_more_vert_24px"
                aria-label="More"></md-icon>
-    </md-button>
+    </md-button>-->
 
   </div>
 

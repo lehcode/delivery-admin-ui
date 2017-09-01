@@ -5,8 +5,10 @@
 angular.module('AdminApp')
   .factory('formService', [
     'api',
+    '$q',
 
-    function (api) {
+    function (api,
+              $q) {
 
       return {
         /**
@@ -100,6 +102,42 @@ angular.module('AdminApp')
 
             this.setDirtyTouched(el);
 
+          });
+        },
+        getShipmentSizes: function () {
+          return $q(function (resolve, reject) {
+            api.get('shipment/sizes')
+              .then(function (response) {
+                if (response.status === 200) {
+                  resolve(response.data);
+                } else {
+                  console.error(response);
+                }
+              });
+          });
+        },
+        getShipmentCategories: function () {
+          return $q(function (resolve, reject) {
+            api.get('shipment/categories')
+              .then(function (response) {
+                if (response.status === 200) {
+                  resolve(response.data);
+                } else {
+                  console.error(response);
+                }
+              });
+          });
+        },
+        getCities: function () {
+          return $q(function (resolve, reject) {
+            api.get('cities')
+              .then(function (response) {
+                if (response.status === 200) {
+                  resolve(response.data.data);
+                } else {
+                  console.error(response);
+                }
+              });
           });
         }
       };

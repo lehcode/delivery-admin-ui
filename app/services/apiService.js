@@ -56,7 +56,8 @@ angular.module('AdminApp')
           console.debug("Request: ", params);
 
           return $q(function (resolve, reject) {
-            $http(params).then(function (success) {
+            $http(params)
+              .then(function (success) {
                 console.debug(success);
                 resolve(success);
               },
@@ -84,10 +85,14 @@ angular.module('AdminApp')
           return $q(function (resolve, reject) {
             call('GET', url)
               .then(function (response) {
-                if (response.status === 500) {
-                  console.error(response);
+                switch (response.status){
+                  case 200:
+                    resolve(response);
+                    break;
+                  default:
+                    reject("Server Error");
+                    console.error(response.data.message[0]);
                 }
-                resolve(response);
               });
           });
         };
@@ -103,10 +108,14 @@ angular.module('AdminApp')
           return $q(function (resolve, reject) {
             call('POST', url, data)
               .then(function (response) {
-                if (response.status === 500) {
-                  console.error(response);
+                switch (response.status){
+                  case 200:
+                    resolve(response);
+                    break;
+                  default:
+                    reject("Server Error");
+                    console.error(response.data.message[0]);
                 }
-                resolve(response);
               });
           });
         };

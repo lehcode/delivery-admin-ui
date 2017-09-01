@@ -50,10 +50,6 @@ AdminApp.factory('settings', [
           multiSelect: false,
           modifierKeysToMultiSelect: false,
           enableColumnMenus: false,
-          /**
-           *
-           * @param gridApi
-           */
           onRegisterApi: function (gridApi) {
             console.info(gridApi);
           }
@@ -97,45 +93,46 @@ AdminApp.config([
   '$locationProvider',
   '$routeProvider',
   '$mdDateLocaleProvider',
+  'localStorageServiceProvider',
 
   function ($locationProvider,
             $routeProvider,
-            $mdDateLocaleProvider) {
+            $mdDateLocaleProvider,
+            localStorageServiceProvider) {
 
-  //$locationProvider.html5Mode(true);
-  $locationProvider.hashPrefix('!');
-  //$routeProvider.otherwise('login');
+    //$locationProvider.html5Mode(true);
+    $locationProvider.hashPrefix('!');
+    //$routeProvider.otherwise('login');
 
-  // $mdDateLocaleProvider.formatDate = function(date) {
-  //   return moment(date).format('YYYY-MM-DD');
-  // };
+    localStorageServiceProvider
+      .setPrefix('AdminApp')
+      .setStorageType('sessionStorage')
+      .setDefaultToCookie(false)
+      .setNotify(true, true);
 
-}]);
-
-AdminApp.config(function (localStorageServiceProvider) {
-  localStorageServiceProvider
-    .setPrefix('AdminApp')
-    .setStorageType('sessionStorage')
-    .setDefaultToCookie(false)
-    .setNotify(true, true);
-});
+  }]);
 
 /**
  * Angular Material theme configuration
  */
 AdminApp.config(function ($mdThemingProvider) {
-  var customBlueMap = $mdThemingProvider.extendPalette('blue', {
-    contrastDefaultColor: 'dark',
+
+  var customBlueMap = $mdThemingProvider.extendPalette('green', {
+    contrastDefaultColor: 'light',
     contrastDarkColors: ['50'],
     '50': '000000'
   });
+
   $mdThemingProvider.definePalette('customBlue', customBlueMap);
+
   $mdThemingProvider.theme('default')
     .primaryPalette('customBlue', {default: '500', 'hue-1': '50'})
-    .accentPalette('pink');
+    .accentPalette('grey');
 
   $mdThemingProvider.theme('input', 'default')
-    .primaryPalette('grey')
+    .primaryPalette('amber');
+
+  //$mdThemingProvider.disableTheming();
 });
 
 AdminApp.config(['$qProvider', function ($qProvider) {

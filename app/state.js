@@ -42,9 +42,9 @@ AdminApp.config([
       },
       "customers": {
         url: "/customers",
-        controller: "OrdersController",
-        templateUrl: "views/default.html",
-        data: {pageTitle: 'Customers Management', message: "Under Construction"},
+        controller: "CustomersController",
+        templateUrl: "views/customers.html",
+        data: {pageTitle: 'Customers Management', message: ""},
       },
       "orders": {
         url: "/orders",
@@ -54,9 +54,39 @@ AdminApp.config([
       },
       "trips": {
         url: "/trips",
-        controller: "TripsController",
-        templateUrl: "views/default.html",
-        data: {pageTitle: 'Trips Management', message: "Under Construction"},
+        controller: "TripsGridController",
+        templateUrl: "views/Trip/grid.html",
+        data: {pageTitle: 'Trips Management', message: ""},
+      },
+      "trip/create": {
+        url: "/trip/create",
+        controller: "CreateTripController",
+        templateUrl: "views/Trip/create.html",
+        data: {
+          pageTitle: 'Create Trip',
+          message: "",
+          formAction: "create",
+        },
+      },
+      // "trip/edit": {
+      //   url: "/trip/edit",
+      //   controller: "EditTripController",
+      //   templateUrl: "views/Trip/edit.html",
+      //   data: {
+      //     pageTitle: 'Edit Trip',
+      //     message: "",
+      //     formAction: "edit",
+      //   },
+      // },
+      "trip/details": {
+        url: "/trip/details",
+        controller: "TripDetailsController",
+        templateUrl: "views/Trip/details.html",
+        data: {
+          pageTitle: 'Trip Details',
+          message: "",
+          formAction: "edit",
+        },
       },
       "shipments": {
         url: "/shipments",

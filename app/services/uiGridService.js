@@ -12,6 +12,13 @@ angular.module('AdminApp')
       function (settings) {
 
         return {
+          /**
+           * Update row of the ui-grid
+           *
+           * @param rowEntity {Object}
+           * @param gridData {Object}
+           * @returns {Object}
+           */
           updateRow: function (rowEntity, gridData) {
             angular.forEach(gridData, function(gridRow, rowIdx){
               if (gridRow.$$hashKey === rowEntity.entity.$$hashKey){

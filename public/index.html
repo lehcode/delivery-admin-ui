@@ -12,13 +12,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <base href="/">
   <title>BarQ Admin</title>
-  <meta name="description" content="">
+  <meta name="description" content="Barq Administration Web Application">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="/css/vendor.sass.css">
   <link rel="stylesheet" href="/css/vendor.css">
   <link rel="stylesheet" href="/css/app.sass.css">
   <link rel="stylesheet" href="/css/app.css">
+  <link id="ng_load_plugins_before" />
 </head>
 <body layout="column"
       layout-fill
@@ -56,6 +57,7 @@
 
     <div flex layout="row" class="">
       <ui-view style="width: 100%;"></ui-view>
+      <div id="preloader" ng-show="!!processing === true">Loading&#8230;</div>
     </div>
   </div>
 

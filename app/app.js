@@ -14,6 +14,7 @@ var AdminApp = angular.module("AdminApp", [
   'ngMaterial',
   'ngMdIcons',
   'ui.grid',
+  //'ui.grid.pagination',
   'ui.grid.edit',
   'ui.grid.rowEdit',
   'ui.grid.treeView',
@@ -24,7 +25,8 @@ var AdminApp = angular.module("AdminApp", [
   'ui.grid.cellNav',
   'LocalStorageModule',
   'ui.slimscroll',
-  'lfNgMdFileInput'
+  'lfNgMdFileInput',
+  //'oc.lazyLoad',
   //'kinvey',
   //'ui-bootstrap',
 ]);

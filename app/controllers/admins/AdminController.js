@@ -89,12 +89,10 @@ angular.module('AdminApp')
 
           $scope.gridOptions = Object.assign(gridDefaults, {
             rowHeight: 46,
-            enableRowSelection: true,
-            enableRowHeaderSelection: false,
+            enableRowSelection: false,
+            enableRowHeaderSelection: true,
             noUnselect: false,
-            enableFiltering: true,
             columnDefs: [
-              //   //{field: "id", name: "ID"},
               {
                 field: "attributes.username",
                 name: "Username",
@@ -128,6 +126,7 @@ angular.module('AdminApp')
             ]
           });
 
+          $scope.gridOptions.data = {};
         }
 
         /**
@@ -307,7 +306,7 @@ angular.module('AdminApp')
             .then(function (response) {
               switch (response.statusCode) {
                 case 200:
-                  if (response.data.updated === true){
+                  if (response.data.updated === true) {
                     $scope.passwordReset = true;
                   }
                   break;
