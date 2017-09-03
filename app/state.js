@@ -36,27 +36,127 @@ AdminApp.config([
       },
       "carriers": {
         url: "/carriers",
-        controller: "CarriersController",
-        templateUrl: "views/carriers.html",
-        data: {pageTitle: 'Carriers Management'},
+        controller: "CarriersGridController",
+        templateUrl: "views/Carrier/grid.html",
+        data: {
+          pageTitle: 'Carriers Management',
+          createRoute: 'carrier/create',
+          entityName: 'Carrier',
+        },
+      },
+      "carrier/details": {
+        url: "/carrier/details",
+        controller: "CarrierDetailsController",
+        templateUrl: "views/Carrier/details.html",
+        data: {
+          pageTitle: 'Carrier Details',
+          createRoute: 'carrier/create',
+          entityName: 'Carrier',
+        },
+      },
+      "carrier/edit": {
+        url: "/carrier/edit",
+        controller: "EditCarrierController",
+        templateUrl: "views/Carrier/edit.html",
+        data: {
+          pageTitle: 'Edit Carrier',
+          createRoute: 'carrier/create',
+          editRoute: 'carrier/edit',
+          entityName: 'Carrier',
+        },
+      },
+      "carrier/create": {
+        url: "/carrier/create",
+        controller: "CreateCarrierController",
+        templateUrl: "views/Carrier/edit.html",
+        data: {
+          pageTitle: 'Add Carrier',
+          createRoute: 'carrier/create',
+          editRoute: 'carrier/edit',
+          entityName: 'Carrier',
+        },
       },
       "customers": {
         url: "/customers",
-        controller: "CustomersController",
-        templateUrl: "views/customers.html",
-        data: {pageTitle: 'Customers Management', message: ""},
+        controller: "CustomersGridController",
+        templateUrl: "views/Customer/grid.html",
+        data: {
+          pageTitle: 'Customers Management',
+          createRoute: 'customer/create',
+          entityName: 'Customer',
+        },
+      },
+      "customer/create": {
+        url: "/customer/create",
+        controller: "CreateCustomerController",
+        templateUrl: "views/Customer/edit.html",
+        data: {
+          pageTitle: 'Create Customer',
+          entityName: 'Customer',
+          action: 'create',
+        },
+      },
+      "customer/edit": {
+        url: "/customer/edit",
+        controller: "EditCustomerController",
+        templateUrl: "views/Customer/edit.html",
+        data: {
+          pageTitle: 'Edit Customer',
+          createRoute: 'customer/create',
+          editRoute: 'customer/edit',
+          entityName: 'Customer',
+          action: 'edit',
+        },
+      },
+      "customer/details": {
+        url: "/customer/details",
+        controller: "CustomerDetailsController",
+        templateUrl: "views/Customer/details.html",
+        data: {
+          pageTitle: 'Customer Details',
+          createRoute: 'customer/create',
+          entityName: 'Customer',
+        },
       },
       "orders": {
         url: "/orders",
-        controller: "CustomersController",
-        templateUrl: "views/default.html",
-        data: {pageTitle: 'Customers Management', message: "Under Construction"},
+        controller: "OrdersGridController",
+        templateUrl: "views/Order/grid.html",
+        data: {
+          pageTitle: 'Orders Management',
+          createRoute: 'order/create',
+          entityName: 'Order',
+        },
+      },
+      "order/create": {
+        url: "/order/create",
+        controller: "CreateOrderController",
+        templateUrl: "views/Order/create.html",
+        data: {
+          pageTitle: 'Create Order',
+          entityName: 'Order',
+          action: 'create',
+        },
+      },
+      "order/details": {
+        url: "/order/details",
+        controller: "OrderDetailsController",
+        templateUrl: "views/Order/details.html",
+        data: {
+          pageTitle: 'Order Details',
+          entityName: 'Order',
+          createRoute: 'order/create',
+        },
       },
       "trips": {
         url: "/trips",
         controller: "TripsGridController",
         templateUrl: "views/Trip/grid.html",
-        data: {pageTitle: 'Trips Management', message: ""},
+        data: {
+          pageTitle: 'Trips Management',
+          createRoute: 'trip/create',
+          entityName: 'Trip',
+        },
       },
       "trip/create": {
         url: "/trip/create",
@@ -64,8 +164,9 @@ AdminApp.config([
         templateUrl: "views/Trip/create.html",
         data: {
           pageTitle: 'Create Trip',
-          message: "",
-          formAction: "create",
+          createRoute: 'trip/create',
+          entityName: 'Trip',
+          //action: 'create',
         },
       },
       // "trip/edit": {
@@ -84,8 +185,8 @@ AdminApp.config([
         templateUrl: "views/Trip/details.html",
         data: {
           pageTitle: 'Trip Details',
-          message: "",
-          formAction: "edit",
+          createRoute: 'trip/create',
+          entityName: 'Trip',
         },
       },
       "shipments": {
@@ -101,10 +202,44 @@ AdminApp.config([
         data: {pageTitle: 'Cities Management', message: "Under Construction"},
       },
       "administrators": {
-        url: "/administrators",
-        controller: "AdminsController",
-        templateUrl: "views/admins.html",
-        data: {pageTitle: 'Administrators Management', message: null},
+        url: "/admins",
+        controller: "AdminsGridController",
+        templateUrl: "views/Admin/grid.html",
+        data: {
+          pageTitle: 'Administrators Management',
+          entityName: 'Administrator',
+          createRoute: 'administrator/create',
+        },
+      },
+      "administrator/details": {
+        url: "/admin/details",
+        controller: "AdminDetailsController",
+        templateUrl: "views/Admin/details.html",
+        data: {
+          pageTitle: 'Account Details',
+          entityName: 'Administrator',
+          createRoute: 'administrator/create',
+        },
+      },
+      "administrator/create": {
+        url: "/admin/create",
+        controller: "CreateAdminController",
+        templateUrl: "views/Admin/create.html",
+        data: {
+          pageTitle: 'Add New Administrator',
+          entityName: 'Administrator',
+          createRoute: 'administrator/create',
+        },
+      },
+      "administrator/edit": {
+        url: "/admin/edit",
+        controller: "EditAdminController",
+        templateUrl: "views/Admin/edit.html",
+        data: {
+          pageTitle: 'Edit Administrator',
+          entityName: 'Administrator',
+          createRoute: 'administrator/create',
+        },
       },
       "audit": {
         url: "/audit",

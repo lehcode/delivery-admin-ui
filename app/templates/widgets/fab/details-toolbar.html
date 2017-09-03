@@ -2,17 +2,16 @@
                 count="0"
                 md-direction="left">
   <md-fab-trigger class="align-with-text">
-    <md-button aria-label="Trip Menu" class="md-fab md-primary">
-      <md-icon md-svg-src="/img/material-design-icons/menu.svg"
-               class="md-light"></md-icon>
+    <md-button aria-label="{{ $state.current.data.entityName }}&nbsp;Menu" class="md-fab md-primary">
+      <md-icon class="material-icons md-light md-24">menu</md-icon>
     </md-button>
   </md-fab-trigger>
 
   <md-toolbar>
     <md-fab-actions class="md-toolbar-tools">
       <md-button class="md-fab md-primary"
-                 aria-label="Create new trip"
-                 ui-sref="trip/create">
+                 aria-label="Create new&nbsp;{{ $state.current.data.entityName }}"
+                 ui-sref="{{ $state.current.data.createRoute }}">
         <i class="material-icons md-light">add</i>
       </md-button>
       <md-button class="md-fab md-primary"

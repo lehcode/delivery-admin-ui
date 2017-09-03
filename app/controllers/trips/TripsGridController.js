@@ -29,48 +29,34 @@ angular.module('AdminApp')
           //debugger;
         });
 
-        /**
-         * AJAX flag
-         *
-         * @type {boolean}
-         */
-        $scope.processing = true;
+        $scope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
 
-        /**
-         *
-         * @type {Array}
-         */
-        $scope.trips = null;
+          $scope.processing = true;
 
-        /**
-         * Dialog action placeholder
-         *
-         * @type {{hash: {String}, string: {String}}}
-         */
-        $scope.formAction = {hash: null, string: null};
-
-        /**
-         * Initialize controller
-         */
-        (function () {
           configure();
           getGridData();
-        })();
 
+        });
+
+        /**
+         * Configure controller
+         */
         function configure() {
 
-          console.log("Configuring controller");
+          console.log("Configuring TripsGridController");
 
           var gridDefaults = $rootScope.settings.grid.defaults;
 
           $scope.gridOptions = Object.assign(gridDefaults, {
+            data: null,
             enableRowHeaderSelection: false,
             columnDefs: [
-              {field: "id", name: "ID"},
+              //{field: "id", name: "ID"},
               {field: "attributes.carrier[0].attributes.username", name: "Carrier"},
-              {field: "attributes.created_at", name: "Date", cellFilter: "date"},
+              {field: "attributes.departure_date", name: "Departure", cellFilter: "longDate"},
               {field: "attributes.from_city[0].attributes.name", name: "From"},
               {field: "attributes.destination_city[0].attributes.name", name: "To"},
+              {field: "attributes.created_at", name: "Created", cellFilter: "fullDate"},
             ]
           });
 
@@ -97,11 +83,23 @@ angular.module('AdminApp')
           $scope.processing = true;
           tripService.getList()
             .then(function (data) {
-              $scope.gridOptions.data = data;
+              $scope.gridOptions.data = data.data;
               $scope.processing = false;
             });
         }
 
       }
     ]
-  );
+  )
+  .filter('shortDate', function () {
+    return function (dString) {
+      var d = moment(new Date(dString));
+      return d.format("YYYY-MM-DD");
+    }
+  })
+  .filter('fullDate', function () {
+  return function (dString) {
+    var d = moment(new Date(dString));
+    return d.format("YYYY-MM-DD HH:mm:ss");
+  }
+});

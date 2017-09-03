@@ -22,6 +22,7 @@ var config = {
   jsDest: "/js",
   assetsDir: "./assets",
   bowerDir: "./bower_components",
+  nodeDir: "./node_modules",
 };
 
 /*
@@ -129,6 +130,7 @@ gulp.task('concat:js:vendor', function () {
     config.bowerDir + '/angular-material/angular-material.js',
     config.bowerDir + '/angular-resource/angular-resource.min.js',
     config.bowerDir + '/angular-material-icons/angular-material-icons.js',
+    config.nodeDir + '/angular-material-badge/source/angular-material-badge.js',
     config.bowerDir + '/jquery/dist/jquery.js',
     config.bowerDir + '/html5-boilerplate/dist/js/plugins.js',
     config.bowerDir + '/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js',
@@ -139,8 +141,10 @@ gulp.task('concat:js:vendor', function () {
     config.bowerDir + '/jquery/dist/jquery.js',
     config.bowerDir + '/slimScroll/jquery.slimscroll.js',
     config.bowerDir + '/angular-ui-grid/ui-grid.js',
-    config.bowerDir + '/lf-ng-md-file-input/dist/lf-ng-md-file-input.js',
+    //config.bowerDir + '/lf-ng-md-file-input/dist/lf-ng-md-file-input.js',
+    config.bowerDir + '/ng-file-upload/ng-file-upload-all.js',
     config.bowerDir + '/moment/moment.js',
+    config.bowerDir + '/ngmap/build/scripts/ng-map.js',
   ];
 
   return gulp.src(vendorScripts)
@@ -164,6 +168,7 @@ gulp.task("concat:css:vendor", function () {
     config.bowerDir + '/angular-bootstrap/ui-bootstrap-csp.css',
     config.bowerDir + '/angular-ui-grid/ui-grid.css',
     config.bowerDir + '/lf-ng-md-file-input/dist/lf-ng-md-file-input.css',
+    config.nodeDir + '/angular-material-badge/source/angular-material-badge.css',
   ];
 
   return gulp.src(files)

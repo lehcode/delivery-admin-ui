@@ -13,12 +13,15 @@ angular.module('AdminApp')
 
       ctrl.$asyncValidators.unique = function (modelValue, viewValue) {
 
-        if (ctrl.$$scope.$parent.dialogAction.hash === 'edit') {
-          return $q.resolve(true);
-        }
-
         if (ctrl.$isEmpty(modelValue)) {
           return $q.resolve(false);
+        }
+
+        if (ctrl.$$scope.$parent.formEdit) {
+          if (modelValue === viewValue){
+            ctrl.$setValidity('uniqueEmail', true);
+            return $q.resolve(true);
+          }
         }
 
         return $q(function (resolve, reject) {

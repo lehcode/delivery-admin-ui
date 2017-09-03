@@ -11,15 +11,21 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <base href="/">
-  <title>BarQ Admin</title>
+  <title ng-if="$state.current.data.pageTitle">BarQ Admin :: {{ $state.current.data.pageTitle }}</title>
   <meta name="description" content="Barq Administration Web Application">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script>
+    function initMap() {
+      console.log('Google Maps API version: ' + google.maps.version);
+    }
+  </script>
+  <script src="http://maps.google.com/maps/api/js?key=AIzaSyDQCGZb0TUJaUbzsOko_SMaBVcIYBmp-0U&&callback=initMap&libraries=places"></script>
   <link rel="stylesheet" href="/css/vendor.sass.css">
   <link rel="stylesheet" href="/css/vendor.css">
   <link rel="stylesheet" href="/css/app.sass.css">
   <link rel="stylesheet" href="/css/app.css">
-  <link id="ng_load_plugins_before" />
+  <link id="ng_load_plugins_before"/>
 </head>
 <body layout="column"
       layout-fill
@@ -57,7 +63,7 @@
 
     <div flex layout="row" class="">
       <ui-view style="width: 100%;"></ui-view>
-      <div id="preloader" ng-show="!!processing === true">Loading&#8230;</div>
+      <div id="preloader" ng-show="loading">Loading&#8230;</div>
     </div>
   </div>
 
@@ -65,6 +71,7 @@
 
 <script src="js/vendor.js"></script>
 <script src="js/app.js"></script>
-<script type="text/javascript" src="https://barrak.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/1h0yzo/b/c/7ebd7d8b8f8cafb14c7b0966803e5701/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=b0a7e713"></script>
+<script type="text/javascript"
+        src="https://barrak.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/1h0yzo/b/c/7ebd7d8b8f8cafb14c7b0966803e5701/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=b0a7e713"></script>
 </body>
 </html>

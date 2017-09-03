@@ -1,5 +1,6 @@
 @import "variables";
 @import "grid";
+@import "uploader";
 @import "animation";
 
 body {
@@ -205,8 +206,13 @@ md-fab-toolbar {
   right: 0;
 }
 
-md-content.details-container {
-  max-height: calc(100vh - (64px * 2));
+md-content{
+
+  max-height: $contentMaxHeight;
+
+  &.details-container{
+    max-height: $contentMaxHeight;
+  }
 }
 
 md-fab-toolbar {
@@ -227,6 +233,18 @@ md-fab-toolbar {
   i.material-icons {
     line-height: 48px;
     color: white;
+  }
+}
+
+.grid {
+  md-input-container{
+    margin: 0;
+  }
+}
+
+.count{
+  &.accent{
+    font-size: 3rem !important;
   }
 }
 

@@ -21,11 +21,7 @@ angular.module('AdminApp')
               api.setContentType('application/json')
                 .get('trips')
                 .then(function (response) {
-                  if (response.status === 200) {
-                    resolve(response.data.data);
-                  } else {
-                    console.error(response);
-                  }
+                  api.processResponse(response, resolve);
                 });
             });
           },
@@ -37,13 +33,10 @@ angular.module('AdminApp')
            */
           get: function (id) {
             return $q(function (resolve, reject) {
-              api.get('trips/' + id)
+              api.setContentType('application/json')
+                .get('trips/' + id)
                 .then(function (response) {
-                  if (response.status === 200) {
-                    resolve(response.data.data[0]);
-                  } else {
-                    console.error(response);
-                  }
+                  api.processResponse(response, resolve);
                 });
             });
           },
@@ -58,20 +51,7 @@ angular.module('AdminApp')
               api.setContentType(undefined)
                 .post('trips/create', formData)
                 .then(function (response) {
-                  switch (response.status) {
-                    case 200:
-                      resolve({
-                        statusCode: response.status,
-                        data: response.data.data[0]
-                      });
-                      break;
-                    default:
-                      reject({
-                        messages: response.data.message,
-                        status: response.statusText,
-                        statusCode: response.status,
-                      });
-                  }
+                  api.processResponse(response, resolve);
                 });
             });
 
@@ -90,18 +70,7 @@ angular.module('AdminApp')
               api.setContentType(undefined)
                 .post('trips/update/' + id, formData)
                 .then(function (response) {
-                  if (response.status === 200) {
-                    resolve({
-                      statusCode: 200,
-                      data: response.data.data[0],
-                    });
-                  } else {
-                    reject({
-                      messages: response.data.message,
-                      status: response.statusText,
-                      statusCode: response.status,
-                    });
-                  }
+                  api.processResponse(response, resolve);
                 });
             });
           },

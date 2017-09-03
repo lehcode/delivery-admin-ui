@@ -1,0 +1,182 @@
+<md-toolbar class="md-accent">
+  <div class="md-toolbar-tools">
+    <h3>{{ $state.current.data.pageTitle }}:</h3>&nbsp;<p ng-show="entity.id">{{ entity.id }}</p>
+    <span flex></span>
+    <ng-include src="'tpl/widgets/fab/details-toolbar.html'"></ng-include>
+  </div>
+  <md-progress-linear md-mode="indeterminate"
+                      ng-show="processing"></md-progress-linear>
+</md-toolbar>
+
+<md-content flex
+            layout-padding
+            class="details-container"
+            id="tripDetails"
+            ng-show="entity.id">
+
+  <md-list layout-padding layout="row">
+    <md-list-item class="md-2-line" flex>
+      <img ng-src="{{ entity.attributes.trip[0].attributes.carrier[0].attributes.photo }}"
+           class="md-avatar"
+           alt="{{ entity.attributes.trip[0].attributes.carrier[0].attributes.username }} photo"
+           ng-show="entity.attributes.trip[0].attributes.carrier[0].attributes.photo"/>
+      <i class="material-icons md-avatar" ng-hide="entity.attributes.photo">person</i>
+      <div class="md-list-item-text">
+        <h3>Username</h3>
+        <p>{{ entity.attributes.trip[0].attributes.carrier[0].attributes.username }}</p>
+      </div>
+    </md-list-item>
+  </md-list>
+
+  <md-list layout-padding layout="row">
+    <md-list-item class="md-2-line" flex="50">
+      <div class="md-list-item-text">
+        <h3>Order status</h3>
+        <md-chips>
+          <md-chip>{{ entity.attributes.status }}</md-chip>
+        </md-chips>
+      </div>
+    </md-list-item>
+    <md-list-item class="md-2-line" flex="50">
+      <div class="md-list-item-text">
+        <h3>Departure date</h3>
+        <p>{{ entity.attributes.departure_date }}</p>
+      </div>
+    </md-list-item>
+  </md-list>
+
+  <md-list layout-padding layout="row">
+    <md-list-item class="md-2-line" flex="50">
+      <div class="md-list-item-text">
+        <h3>From city</h3>
+        <p>{{ entity.attributes.trip[0].attributes.from_city[0].attributes.name }}</p>
+      </div>
+    </md-list-item>
+    <md-list-item class="md-2-line" flex="50">
+      <div class="md-list-item-text">
+        <h3>To city</h3>
+        <p>{{ entity.attributes.trip[0].attributes.destination_city[0].attributes.name }}</p>
+      </div>
+    </md-list-item>
+  </md-list>
+
+  <md-list layout-padding layout="row">
+    <md-list-item class="md-2-line" flex="33">
+      <div class="md-list-item-text">
+        <h3>Carrier username</h3>
+        <p>
+          <a ng-click="openDetailsPage($event, 'carrier',entity.attributes.trip[0].attributes.carrier[0])">{{
+            entity.attributes.trip[0].attributes.carrier[0].attributes.username }}
+            <ng-md-icon icon="open_in_browser"></ng-md-icon>
+          </a>
+        </p>
+      </div>
+    </md-list-item>
+    <md-list-item class="md-2-line" flex="33">
+      <div class="md-list-item-text">
+        <h3>Carrier phone</h3>
+        <p><a ng-click="sendMessage($event, entity.attributes.trip[0].attributes.carrier[0])">{{
+          entity.attributes.trip[0].attributes.carrier[0].attributes.phone }}&nbsp;
+          <ng-md-icon icon="sms"></ng-md-icon>
+        </a></p>
+      </div>
+    </md-list-item>
+    <md-list-item class="md-2-line" flex="33">
+      <div class="md-list-item-text">
+        <h3>Carrier email</h3>
+        <p><a ng-click="sendMessage($event, entity.attributes.trip[0].attributes.carrier[0])">{{
+          entity.attributes.trip[0].attributes.carrier[0].attributes.email }}&nbsp;
+          <ng-md-icon icon="mail_outline"></ng-md-icon>
+        </a></p>
+      </div>
+    </md-list-item>
+  </md-list>
+
+  <md-list layout-padding layout="row">
+    <md-list-item class="md-2-line" flex="33">
+      <div class="md-list-item-text">
+        <h3>Customer username</h3>
+        <p>
+          <a ng-click="openDetailsPage($event, 'customer',entity.attributes.customer[0])">{{
+            entity.attributes.customer[0].attributes.username }}&nbsp;
+            <ng-md-icon icon="open_in_browser"></ng-md-icon>
+          </a>
+        </p>
+      </div>
+    </md-list-item>
+    <md-list-item class="md-2-line" flex="33">
+      <div class="md-list-item-text">
+        <h3>Customer phone</h3>
+        <p>
+          <a ng-click="sendMessage($event, entity.attributes.customer[0])">{{
+            entity.attributes.customer[0].attributes.phone }}&nbsp;
+            <ng-md-icon icon="sms"></ng-md-icon>
+          </a>
+        </p>
+      </div>
+    </md-list-item>
+    <md-list-item class="md-2-line" flex="33">
+      <div class="md-list-item-text">
+        <h3>Customer email</h3>
+        <p>
+          <a ng-click="sendMessage($event, entity.attributes.customer[0])">{{
+            entity.attributes.customer[0].attributes.email }}&nbsp;
+            <ng-md-icon icon="mail_outline"></ng-md-icon>
+          </a>
+        </p>
+      </div>
+    </md-list-item>
+  </md-list>
+
+  <md-list layout-padding layout="row">
+    <md-list-item class="md-2-line" flex="50">
+      <div class="md-list-item-text">
+        <h3>Recipient full name</h3>
+        <p>{{ entity.attributes.recipient[0].attributes.name }}</p>
+      </div>
+    </md-list-item>
+    <md-list-item class="md-2-line" flex="50">
+      <div class="md-list-item-text">
+        <h3>Recipient phone</h3>
+        <p>{{ entity.attributes.recipient[0].attributes.phone }}</p>
+      </div>
+    </md-list-item>
+  </md-list>
+
+  <md-list layout-padding layout="row">
+    <md-list-item class="md-2-line" flex="50">
+      <div class="md-list-item-text">
+        <h3>Shipment size</h3>
+        <p>{{ entity.attributes.shipment[0].attributes.size.name }}</p>
+        <div class="md-caption">
+          {{ entity.attributes.shipment[0].attributes.size.description }}. W/H/L (cm):&nbsp;{{
+          entity.attributes.shipment[0].attributes.size.width }}/{{ entity.attributes.shipment[0].attributes.size.height
+          }}/{{ entity.attributes.shipment[0].attributes.size.length }}<br/>Max. weight (kg):&nbsp;{{
+          entity.attributes.shipment[0].attributes.size.weight }}</div>
+      </div>
+    </md-list-item>
+    <md-list-item class="md-2-line" flex="50">
+      <div class="md-list-item-text">
+        <h3>Shipment category</h3>
+        <p>{{ entity.attributes.shipment[0].attributes.category.name }}</p>
+        <div class="md-caption">{{ entity.attributes.shipment[0].attributes.category.description }}</div>
+      </div>
+    </md-list-item>
+  </md-list>
+
+  <md-list layout-padding layout="row">
+    <md-list-item class="md-2-line" flex="50">
+      <div class="md-list-item-text">
+        <h3>Price</h3>
+        <p>{{ entity.attributes.price }}</p>
+      </div>
+    </md-list-item>
+    <md-list-item class="md-2-line" flex="50">
+      <div class="md-list-item-text">
+        <h3>Payment type</h3>
+        <p>{{ entity.attributes.payment[0].attributes.payment_type[0].attributes.name ? entity.attributes.payment[0].attributes.payment_type[0].attributes.name : 'N/A' }}</p>
+      </div>
+    </md-list-item>
+  </md-list>
+
+</md-content>

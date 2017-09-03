@@ -16,61 +16,44 @@ angular.module('AdminApp')
                 $q) {
 
         return {
+          /**
+           * Fetch list of Customers from server
+           * @returns {Promise}
+           */
           getList: function () {
             return $q(function (resolve, reject) {
               api.get('customers')
                 .then(function (response) {
-                  if (response.status === 200) {
-                    resolve(response.data.data);
-                  } else {
-                    console.error(response);
-                  }
+                  api.processResponse(response, resolve);
                 });
             });
           },
           /**
            *
            *
-           * @param id
-           * @returns {*}
+           * @param id {String}
+           * @returns {Promise}
            */
           get: function (id) {
             return $q(function (resolve, reject) {
               api.get('customers/' + id)
                 .then(function (response) {
-                  if (response.status === 200) {
-                    resolve(response.data.data[0]);
-                  } else {
-                    console.error(response);
-                  }
+                  api.processResponse(response, resolve);
                 });
             });
           },
           /**
            * XHR call to add new Customer account
            *
-           * @param formData
-           * @returns {*}
+           * @param formData {FormData}
+           * @returns {Promise}
            */
           create: function (formData) {
             return $q(function (resolve, reject) {
               api.setContentType(undefined)
                 .post('customers/create', formData)
                 .then(function (response) {
-                  switch (response.status) {
-                    case 200:
-                      resolve({
-                        statusCode: response.status,
-                        data: response.data.data[0]
-                      });
-                      break;
-                    default:
-                      reject({
-                        messages: response.data.message,
-                        status: response.statusText,
-                        statusCode: response.status,
-                      });
-                  }
+                  api.processResponse(response, resolve);
                 });
             });
 
@@ -79,50 +62,34 @@ angular.module('AdminApp')
            * XHR call to update existing Customer account properties
            *
            * @param id {String}
-           * @param formData {Object}
-           * @returns {*}
+           * @param formData {FormData}
+           * @returns {Promise}
            */
           update: function (id, formData) {
             return $q(function (resolve, reject) {
               formData.append('_method', "PUT");
 
-              api.setContentType(undefined)
+              api.setContentType('multipart/form-data')
                 .post('customers/update/' + id, formData)
                 .then(function (response) {
-                  if (response.status === 200) {
-                    resolve({
-                      statusCode: 200,
-                      data: response.data.data[0],
-                    });
-                  } else {
-                    reject({
-                      messages: response.data.message,
-                      status: response.statusText,
-                      statusCode: response.status,
-                    });
-                  }
+                  api.processResponse(response, resolve);
                 });
             });
           },
-          toggleAccountState: function (id, enabled) {
+          /**
+           * Set account state
+           *
+           * @param id {String}
+           * @param state {Boolean}
+           * @returns {Promise}
+           */
+          toggleAccountState: function (id, state) {
             return $q(function (resolve, reject) {
-
-              var fd = new FormData();
-              fd.append('enabled', enabled);
-
-              api.post('customers/toggle/' + id, {enabled: enabled})
-                .then(function (data) {
-                  switch (data.status) {
-                    case 200:
-                      resolve(data.data[0]);
-                      break;
-                    default:
-                      reject({
-                        messages: response.data.message,
-                        status: response.statusText,
-                        statusCode: response.status,
-                      })
-                  }
+              var s = state === true ? 1 : 0;
+              api.setContentType('application/json')
+                .post('customers/toggle/' + id, {is_enabled: state})
+                .then(function (response) {
+                  api.processResponse(response, resolve);
                 })
             });
           }

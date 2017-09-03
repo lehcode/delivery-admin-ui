@@ -1,179 +1,239 @@
-<div class="form-body" layout="column">
-  <!--
-    Email
-    Phone number
-    Full name
-    Username
-    Password
-    Password confirmation
-    Personal photo
-  -->
-  <md-list layout="row">
-    <md-list-item flex="50" flex-gt-sm>
-      <md-input-container class="md-block">
-        <label for="customerEmailInput">Email</label>
-        <input type="email"
-               id="customerEmailInput"
-               data-ng-model="customer.attributes.email"
-               aria-label="Carrier email"
-               name="email"
-               required
-               unique-email>
-        <div ng-messages="customerForm.email.$error">
-          <div ng-message="required" ng-show="customerForm.email.$error.required">User email is required</div>
-          <div ng-message="email" ng-show="customerForm.email.$error.email">Email format is wrong</div>
-          <div ng-message="unique-email" ng-show="customerForm.email.$pending">Checking if this e-mail is available&hellip;
+<form name="customerForm" role="form">
+  <div class="form-body" layout="column">
+    <!--
+      Email
+      Phone number
+      Full name
+      Username
+      Password
+      Password confirmation
+      Personal photo
+    -->
+    <md-list flex-gt-sm layout="row" layout-align="space-between start">
+      <md-list-item flex="50" class="md-2-line">
+        <img ng-src="{{ entity.attributes.photo }}"
+             class="md-avatar"
+             alt="{{ entity.attributes.username }} photo"
+             ng-show="entity.attributes.photo"/>
+        <i class="material-icons md-avatar" ng-hide="entity.attributes.photo || !editing">person</i>
+        <div class="md-list-item-text">
+          <h3>Username</h3>
+          <md-input-container class="md-block">
+            <label for="customerUsernameInput" ng-hide="editing">required</label>
+            <input type="text"
+                   id="customerUsernameInput"
+                   data-ng-model="entity.attributes.username"
+                   aria-label="Customer username"
+                   name="username"
+                   required
+                   unique-username
+                   ng-model-options="{ debounce: 200 }"
+                   ng-disabled="editing">
+            <div ng-messages="customerForm.username.$error">
+              <div ng-message="required" ng-show="customerForm.username.$error.required">Login username is required
+              </div>
+              <div ng-message="unique-username" ng-show="customerForm.username.$error.unique">Username already taken
+              </div>
+              <div ng-message="unique-username" ng-show="customerForm.username.$pending">Checking if this
+                username
+                is available&hellip;</div>
+            </div>
+          </md-input-container>
+        </div>
+      </md-list-item>
+      <md-list-item flex="50" class="md-2-line">
+        <div class="md-list-item-text">
+          <h3>Phone number</h3>
+          <md-input-container class="md-block">
+            <label for="customerPhoneNumberInput">required</label>
+            <input type="text"
+                   id="customerPhoneNumberInput"
+                   data-ng-model="entity.attributes.phone"
+                   aria-label="Customer phone number"
+                   name="phone"
+                   unique-phone
+                   ng-required="!editing">
+            <div ng-messages="customerForm.phone.$error">
+              <div ng-message="required" ng-show="customerForm.phone.$error.required">{{ $state.current.data.entityName
+                }} phone is required
+              </div>
+              <div ng-message="unique-phone" ng-show="customerForm.phone.$error.unique">Phone number is already
+                registered in the system
+              </div>
+              <div ng-message="unique-phone" ng-show="customerForm.phone.$pending">Checking if this phone number is
+                taken&hellip;</div>
+            </div>
+          </md-input-container>
+        </div>
+      </md-list-item>
+    </md-list>
+
+    <md-list flex-gt-sm layout="row" layout-align="space-between start">
+      <md-list-item flex="50" class="md-2-line">
+        <div class="md-list-item-text">
+          <h3>Full name</h3>
+          <md-input-container class="md-block">
+            <label for="customerFullNameInput">required</label>
+            <input type="text"
+                   id="customerFullNameInput"
+                   data-ng-model="entity.attributes.name"
+                   aria-label="Customer full name"
+                   name="name"
+                   required
+                   ng-minlength="5">
+            <div ng-messages="customerForm.name.$error"
+                 ng-show="customerForm.$valid">
+              <div ng-message="required" ng-show="customerForm.name.$error.required">{{ $state.current.data.entityName
+                }} full name is required
+              </div>
+              <div ng-message="minlength" ng-show="customerForm.name.$error.minlength">{{ $state.current.data.entityName
+                }} full name is too short
+              </div>
+            </div>
+          </md-input-container>
+        </div>
+      </md-list-item>
+      <md-list-item flex="50" class="md-2-line">
+        <div class="md-list-item-text">
+          <h3>Email address</h3>
+          <md-input-container class="md-block">
+            <label for="customerEmailInput">required</label>
+            <input type="email"
+                   id="customerEmailInput"
+                   data-ng-model="entity.attributes.email"
+                   aria-label="Customer email"
+                   name="email"
+                   required
+                   ng-model-options="{ debounce: 200 }"
+                   unique-email>
+            <div ng-messages="customerForm.email.$error">
+              <div ng-message="required" ng-show="customerForm.email.$error.required">{{ $state.current.data.entityName
+                }} email is required
+              </div>
+              <div ng-message="email" ng-show="customerForm.email.$error.email">Email format is wrong</div>
+              <div ng-message="unique-email" ng-show="customerForm.email.$pending">Checking if this e-mail is available&hellip;
+              </div>
+              <div ng-message="unique-email" ng-show="customerForm.email.$error.unique">Email already taken
+              </div>
+            </div>
+          </md-input-container>
+        </div>
+      </md-list-item>
+    </md-list>
+
+    <md-list flex-gt-sm layout="row" layout-align="space-between start" ng-hide="editing">
+      <md-list-item flex="50" class="md-2-line">
+        <div class="md-list-item-text">
+          <h3>Password</h3>
+          <md-input-container class="md-block">
+            <label for="customerPasswordInput">required</label>
+            <input type="password"
+                   id="customerPasswordInput"
+                   data-ng-model="entity.attributes.password"
+                   aria-label="Password"
+                   name="password"
+                   ng-required="!editing"
+                   ng-minlength="6">
+            <div ng-messages="customerForm.password.$error">
+              <div ng-message="required" ng-show="customerForm.password.$error.required">Password is required</div>
+              <div ng-message="minlength" ng-show="customerForm.password.$error.minlength">Value is too short</div>
+            </div>
+          </md-input-container>
+        </div>
+      </md-list-item>
+      <md-list-item flex="50" class="md-2-line">
+        <div class="md-list-item-text">
+          <h3>Confirm password</h3>
+          <md-input-container class="md-block">
+            <label for="customerPasswordConfirmationInput">required</label>
+            <input type="password"
+                   id="customerPasswordConfirmationInput"
+                   data-ng-model="entity.attributes.password_confirmation"
+                   aria-label="Password confirmation"
+                   name="password_confirmation"
+                   ng-required="!editing"/>
+            <div ng-messages="customerForm.password_confirmation.$error">
+              <div ng-message="required" ng-show="customerForm.password_confirmation.$error.required">Password
+                confirmation
+                is required
+              </div>
+              <div ng-message="" ng-show="passwordConfirmed">Passwords do not match</div>
+            </div>
+          </md-input-container>
+        </div>
+      </md-list-item>
+    </md-list>
+
+    <md-list flex-gt-sm layout="row" layout-align="space-between start">
+      <md-list-item flex="50" class="md-2-line" md-no-ink>
+        <div class="md-list-item-text">
+          <h3>Account state</h3>
+          <md-input-container class="md-block">
+            <md-checkbox aria-label="Set account state"
+                         ng-model="entity.attributes.is_enabled"
+                         md-colors="{{ accountStateStyle }}"
+                         name="is_enabled">{{ entity.attributes.is_enabled ? 'Enabled' : 'Disabled' }}
+            </md-checkbox>
+            <!--<pre>accountStateStyle={{accountStateStyle}}</pre>-->
+          </md-input-container>
+        </div>
+      </md-list-item>
+      <md-list-item flex="50" class="md-2-line" ng-show="editing">
+        <div class="md-list-item-text">
+          <h3>Reset password</h3>
+          <md-input-container class="md-block">
+            <md-button ng-click="resetPassword($event, entity)"
+                       class="md-warn md-hue-2"
+                       aria-label="Reset password"
+                       ng-disabled="passwordReset || processing"
+                       id="resetPasswordButton">Click to reset
+            </md-button>
+            <div ng-messages ng-show="passwordReset">
+              <div class="md-caption"
+                   md-colors="{color: 'green'}"
+                   md-colors-watch="false"
+                   ng-show="passwordReset">Password was reset. New password sent to user by preferred communication
+                channel.
+              </div>
+            </div>
+          </md-input-container>
+        </div>
+      </md-list-item>
+    </md-list>
+
+    <md-list flex-gt-sm layout="row" layout-align="space-between start">
+      <md-list-item class="md-2-line">
+        <div class="md-list-item-text">
+          <h3>Upload profile photo</h3>
+          <md-input-container flex
+                              class="md-block"
+                              id="userPhotoInputContainer">
+            <input type="file"
+                   id="userPhotoUpload"
+                   data-file-model="entity.attributes.photo"
+                   style="opacity: 0;"
+                   class="file-input"
+                   ng-required="!editing"
+                   placeholder="Click here to select file"/>
+          </md-input-container>
+          <div flex
+               id="userPhotoImageContainer"
+               class="form-image"
+               ng-show="entity.attributes.photo.url">
+            <!--<img src="{{ entity.attributes.photo }}" alt="{{ $state.current.data.entityName }} profile photo"/>-->
           </div>
         </div>
-      </md-input-container>
-    </md-list-item>
-    <md-list-item flex="50" flex-gt-sm>
-      <md-input-container class="md-block">
-        <label for="customerPhoneNumberInput">Phone number</label>
-        <input type="text"
-               id="customerPhoneNumberInput"
-               data-ng-model="customer.attributes.phone"
-               aria-label="Carrier phone number"
-               name="phone"
-               unique-phone
-               required>
-        <div ng-messages="customerForm.phone.$error">
-          <div ng-message="unique-phone" ng-show="customerForm.phone.$error.required">Phone number is required</div>
-          <div ng-message="unique-phone" ng-show="customerForm.phone.$error.unique">Phone number is already registered
-            in
-            the system
-          </div>
-          <div ng-message="unique-phone" ng-show="customerForm.phone.$pending">Checking if this phone number is
-            taken&hellip;</div>
-          <div ng-message="required" ng-show="customerForm.phone.$error.required">User phone is required</div>
-        </div>
-      </md-input-container>
-    </md-list-item>
-  </md-list>
+      </md-list-item>
+    </md-list>
+  </div>
 
-  <md-list layout="row">
-    <md-list-item flex-gt-sm>
-      <md-input-container class="md-block">
-        <label for="customerFullNameInput">Full name</label>
-        <input type="text"
-               id="customerFullNameInput"
-               data-ng-model="customer.attributes.name"
-               aria-label="Carrier full name"
-               name="name"
-               required
-               ng-minlength="5">
-        <div ng-messages="customerForm.name.$error" ng-show="customerForm.$valid">
-          <div ng-message="required" ng-show="customerForm.name.$error.required">Carrier's full name is required</div>
-          <div ng-message="minlength" ng-show="customerForm.name.$error.minlength">Name is too short</div>
-        </div>
-      </md-input-container>
-    </md-list-item>
-    <md-list-item flex-gt-sm>
-      <md-input-container class="md-block">
-        <label for="customerUsernameInput">Username</label>
-        <input type="text"
-               id="customerUsernameInput"
-               data-ng-model="customer.attributes.username"
-               aria-label="Carrier username"
-               name="username"
-               required
-               unique-username
-               ng-model-options="{ debounce: 150 }"
-               ng-disabled="!allowUsernameEdit">
-        <div ng-messages="customerForm.username.$error">
-          <div ng-message="required" ng-show="customerForm.username.$error.required">Login username is required</div>
-          <div ng-message="unique-username" ng-show="customerForm.username.$error.unique">Username already taken</div>
-          <div ng-message="unique-username" ng-show="customerForm.username.$pending.required">Checking if this username
-            is available&hellip;</div>
-        </div>
-      </md-input-container>
-    </md-list-item>
-  </md-list>
+  <div layout="row">
+    <md-button ng-click="saveEntity($event, entity)"
+               class="md-primary md-raised"
+               ng-disabled="customerForm.$invalid || customerForm.$pending"
+               type="button">Save
+    </md-button>
+  </div>
 
-  <md-list layout="row" ng-if="dialogAction.hash === 'create'">
-    <md-list-item flex="50" flex-gt-sm>
-      <md-input-container class="md-block">
-        <label for="customerPasswordInput">Password</label>
-        <input type="password"
-               id="customerPasswordInput"
-               data-ng-model="customer.attributes.password"
-               aria-label="Password"
-               name="password"
-               required
-               ng-minlength="6">
-        <div ng-messages="customerForm.password.$error">
-          <div ng-message="required" ng-show="customerForm.password.$error.required">Password is required</div>
-          <div ng-message="minlength" ng-show="customerForm.password.$error.minlength">Value is too short</div>
-        </div>
-      </md-input-container>
-    </md-list-item>
-    <md-list-item flex="50" flex-gt-sm>
-      <md-input-container class="md-block">
-        <label for="customerPasswordConfirmationInput">Password confirmation</label>
-        <input type="password"
-               id="customerPasswordConfirmationInput"
-               data-ng-model="customer.attributes.password_confirmation"
-               aria-label="Password confirmation"
-               name="password_confirmation"
-               required/>
-        <div ng-messages="customerForm.password_confirmation.$error">
-          <div ng-message="required" ng-show="customerForm.password_confirmation.$error.required">Password confirmation
-            is required
-          </div>
-          <div ng-message="" ng-show="passwordConfirmed === false">Passwords do not match</div>
-        </div>
-      </md-input-container>
-    </md-list-item>
-  </md-list>
+</form>
 
-  <md-list layout="row" ng-if="dialogAction.hash === 'edit'">
-    <md-list-item flex-gt-sm>
-      <md-input-container class="md-block">
-        <md-button ng-click="resetPassword()"
-                   class="md-warn md-raised md-hue-2"
-                   aria-label="Reset password"
-                   id="resetPasswordButton">Reset password
-        </md-button>
-        <div ng-messages ng-show="passwordReset">
-          <div ng-message=""
-               class="hint"
-               md-colors="{color: 'green'}"
-               md-colors-watch="false"
-               ng-show="passwordReset">Password was reset. New password sent to user by preferred communication channel.
-          </div>
-        </div>
-      </md-input-container>
-    </md-list-item>
-  </md-list>
-
-
-  <md-list layout="row">
-    <md-list-item flex-gt-sm flex="50" layout="column">
-      <md-input-container flex
-                          class="md-block"
-                          id="userPhotoInputContainer">
-        <label for="userPhotoUpload"
-               class="md-button md-raised md-primary">Upload profile photo</label>
-        <input type="file"
-               id="userPhotoUpload"
-               data-file-model="carrier.attributes.photo"
-               style="opacity: 0;"
-               class="file-input"
-               required/>
-      </md-input-container>
-      <div flex id="userPhotoImageContainer" class="form-image">
-        <img src="{{ carrier.attributes.photo }}" alt="Profile photo"/>
-      </div>
-    </md-list-item>
-
-    <md-list-item flex-gt-sm flex="50">
-      <md-input-container class="md-block" layout="column" layout-align="start center">
-        <md-checkbox aria-label="Set account enabled"
-                     ng-model="customer.attributes.is_enabled"
-                     name="is_enabled">Enable account
-        </md-checkbox>
-      </md-input-container>
-    </md-list-item>
-  </md-list>
-
-</div>

@@ -1,0 +1,274 @@
+<form name="orderForm" role="form">
+  <div class="form-body" layout="column">
+
+    <!--<pre>{{ orderForm.$valid }}</pre>
+    <pre ng-repeat="error in orderForm.$errors">{{ error }}</pre>-->
+
+    <!--<ul>
+      <li ng-repeat="(key, errors) in orderForm.$error track by $index"><strong>{{ key }}</strong> errors
+        <ul>
+          <li ng-repeat="e in errors">{{ e.$name }} has an error: <strong>{{ key }}</strong>.</li>
+        </ul>
+      </li>
+    </ul>-->
+
+    <md-list layout="row" layout-align="start start">
+      <md-list-item flex-gt-sm flex="25" class="md-2-line" md-no-ink>
+        <div class="md-list-item-text">
+          <h3>Customer username</h3>
+          <!--<label for="customerUsernameInput">required</label>-->
+          <md-autocomplete id="customerUsernameInput"
+                           name="customer_username"
+                           md-no-cache="true"
+                           md-items="customer in querySearch(searchText, 'username')"
+                           md-item-text="customer.attributes.username"
+                           md-search-text="searchText"
+                           md-selected-item="selectedCustomer"
+                           placeholder="Required, type in to search"
+                           ng-disabled="!customers"
+                           required>
+            <md-item-template>
+              <span md-highlight-text="searchText" md-highlight-flags="^ig">{{customer.attributes.username}}</span>
+            </md-item-template>
+            <md-not-found>
+              No matches found.
+            </md-not-found>
+            <div ng-messages="orderForm.customer_username.$error">
+              <div ng-message="required" ng-show="orderForm.customer_username.$error.required">
+                Carrier username is required
+              </div>
+            </div>
+          </md-autocomplete>
+        </div>
+      </md-list-item>
+      <md-list-item flex-gt-sm flex="50" class="md-2-line">
+        <div class="md-list-item-text">
+          <h3>Trip ID</h3>
+          <md-autocomplete id="tripIdInput"
+                           name="trip_id"
+                           md-no-cache="true"
+                           md-items="trip in querySearch(tripSearchText, 'trip')"
+                           md-item-text="trip.id"
+                           md-search-text="tripSearchText"
+                           md-selected-item="selectedTrip"
+                           placeholder="Type in to search"
+                           ng-disabled="!trips">
+            <md-item-template>
+              <span md-highlight-text="tripSearchText" md-highlight-flags="^ig">{{trip.id}}</span>
+            </md-item-template>
+            <md-not-found>
+              No matches found.
+            </md-not-found>
+          </md-autocomplete>
+        </div>
+      </md-list-item>
+      <md-list-item flex-gt-sm flex="25" class="md-2-line">
+        <div class="md-list-item-text">
+          <h3>Order price</h3>
+          <md-input-container class="md-block">
+            <label for="priceInput">required</label>
+            <input type="text"
+                   id="priceInput"
+                   name="price"
+                   ng-model="price"
+                   placeholder=""
+                   required/>
+            <div ng-messages="orderForm.price.$error">
+              <div ng-message="required" ng-show="orderForm.price.$error.required">
+                Order price is required
+              </div>
+            </div>
+          </md-input-container>
+        </div>
+      </md-list-item>
+    </md-list>
+
+    <md-subheader class="md-primary">Locations</md-subheader>
+    <md-list layout="row" layout-align="start start">
+      <md-list-item flex-gt-sm flex="50" class="md-2-line">
+        <div class="md-list-item-text">
+          <h3>Start location ({{ country.short_name }})</h3>
+          <md-input-container class="md-block">
+            <label for="startCoordinateInput">required</label>
+            <input places-auto-complete
+                   component-restrictions="{country: 'sa'}"
+                   ng-model="vm.origin"
+                   id="startCoordinateInput"
+                   name="start_coord"
+                   ng-disabled="!maps.Geocoder"
+                   placeholder="Address line">
+            <div ng-messages="orderForm.start_coord.$error">
+              <div ng-message="required" ng-show="orderForm.start_coord.$error.required">
+                Start coordinate is required
+              </div>
+            </div>
+          </md-input-container>
+        </div>
+      </md-list-item>
+      <md-list-item flex-gt-sm flex="50" class="md-2-line">
+        <div class="md-list-item-text">
+          <h3>End location ({{ country.short_name }})</h3>
+          <md-input-container class="md-block">
+            <label for="endCoordinateInput">required</label>
+            <input places-auto-complete
+                   component-restrictions="{country: 'sa'}"
+                   ng-model="vm.destination"
+                   id="endCoordinateInput"
+                   name="end_coord"
+                   style="{display:none}"
+                   ng-disabled="!maps.Geocoder"
+                   placeholder="Address line">
+            <div ng-messages="orderForm.end_coord.$error">
+              <div ng-message="required" ng-show="orderForm.end_coord.$error.required">
+                End coordinate is required
+              </div>
+            </div>
+          </md-input-container>
+        </div>
+      </md-list-item>
+    </md-list>
+
+    <md-subheader class="md-primary">Recipient info</md-subheader>
+    <md-list layout="row" layout-align="start start">
+      <md-list-item flex-gt-sm flex="33" class="md-2-line">
+        <div class="md-list-item-text">
+          <h3>Name</h3>
+          <md-input-container class="md-block">
+            <label>required</label>
+            <input type="text"
+                   name="recipient_name"
+                   required
+                   ng-model="recipient.name"
+                   id="recipientNameInput"
+                   placeholder="Full name">
+            <div ng-messages="orderForm.recipient_name.$error">
+              <div ng-message="required" ng-show="orderForm.recipient_name.$error.required">
+                Recipient name is required
+              </div>
+            </div>
+          </md-input-container>
+        </div>
+      </md-list-item>
+      <md-list-item flex-gt-sm flex="33" class="md-2-line">
+        <div class="md-list-item-text">
+          <h3>Phone</h3>
+          <md-input-container class="md-block">
+            <label for="recipientPhoneNumberInput">required</label>
+            <input type="text"
+                   name="recipient_phone"
+                   id="recipientPhoneNumberInput"
+                   ng-model="recipient.phone"
+                   ng-pattern="phoneRegex"
+                   aria-label="Recipient phone number"
+                   ng-required="!editing"
+                   placeholder="+">
+            <div ng-messages="orderForm.recipient_phone.$error">
+              <div ng-message="required" ng-show="orderForm.recipient_phone.$error.required">
+                Recipient phone is required
+              </div>
+              <div ng-message="unique-phone" ng-show="orderForm.recipient_phone.$pending">
+                Checking if this phone number is taken&hellip;</div>
+            </div>
+          </md-input-container>
+        </div>
+      </md-list-item>
+      <md-list-item flex-gt-sm flex="33" class="md-2-line">
+        <div class="md-list-item-text">
+          <h3>Note</h3>
+          <md-input-container class="md-block">
+            <input type="text"
+                   name="recipient_notes"
+                   ng-model="recipient.notes"/>
+          </md-input-container>
+        </div>
+      </md-list-item>
+    </md-list>
+
+    <md-subheader class="md-primary">Shipment info</md-subheader>
+    <md-list layout="row" layout-align="start start">
+      <md-list-item flex-gt-sm flex="50" class="md-2-line">
+        <div class="md-list-item-text">
+          <h3>Size</h3>
+          <md-input-container class="md-block">
+            <label for="shipmentSizeSelect">required</label>
+            <md-select name="shipment_size"
+                       required
+                       ng-model="shipment.size"
+                       id="shipmentSizeSelect"
+                       placeholder="Select size"
+                       ng-disabled="!shipmentSizes">
+              <md-optgroup>
+                <md-option ng-value="size.id" ng-repeat="size in shipmentSizes">{{size.name}} (W: {{size.width}}, L:
+                  {{size.length}}) H: {{size.name}}, weight: {{size.weight}} kg
+                </md-option>
+              </md-optgroup>
+            </md-select>
+          </md-input-container>
+        </div>
+      </md-list-item>
+      <md-list-item flex-gt-sm flex="50" class="md-2-line">
+        <div class="md-list-item-text">
+          <h3>Category</h3>
+          <md-input-container class="md-block">
+            <label for="shipmentCategorySelect">required</label>
+            <md-select name="shipment_category"
+                       required
+                       ng-model="shipment.category"
+                       id="shipmentCategorySelect"
+                       placeholder="Select category"
+                       ng-disabled="!shipmentCategories">
+              <md-optgroup>
+                <md-option ng-value="category.id" ng-repeat="category in shipmentCategories">{{category.name}}
+                </md-option>
+              </md-optgroup>
+            </md-select>
+          </md-input-container>
+        </div>
+      </md-list-item>
+    </md-list>
+
+    <md-list layout="row" layout-align="start start">
+      <md-list-item flex-gt-sm flex="33" class="md-2-line">
+        <div class="md-list-item-text">
+          <h3>Image(s)</h3>
+          <md-input-container class="md-block">
+            <div name="files"
+                 id="filesInput"
+                 ngf-drop
+                 ngf-select
+                 ng-model="shipment.images"
+                 class="drop-box"
+                 ngf-drag-over-class="'dragover'"
+                 ngf-multiple="true"
+                 ngf-allow-dir="true"
+                 accept="image/*"
+                 ngf-pattern="'image/*'"
+                 ngf-max-files="3"
+                 ngf-max-size="'2MB'">Drop image(s) here or click to select and upload
+            </div>
+            <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+            <ul>
+              <li ng-repeat="f in shipment.images">{{f.name}} {{f.$error}} {{f.$errorParam}}</li>
+            </ul>
+            <!--<div ng-messages="orderForm.recipient_name.$error">-->
+            <!--<div ng-message="required" ng-show="orderForm.files.$error.required">-->
+            <!--Recipient name is required-->
+            <!--</div>-->
+            <!--</div>-->
+          </md-input-container>
+        </div>
+      </md-list-item>
+    </md-list>
+
+    <md-list layout="row" layout-align="start start">
+
+    </md-list>
+  </div>
+
+  <md-button ng-click="saveEntity($event)"
+             class="md-primary md-raised"
+             ng-disabled="orderForm.$invalid || orderForm.$pending"
+             type="button">Save
+  </md-button>
+
+</form>

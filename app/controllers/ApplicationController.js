@@ -16,6 +16,9 @@ angular.module('AdminApp')
       '$location',
       '$mdSidenav',
       '$mdPanel',
+      'carrierService',
+      'customerService',
+      'adminService',
 
       function ($scope,
                 $rootScope,
@@ -27,7 +30,10 @@ angular.module('AdminApp')
                 localStorageService,
                 $location,
                 $mdSidenav,
-                $mdPanel) {
+                $mdPanel,
+                carrierService,
+                customerService,
+                adminService) {
 
         $scope.state = $state;
 
@@ -36,10 +42,18 @@ angular.module('AdminApp')
          *
          * @type {boolean}
          */
-        //$scope.processing = false;
+        $scope.loading = true;
 
         // $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
         //   debugger;
+        // });
+
+        $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
+          console.error(error);
+        });
+
+        // $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams, error) {
+        //   $scope.loading = false;
         // });
 
         /**
@@ -151,6 +165,12 @@ angular.module('AdminApp')
          * @type {string}
          */
         $scope.apiRoot = 'api/admin/' + $rootScope.settings.apiVersion;
+
+        /**
+         *
+         * @type {string}
+         */
+        $scope.country = settings.defaultCountry;
 
         $scope.$on('$viewContentLoaded', function () {
 
@@ -270,7 +290,11 @@ angular.module('AdminApp')
           $mdSidenav(menuId).toggle();
         };
 
-
+        /**
+         *
+         * @param $event
+         * @param menu
+         */
         $scope.showToolbarMenu = function ($event, menu) {
           debugger;
           var template = '' +
@@ -331,6 +355,10 @@ angular.module('AdminApp')
 
         };
 
+        /**
+         *
+         * @type {string}
+         */
         var menuTemplate = '' +
           '<div class="menu-panel" md-whiteframe="4">' +
           '  <div class="menu-content">' +
@@ -388,6 +416,11 @@ angular.module('AdminApp')
 
         };
 
+        /**
+         *
+         * @param mdPanelRef
+         * @constructor
+         */
         function PanelMenuCtrl(mdPanelRef) {
           $scope.closeMenu = function () {
             mdPanelRef && mdPanelRef.close();
@@ -406,15 +439,76 @@ angular.module('AdminApp')
             contentElement: document.querySelector(elId),
             parent: angular.element(document.body)
           });
-        }
+        };
 
         /**
          * Close dialog pane
          */
         $rootScope.hideDialog = function () {
           $mdDialog.hide();
-        }
+        };
+
+        $rootScope.phoneRegex = '^\+';
+
+        /**
+         * Redirect to entity details page
+         *
+         * @param e {MouseEvent}
+         * @param entityName {String}
+         * @param entity {Object}
+         */
+        $scope.openDetailsPage = function (e, entityName, entity) {
+          var props = {};
+          props[entityName] = entity;
+          $state.go(entityName + '/details', props);
+        };
+
+        /**
+         *
+         * @type {string}
+         */
+        $scope.googleMapsUrl = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDQCGZb0TUJaUbzsOko_SMaBVcIYBmp-0U";
+
+        var now = new Date();
+
+        /**
+         * Minimal birthday date
+         *
+         * @type {Date}
+         */
+        $scope.minBirthdayDate = new Date(now.getFullYear() - 99, now.getMonth(), now.getDate());
+
+        /**
+         * Maximal birthday date
+         *
+         * @type {Date}
+         */
+        $scope.maxBirthdayDate = new Date(now.getFullYear() - 18, now.getMonth(), now.getDate());
+
+        /**
+         * Minimal departure date
+         *
+         * @type {Date}
+         */
+        $scope.minDepartureDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+        /**
+         * maximal departure date
+         *
+         * @type {Date}
+         */
+        $scope.maxDepartureDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 2, now.getHours(), now.getMinutes());
+        $scope.departure_time = moment(now).format('HH:mm');
+
+        /**
+         * Set $scope.processing value
+         */
+        $scope.$on('ajaxEvent', function (event, value) {
+          $scope.processing = $scope.loading = value;
+          $scope.$broadcast('processing', false);
+        });
 
       }
-    ]);
+    ]
+  );
 

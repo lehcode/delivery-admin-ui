@@ -24,7 +24,7 @@ angular.module('AdminApp')
           });
         },
         get: function (id) {
-          return $q(function(resolve, reject){
+          return $q(function (resolve, reject) {
             api.get('admins/' + id)
               .then(function (response) {
                 if (response.status === 200) {
@@ -78,22 +78,26 @@ angular.module('AdminApp')
               });
           });
         },
-        resetAccountPassword: function(id){
-          return $q(function(resolve, reject){
+        resetAccountPassword: function (id) {
+          return $q(function (resolve, reject) {
             api.setContentType('application/json')
               .get('user/reset-password/' + id)
               .then(function (response) {
-                if (response.status === 200) {
-                  resolve({
-                    statusCode: 200,
-                    data: response.data.data,
-                  });
-                } else {
-                  reject({
-                    messages: response.data.message,
-                    status: response.statusText,
-                    statusCode: response.status,
-                  });
+                switch (response.status) {
+                  case 200:
+                    resolve({
+                      statusCode: 200,
+                      updated: response.data.data.updated,
+                    });
+                    break;
+                  default:
+                    debugger;
+                    reject({
+                      messages: response.data.message,
+                      status: response.statusText,
+                      statusCode: response.status,
+                    });
+
                 }
               });
           });

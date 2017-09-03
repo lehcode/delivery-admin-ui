@@ -31,7 +31,7 @@ angular.module('AdminApp')
         //$rootScope.redirectIfAuthenticated();
 
         $scope.$on('$viewContentLoaded', function () {
-
+          $scope.$parent.loading = false;
         });
 
         /**

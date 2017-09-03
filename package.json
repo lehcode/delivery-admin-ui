@@ -6,6 +6,7 @@
   "repository": "https://bitbucket.org/zeesofts/barq-admin-webapp",
   "license": "NA",
   "devDependencies": {
+    "angular-material-badge": "^1.0.1",
     "bower": "^1.7.7",
     "fs": "0.0.1-security",
     "fs-extra": "^3.0.0",

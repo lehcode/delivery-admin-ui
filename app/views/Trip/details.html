@@ -1,4 +1,4 @@
-<md-toolbar class="md-accent" id="tripsToolbar">
+<md-toolbar class="md-accent">
   <div class="md-toolbar-tools">
     <h3>{{ $state.current.data.pageTitle }}:</h3>&nbsp;<p ng-show="trip.id">{{ trip.id }}</p>
     <span flex></span>
@@ -13,53 +13,74 @@
             class="details-container"
             id="tripDetails"
             ng-show="trip.id">
-  <md-list>
+
+  <md-list layout-padding flex-gt-sm layout="row" layout-align="space-between start">
     <md-list-item class="md-2-line" flex="50">
       <div class="md-list-item-text">
-        <h4>Departure date</h4>
+        <h3>Departure date</h3>
         <p>{{ trip.attributes.departure_date }}</p>
       </div>
     </md-list-item>
     <md-list-item class="md-2-line" flex="50">
       <div class="md-list-item-text">
-        <h4>Expected delivery date</h4>
+        <h3>Expected delivery date</h3>
         <p>{{ trip.attributes.exp_delivery_date }}</p>
       </div>
     </md-list-item>
+  </md-list>
+
+  <md-list layout-padding flex-gt-sm layout="row" layout-align="space-between start">
     <md-list-item class="md-2-line" flex="50">
       <div class="md-list-item-text">
-        <h4>From</h4>
+        <h3>From</h3>
         <p>{{ trip.attributes.from_city[0].attributes.name }}</p>
       </div>
     </md-list-item>
     <md-list-item class="md-2-line" flex="50">
       <div class="md-list-item-text">
-        <h4>To</h4>
+        <h3>To</h3>
         <p>{{ trip.attributes.destination_city[0].attributes.name }}</p>
       </div>
     </md-list-item>
+  </md-list>
+
+  <md-list layout-padding flex-gt-sm layout="row" layout-align="space-between start">
     <md-list-item class="md-2-line" flex="50">
       <div class="md-list-item-text">
-        <h4>Carrier ID</h4>
-        <p>{{ trip.attributes.carrier[0].id }}</p>
+        <h3>Carrier ID</h3>
+        <p>{{
+          entity.attributes.carrier[0].id }}&nbsp;<a
+            ng-click="openDetailsPage($event, 'carrier', entity.attributes.carrier[0])">
+            <ng-md-icon icon="open_in_browser"></ng-md-icon>
+          </a></p>
       </div>
     </md-list-item>
     <md-list-item class="md-2-line" flex="50">
       <div class="md-list-item-text">
-        <h4>Carrier username</h4>
-        <p>{{ trip.attributes.carrier[0].attributes.username }}</p>
+        <h3>Carrier username</h3>
+        <p>{{ entity.attributes.carrier[0].attributes.username }}&nbsp;<a
+          ng-click="openDetailsPage($event, 'carrier', entity.attributes.carrier[0])">
+          <ng-md-icon icon="open_in_browser"></ng-md-icon>
+        </a>
+        </p>
+      </div>
+    </md-list-item>
+  </md-list>
+
+  <md-list layout-padding flex-gt-sm layout="row" layout-align="space-between start">
+    <md-list-item class="md-2-line" flex="50">
+      <div class="md-list-item-text">
+        <h3>Carrier phone</h3>
+        <p><a ng-click="sendMessage($event, entity.attributes.carrier[0])">{{
+          entity.attributes.carrier[0].attributes.phone }}&nbsp;
+          <ng-md-icon icon="sms"></ng-md-icon>
+        </a></p>
       </div>
     </md-list-item>
     <md-list-item class="md-2-line" flex="50">
       <div class="md-list-item-text">
-        <h4>Carrier phone</h4>
-        <p>{{ trip.attributes.carrier[0].attributes.phone }}</p>
-      </div>
-    </md-list-item>
-    <md-list-item class="md-2-line" flex="50">
-      <div class="md-list-item-text">
-        <h4>Carrier full name</h4>
-        <p>{{ trip.attributes.carrier[0].attributes.name }}</p>
+        <h3>Carrier full name</h3>
+        <p>{{ trip.attributes.carrier[0].attributes.name ? trip.attributes.carrier[0].attributes.name : 'N/A' }}</p>
       </div>
     </md-list-item>
   </md-list>

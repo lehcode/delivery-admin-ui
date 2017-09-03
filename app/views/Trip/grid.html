@@ -1,5 +1,4 @@
 <md-toolbar class="md-accent">
-
   <div class="md-toolbar-tools">
     <h1>{{ $state.current.data.pageTitle }}</h1>
     <span flex></span>
@@ -9,13 +8,14 @@
                       ng-show="processing"></md-progress-linear>
 </md-toolbar>
 
-<md-content flex layout-padding
+<md-content flex
+            layout-padding
             class="grid-container"
-            id="tripsGridContainer"
-            ng-if="gridOptions.data.length">
+            id="tripsGridContainer">
 
   <div ui-grid="gridOptions"
        ui-grid-selection
        ui-grid-resize-columns
-       class="grid"></div>
+       class="grid"
+       ng-if="gridOptions.data.length"></div>
 </md-content>

@@ -12,144 +12,98 @@ angular.module('AdminApp')
       'tripService',
       'carrierService',
       'formService',
+      '$q',
 
       function ($scope,
                 $rootScope,
                 $state,
                 tripService,
                 carrierService,
-                formService) {
-
-        /**
-         * AJAX flag
-         *
-         * @type {boolean}
-         */
-        $scope.processing = true;
+                formService,
+                $q) {
 
         console.log("Initializing EditTripController");
 
         $scope.$on('$viewContentLoaded', function () {
-          console.info('"Edit Trip" view content loaded');
+          //console.info('"Edit Trip" view content loaded');
         });
 
-        /**
-         * Carriers placeholder
-         *
-         * @type {Array}
-         */
-        $scope.carriers = [];
-
-        /**
-         * Shipments sizes placeholder
-         *
-         * @type {Array}
-         */
-        $scope.shipmentSizes = [];
-
-        /**
-         * Carrier entity placeholder
-         *
-         * @type {Object}
-         */
-        $scope.carrier = {};
-
-        /**
-         * Trip entity placeholder
-         *
-         * @type {Object}
-         */
-        $scope.trip = {};
-
-        /**
-         * Trip object placeholder
-         *
-         * @type {Object}
-         */
-        if (!!$rootScope.trip === true){
-          $rootScope.trip = null;
-        }
-
-        // $scope.$watch('carrier', function (newVal, oldVal) {
-        //   debugger;
-        //   console.log("Carrier: ", newVal);
-        // });
-				//
-        // $scope.$watch('trip', function (newVal, oldVal) {
-        //   debugger;
-        //   console.log("Trip: ", newVal);
-        // });
-				//
-        // $scope.$watch('trip.attributes.from_city.attributes.name', function (newVal, oldVal) {
-        //   console.log("from_city.name: ", newVal);
-        // });
-
-        /**
-         * Initialize controller
-         */
-        (function () {
-          if ($state.current.data.formAction === 'edit' && !$scope.trip.id) {
-            $scope.state.go('trips');
-          }
-          configure();
-          getCarriers();
-          getShipmentsProperties();
-          getCities();
-        })();
-
-        /**
-         * Configure controller
-         */
-        function configure() {
-
-          var now = new Date();
-
-          $scope.minDepartureDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
-          $scope.maxDepartureDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 2, now.getHours(), now.getMinutes());
-        }
-
-        /**
-         * Fetch Carriers list from server
-         */
-        function getCarriers() {
+        $scope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
+          
           $scope.processing = true;
-          carrierService.getList()
+
+          getCarriers()
             .then(function (data) {
               $scope.carriers = data;
               $scope.processing = false;
             });
-        };
 
-        /**
-         * Get shipment properties for select list
-         */
-        function getShipmentsProperties() {
-          $scope.processing = true;
-          formService.getShipmentSizes()
+          getShipmentsSizes()
             .then(function (data) {
               $scope.shipmentSizes = data;
-              $scope.processing = false;
 
-              // formService.getShipmentCategories()
-              //   .then(function (data) {
-              //     $scope.shipmentCategories = data;
-              //     $scope.processing = false;
-              //   });
+              getShipmentsCategories()
+                .then(function (resolve) {
+                  $scope.shipmentCategories = data;
 
-            })
-        };
+                  getCities()
+                    .then(function (data) {
+                      $scope.cities = data;
+                    });
+
+                });
+            });
+        });
+
+        /**
+         *
+         * @returns {Promise}
+         */
+        function getCarriers() {
+          return $q(function (resolve) {
+            carrierService.getList()
+              .then(function (data) {
+                resolve(data.data);
+              });
+          });
+        }
+
+        /**
+         *
+         * @returns {Promise}
+         */
+        function getShipmentsSizes() {
+          return $q(function (resolve) {
+            formService.getShipmentSizes()
+              .then(function (data) {
+                resolve(data.data);
+              });
+          });
+        }
+
+        /**
+         *
+         * @returns {Promise}
+         */
+        function getShipmentsCategories() {
+          return $q(function (resolve) {
+            formService.getShipmentCategories()
+              .then(function (data) {
+                resolve(data.data);
+              });
+          });
+        }
 
         /**
          * Get cities for Carrier current location
          */
         function getCities() {
-          $scope.processing = true;
-          formService.getCities()
-            .then(function (data) {
-              $scope.cities = data;
-              $scope.processing = false;
-            });
+          return $q(function (resolve) {
+            formService.getCities()
+              .then(function (data) {
+                resolve(data.data);
+              });
+          });
         };
 
         /**
@@ -160,58 +114,31 @@ angular.module('AdminApp')
 
           $scope.processing = true;
 
-          var fillable = [
-            'carrier_id',
-            'from_city_id',
-            'to_city_id',
-            'departure_date',
-          ];
-
           var formData = new FormData();
 
-          formData.append('carrier_id', $scope.carrier.id);
+          formData.append('carrier_id', this.carrier.id);
+          formData.append('from_city_id', parseInt(this.carrier.attributes.current_city.id));
 
-          angular.forEach($scope.carrier.attributes, function (value, key) {
-            if (key === 'current_city') {
-              formData.append('from_city_id', value.id);
-            }
-          });
+          var dt = this.departure_time.match(/^(\d{2}):(\d{2})/);
+          var departureDate = moment(this.trip.attributes.departure_date)
+              .utc().hours(dt[1]).minutes(dt[2])
+              .format("YYYY-MM-DD HH:mm") + ":00";
 
-          var departureDate = moment($scope.trip.attributes.departure_date);
-          var dt = $scope.trip.attributes.departure_time.match(/^(\d{2}):(\d{2})/);
-          departureDate.utc().hours(dt[1]);
-          departureDate.utc().minutes(dt[2]);
-          departureDate = departureDate.utc().format("YYYY-MM-DD HH:mm") + ":00";
+          formData.append('to_city_id', parseInt(this.trip.attributes.destination_city.id));
+          formData.append('departure_date', departureDate);
+          formData.append('shipment_size_id', parseInt(this.trip.attributes.shipment_size.id));
 
-          angular.forEach($scope.trip.attributes, function (value, key) {
-            if (key === 'departure_date') {
-              formData.append(key, departureDate);
-            }
+          tripService.create(formData)
+            .then(function (data) {
 
-            if (key === 'destination_city') {
-              formData.append('to_city_id', parseInt(value.id));
-            }
+              if (data.statusCode === 422){
+                formService.showServerErrors(tripForm, data.messages);
+                return false;
+              }
 
-            if (key === 'shipment_size') {
-              formData.append('shipment_size_id', value.id);
-            }
-          });
-
-          if (!!$scope.trip.id === true) {
-            tripService.update($scope.trip.id, formData)
-              .then(function (data) {
-                $rootScope.trip = data;
-                $scope.processing = false;
-                $scope.state.go('trips');
-              });
-          } else {
-            tripService.create(formData)
-              .then(function (data) {
-                $rootScope.trip = data;
-                $scope.processing = false;
-                $scope.state.go('trips');
-              });
-          }
+              $scope.processing = false;
+              $scope.state.go('trips');
+            });
 
         }
 

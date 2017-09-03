@@ -16,119 +16,73 @@ angular.module('AdminApp')
                 $q) {
 
         return {
+          /**
+           * Fetch carriers collection from server
+           *
+           * @param orderBy {String}
+           * @param order {String}
+           * @returns {Promise}
+           */
           getList: function (orderBy, order) {
             return $q(function (resolve, reject) {
 
               var uri = !!orderBy === true ? 'carriers/' + orderBy : 'carriers';
               uri += !!order === true ? '/' + order : '';
 
-              api.get('carriers')
+              api.setContentType('application/json')
+                .get('carriers')
                 .then(function (response) {
-                  if (response.status === 200) {
-                    resolve(response.data.data);
-                  } else {
-                    console.error(response);
-                  }
+                  api.processResponse(response, resolve);
                 });
             });
           },
           /**
+           * Fetch single Carrier entity
            *
-           *
-           * @param id
-           * @returns {*}
+           * @param id {String}
+           * @returns {Promise}
            */
           get: function (id) {
             return $q(function (resolve, reject) {
               api.get('carriers/' + id)
                 .then(function (response) {
-                  if (response.status === 200) {
-                    resolve(response.data.data[0]);
-                  } else {
-                    console.error(response);
-                  }
+                  api.processResponse(response, resolve);
                 });
             });
           },
           /**
-           * XHR call to add new Carrier account
+           * Add new Carrier account
            *
            * @param formData
-           * @returns {*}
+           * @returns {Promise}
            */
           create: function (formData) {
             return $q(function (resolve, reject) {
               api.setContentType(undefined)
                 .post('carriers/create', formData)
                 .then(function (response) {
-                  if (response.status === 200) {
-                    resolve({
-                      statusCode: 200,
-                      data: response.data.data[0],
-                    });
-                  } else {
-                    resolve({
-                      messages: response.data.message,
-                      status: response.statusText,
-                      statusCode: response.status,
-                    });
-                  }
+                  api.processResponse(response, resolve);
                 });
             });
 
           },
           /**
-           * XHR call to update existing Carrier account properties
+           * Update existing Carrier account properties
            *
            * @param id {String}
            * @param formData {Object}
-           * @returns {*}
+           * @returns {Promise}
            */
           update: function (id, formData) {
             return $q(function (resolve, reject) {
-
               formData.append('_method', "PUT");
-
               api.setContentType(undefined)
                 .post('carriers/update/' + id, formData)
                 .then(function (response) {
-                  if (response.status === 200) {
-                    resolve({
-                      statusCode: 200,
-                      data: response.data.data[0],
-                    });
-                  } else {
-                    resolve({
-                      messages: response.data.message,
-                      status: response.statusText,
-                      statusCode: response.status,
-                    });
-                  }
+                  api.processResponse(response, resolve);
                 });
             });
           },
-          toggleAccountState: function (id, enabled) {
-            return $q(function (resolve, reject) {
-
-              var fd = new FormData();
-              fd.append('enabled', enabled);
-
-              api.post('carriers/toggle/' + id, {enabled: enabled})
-                .then(function (data) {
-                  switch (data.status) {
-                    case 200:
-                      resolve(data.data[0]);
-                      break;
-                    default:
-                      reject({
-                        messages: response.data.message,
-                        status: response.statusText,
-                        statusCode: response.status,
-                      })
-                  }
-                })
-            });
-          }
         };
       }]
   );

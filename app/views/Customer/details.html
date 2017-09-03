@@ -1,0 +1,89 @@
+<md-toolbar class="md-accent">
+  <div class="md-toolbar-tools">
+    <h3>{{ $state.current.data.pageTitle }}:</h3>&nbsp;<p ng-show="customer.id">{{ customer.id }}</p>
+    <span flex></span>
+    <ng-include src="'tpl/widgets/fab/details-toolbar.html'"></ng-include>
+  </div>
+  <md-progress-linear md-mode="indeterminate"
+                      ng-show="processing"></md-progress-linear>
+</md-toolbar>
+
+<md-content flex
+            layout-padding
+            class="details-container"
+            id="carrierDetails"
+            ng-show="entity.id">
+
+  <md-list flex-gt-sm layout-padding layout="row" layout-align="start start">
+    <md-list-item class="md-2-line" flex="25">
+      <img ng-src="{{ entity.attributes.photo }}"
+           class="md-avatar"
+           alt="{{ entity.attributes.username }} photo"
+           ng-show="entity.attributes.photo"/>
+      <i class="material-icons md-avatar" ng-hide="entity.attributes.photo">person</i>
+      <div class="md-list-item-text">
+        <h3>Username</h3>
+        <p>{{ entity.attributes.username }}</p>
+      </div>
+    </md-list-item>
+    <md-list-item class="md-2-line" flex="25">
+      <div class="md-list-item-text">
+        <h3>Email</h3>
+        <p>{{ entity.attributes.email }}&nbsp;<a ng-click="openEmailDialog()">
+          <ng-md-icon icon="mail_outline"></ng-md-icon>
+        </a></p>
+      </div>
+    </md-list-item>
+    <md-list-item class="md-2-line" flex="25" ng-if="entity.attributes.phone">
+      <div class="md-list-item-text">
+        <h3>Phone</h3>
+        <p>{{ entity.attributes.phone }}&nbsp;<a ng-click="sendSMSDialog()">
+          <ng-md-icon icon="contact_phone"></ng-md-icon>
+        </a></p>
+      </div>
+    </md-list-item>
+    <md-list-item class="md-2-line" flex="25" ng-if="entity.attributes.phone">
+      <div class="md-list-item-text">
+        <h3>Registered</h3>
+        <p>{{ entity.attributes.created_at }}</p>
+      </div>
+    </md-list-item>
+  </md-list>
+
+  <md-list flex-gt-sm layout-padding layout="row" layout-align="start start">
+    <md-list-item class="md-2-line" flex="25">
+      <div class="md-list-item-text">
+        <h3>Orders</h3>
+        <p class="count accent">{{ entity.attributes.orders }}</p>
+      </div>
+    </md-list-item>
+    <md-list-item class="md-2-line" flex="25">
+      <div class="md-list-item-text">
+        <h3>Rating</h3>
+        <p class="count accent">{{ entity.attributes.rating }} <span style="font-size: small;">of 10</span></p>
+      </div>
+    </md-list-item>
+  </md-list>
+
+  <md-list flex-gt-sm layout-padding layout="row" layout-align="start start">
+    <md-list-item class="md-2-line" flex="25">
+      <div class="md-list-item-text">
+        <h3>Payment type</h3>
+        <p>{{ paymentType }}</p>
+      </div>
+    </md-list-item>
+    <md-list-item class="md-2-line" flex="25">
+      <div class="md-list-item-text">
+        <h3>Last login</h3>
+        <p>{{ lastLogin }}</p>
+      </div>
+    </md-list-item>
+  </md-list>
+
+  <md-button ng-click="goEdit()"
+             class="md-primary"
+             type="button">Edit Customer
+  </md-button>
+
+</md-content>
+

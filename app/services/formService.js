@@ -29,18 +29,18 @@ angular.module('AdminApp')
 
           var result;
 
-          result = msg.match(/^The ([\w\s]+) field (is required)\.$/);
+          result = msg.match(/^The ([\w\s]+) field (is required)/);
 
           if (!!result === false) {
-            result = msg.match(/^The selected ([\w\s]+) (is invalid)\.$/);
+            result = msg.match(/^The selected ([\w\s]+) (is invalid)/);
           }
 
           if (!!result === false) {
-            result = msg.match(/^The ([\w\s]+) has already been (taken)\.$/);
+            result = msg.match(/^The ([\w\s]+) has already been (taken)/);
           }
 
           if (!!result === false) {
-            result = msg.match(/^The ([\w\s]+) (must be at least) 8 characters\.$/);
+            result = msg.match(/^The ([\w\s]+) (must be at least) \d+ characters/);
           }
 
           if (!!result === false) {
@@ -68,18 +68,18 @@ angular.module('AdminApp')
          * @param form {Object}
          * @param messages {Array}
          */
-        showServerErrors: function (form, messages) {
+        showServerErrors: function (/* Object */ form, /* Array */ messages) {
 
           var errors = [];
           var field;
 
-          messages.forEach(function (msg, idx) {
+          messages.forEach(function (msg) {
             field = this.resolveFieldFromServerMessage(msg);
             if (field === false) {
-              throw new Error('Unknown server validation error "' + msg + '"');
+              console.error('Unknown server validation error "' + msg + '"');
             }
             errors.push(Object.assign(field, {text: msg}));
-          });
+          }.bind(this));
 
           errors.forEach(function (err) {
 
@@ -108,11 +108,7 @@ angular.module('AdminApp')
           return $q(function (resolve, reject) {
             api.get('shipment/sizes')
               .then(function (response) {
-                if (response.status === 200) {
-                  resolve(response.data);
-                } else {
-                  console.error(response);
-                }
+               api.processResponse(response, resolve);
               });
           });
         },
@@ -120,11 +116,7 @@ angular.module('AdminApp')
           return $q(function (resolve, reject) {
             api.get('shipment/categories')
               .then(function (response) {
-                if (response.status === 200) {
-                  resolve(response.data);
-                } else {
-                  console.error(response);
-                }
+                api.processResponse(response, resolve);
               });
           });
         },
@@ -132,11 +124,15 @@ angular.module('AdminApp')
           return $q(function (resolve, reject) {
             api.get('cities')
               .then(function (response) {
-                if (response.status === 200) {
-                  resolve(response.data.data);
-                } else {
-                  console.error(response);
-                }
+                api.processResponse(response, resolve);
+              });
+          });
+        },
+        checkPhoneExistence: function(phone){
+          return $q(function(resolve, reject){
+            api.get('user/phone/exists/' + phone)
+              .then(function (response) {
+                api.processResponse(response, resolve);
               });
           });
         }

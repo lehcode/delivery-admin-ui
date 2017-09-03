@@ -20,72 +20,38 @@ angular.module('AdminApp')
                 carrierService,
                 localStorageService) {
 
-        /**
-         * AJAX flag
-         *
-         * @type {boolean}
-         */
-        $scope.processing = false;
-
         console.log("Initializing TripDetailsController");
 
         $scope.$on('$viewContentLoaded', function () {
           console.info('"Trip Details" view content loaded');
         });
 
-        /**
-         * Carriers placeholder
-         *
-         * @type {Array}
-         */
-        $scope.carriers = [];
+        $scope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
 
-        /**
-         * Shipments sizes placeholder
-         *
-         * @type {Array}
-         */
-        $scope.shipmentSizes = [];
+          $scope.processing = false;
 
-        /**
-         * Carrier entity placeholder
-         *
-         * @type {Object}
-         */
-        $scope.carrier = {};
+          if (!!$rootScope.trip === true) {
+            $scope.trip = !!$rootScope.trip === true ? $rootScope.trip : {};
+          } else {
+            $scope.trip = localStorageService.get('trip');
+          }
 
-        /**
-         * Trip entity placeholder
-         *
-         * @type {Object}
-         */
-        $scope.trip = {};
+          if (!$scope.trip.id){
+            $scope.state.go('trips');
+          }
 
-        /**
-         * Trip object placeholder
-         *
-         * @type {Object}
-         */
-        if (!!$rootScope.trip === true) {
-          $scope.trip = !!$rootScope.trip === true ? $rootScope.trip : {};
-        } else {
-          $scope.trip = localStorageService.get('trip');
-        }
+          $scope.entity = $scope.trip;
 
-        // $scope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
-        //   debugger;
-        //   $scope.trip = null;
-        // });
+          $scope.trip.attributes.departure_date = moment($scope.trip.attributes.departure_date).utc()
+            .format("YYYY-MM-DD HH:mm")
+          $scope.trip.attributes.exp_delivery_date = moment($scope.trip.attributes.departure_date).utc()
+            .minutes($scope.trip.attributes.approx_time)
+            .format("YYYY-MM-DD HH:mm");
 
-        if (!$scope.trip.id){
-          $scope.state.go('trips');
-        }
+          $scope.$watch('trip', function (newVal, oldVal) {
+            console.debug("Trip: ", newVal);
+          });
 
-        $scope.trip.attributes.departure_date = moment($scope.trip.attributes.departure_date).format("YYYY-MM-DD HH:mm")
-        $scope.trip.attributes.exp_delivery_date = moment($scope.trip.attributes.departure_date).minutes($scope.trip.attributes.approx_time).format("YYYY-MM-DD HH:mm");
-
-        $scope.$watch('trip', function (newVal, oldVal) {
-          console.debug("Trip: ", newVal);
         });
 
       }]

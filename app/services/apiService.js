@@ -58,19 +58,19 @@ angular.module('AdminApp')
           return $q(function (resolve, reject) {
             $http(params)
               .then(function (success) {
-                console.debug(success);
-                resolve(success);
-              },
-              function (error) {
-                switch (error.status) {
-                  case 401:
-                  case 403:
-                    $location.path('/login');
-                    localStorage.setItem('token', false);
-                    break;
-                }
-                resolve(error);
-              });
+                  console.debug(success);
+                  resolve(success);
+                },
+                function (error) {
+                  switch (error.status) {
+                    case 401:
+                    case 403:
+                      $location.path('/login');
+                      localStorage.setItem('token', false);
+                      break;
+                  }
+                  resolve(error);
+                });
           });
         };
 
@@ -85,7 +85,7 @@ angular.module('AdminApp')
           return $q(function (resolve, reject) {
             call('GET', url)
               .then(function (response) {
-                switch (response.status){
+                switch (response.status) {
                   case 200:
                     resolve(response);
                     break;
@@ -108,8 +108,9 @@ angular.module('AdminApp')
           return $q(function (resolve, reject) {
             call('POST', url, data)
               .then(function (response) {
-                switch (response.status){
+                switch (response.status) {
                   case 200:
+                  case 422:
                     resolve(response);
                     break;
                   default:
@@ -145,10 +146,59 @@ angular.module('AdminApp')
          * @param value
          * @returns {api}
          */
-        api.setContentType = function(value){
+        api.setContentType = function (value) {
           httpHeaders["Content-Type"] = value;
           return this;
         }
+
+        /**
+         * Process response by code
+         *
+         * @param response
+         * @param resolve
+         * @returns {Object}
+         */
+        api.processResponse = function (response, resolve) {
+          switch (response.status) {
+            case 200:
+              resolve({
+                statusCode: response.status,
+                data: response.data.data
+              });
+              break;
+            case 422:
+              resolve({
+                messages: response.data.message,
+                status: response.statusText,
+                statusCode: response.status,
+              });
+              break;
+            default:
+              console.error({
+                messages: response.data.message,
+                status: response.statusText,
+                statusCode: response.status,
+              });
+          }
+        };
+
+        /**
+         * Toggle Carrier account enabled/disabled
+         *
+         * @param id {String}
+         * @param value {Number}
+         * @param prefix {String}
+         * @returns {Promise}
+         */
+        api.toggleAccountState = function (id, value, prefix) {
+          return $q(function (resolve, reject) {
+            api.setContentType('application/json')
+              .post(prefix + '/toggle/' + id, {is_enabled: value})
+              .then(function (response) {
+                api.processResponse(response, resolve);
+              })
+          });
+        };
 
         return api;
 

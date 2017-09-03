@@ -32,6 +32,13 @@ AdminApp.factory('settings', [
       apiVersion: 'v1',
       appVersion: '0.0.1',
       apiRoot: null,
+      defaultCountry: {
+        short_name: 'Saudi Arabia',
+        db_id: 195,
+        alpha2_code: 'sa',
+        alpha3_code: 'sau',
+        numeric_code: 682
+      },
       grid: {
         defaults: {
           data: null,
@@ -109,6 +116,12 @@ AdminApp.config([
       .setStorageType('sessionStorage')
       .setDefaultToCookie(false)
       .setNotify(true, true);
+
+    // uiGmapGoogleMapApiProvider.configure({
+    //   key: 'AIzaSyDQCGZb0TUJaUbzsOko_SMaBVcIYBmp-0U',
+    //   v: '3.20',
+    //   libraries: 'weather,geometry,visualization'
+    // });
 
   }]);
 

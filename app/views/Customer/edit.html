@@ -1,0 +1,19 @@
+<md-toolbar class="md-accent" id="tripsToolbar">
+  <div class="md-toolbar-tools">
+    <h3>{{ $state.current.data.pageTitle }}</h3>&nbsp;<p ng-show="entity.id">{{ entity.id }}</p>
+    <span flex></span>
+    <ng-include ng-if="$state.current.data.action === 'edit' " src="'tpl/widgets/fab/details-toolbar.html'"></ng-include>
+    <ng-include ng-if="$state.current.data.action === 'create' " src="'tpl/widgets/fab/create-toolbar.html'"></ng-include>
+  </div>
+  <md-progress-linear md-mode="indeterminate"
+                      ng-show="processing"></md-progress-linear>
+</md-toolbar>
+
+<md-content flex layout-padding
+            class="details-container"
+            id="customerFormContainer"
+            ng-show="entity.id || !editing">
+
+  <ng-include src="'tpl/forms/customer.html'"></ng-include>
+
+</md-content>

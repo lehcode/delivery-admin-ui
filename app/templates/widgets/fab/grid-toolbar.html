@@ -3,7 +3,7 @@
                 md-direction="left">
 
   <md-fab-trigger class="align-with-text">
-    <md-button aria-label="Trip Menu"
+    <md-button aria-label="{{ $state.current.data.entityName }}&nbsp;Menu"
                class="md-fab md-primary">
       <md-icon class="material-icons md-light md-24">menu</md-icon>
     </md-button>
@@ -13,9 +13,12 @@
     <md-fab-actions class="md-toolbar-tools">
       <md-button
         class="md-icon-button"
-        aria-label="Tools"
-        ui-sref="trip/create">
+        aria-label="Create new&nbsp;{{ $state.current.data.entityName }}"
+        ui-sref="{{ $state.current.data.createRoute }}">
         <ng-md-icon icon="add"></ng-md-icon>
+      </md-button>
+      <md-button back-button class="md-icon-button" aria-label="Back">
+        <ng-md-icon icon="keyboard_arrow_left"></ng-md-icon>
       </md-button>
 
       <!--<md-button class="md-icon-button"
