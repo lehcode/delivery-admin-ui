@@ -1,0 +1,174 @@
+<div class="form-body" layout="column">
+  <!--
+    Email*
+    Phone number
+    Full name*
+    Username*
+    Password*
+    Password confirmation
+    Home address*
+    Personal photo*
+    Birthday date
+    Nationality
+    National ID/passport number*
+    National ID/Passport scan*
+  -->
+  <md-list layout="row">
+    <md-list-item flex="50" flex-gt-sm>
+      <md-input-container class="md-block">
+        <label class="checkbox-label">Email</label>
+        <input type="email"
+               data-ng-model="carrier.attributes.email"
+               aria-label="Carrier email"
+               name="email"
+               required>
+      </md-input-container>
+    </md-list-item>
+    <md-list-item flex="50" flex-gt-sm>
+      <md-input-container class="md-block">
+        <label class="checkbox-label">Phone number</label>
+        <input type="text"
+               data-ng-model="carrier.attributes.phone"
+               aria-label="Carrier phone number"
+               name="phone">
+      </md-input-container>
+    </md-list-item>
+  </md-list>
+
+  <md-list layout="row">
+    <md-list-item flex="100" flex-gt-sm>
+      <md-input-container class="md-block">
+        <label class="checkbox-label">Full name</label>
+        <input type="text"
+               data-ng-model="carrier.attributes.name"
+               aria-label="Carrier full name"
+               name="name"
+               required>
+      </md-input-container>
+    </md-list-item>
+    <md-list-item flex="100" flex-gt-sm>
+      <md-input-container class="md-block">
+        <label class="checkbox-label">Username</label>
+        <input type="text"
+               data-ng-model="carrier.attributes.username"
+               aria-label="Carrier username"
+               name="username"
+               required>
+      </md-input-container>
+    </md-list-item>
+  </md-list>
+
+  <md-list layout="row">
+    <md-list-item flex="50" flex-gt-sm>
+      <md-input-container class="md-block">
+        <label class="checkbox-label">Password</label>
+        <input type="password"
+               data-ng-model="carrier.attributes.password"
+               aria-label="Password"
+               name="password"
+               required>
+      </md-input-container>
+    </md-list-item>
+    <md-list-item flex="50" flex-gt-sm>
+      <md-input-container class="md-block">
+        <label class="checkbox-label">Password confirmation</label>
+        <input type="password"
+               data-ng-model="carrier.attributes.password_confirmation"
+               aria-label="Password confirmation"
+               name="email"
+               required>
+      </md-input-container>
+    </md-list-item>
+  </md-list>
+
+  <md-list layout="row">
+    <md-list-item flex="50" flex-gt-sm>
+      <md-input-container class="md-block">
+        <label class="checkbox-label">Home address</label>
+        <input type="text"
+               data-ng-model="carrier.attributes.default_address"
+               aria-label="Home address"
+               name="address"
+               required
+               style="width:100%">
+      </md-input-container>
+    </md-list-item>
+    <md-list-item flex="50" flex-gt-sm>
+      <md-input-container>
+        <label>Birthday Date</label>
+        <md-datepicker data-ng-model="carrier.attributes.birthday.date"
+                       name="birthday"
+                       md-min-date="minBirthdayDate"
+                       md-max-date="maxBirthdayDate">
+        </md-datepicker>
+        <div ng-messages="createCarrierForm.birthday_date.$error">
+          <div ng-message="valid">The entered value is not a date!</div>
+          <div ng-message="required">This date is required!</div>
+          <div ng-message="mindate">Date is too early!</div>
+          <div ng-message="maxdate">Date is too late!</div>
+        </div>
+      </md-input-container>
+    </md-list-item>
+  </md-list>
+
+  <md-list layout="row">
+    <md-list-item flex="50" flex-gt-sm layout="column">
+      <md-input-container flex
+                          class="md-block"
+                          id="idScanInputContainer">
+        <label for="idScanUpload"
+               class="md-button md-raised md-primary">Upload ID scan</label>
+        <input type="file"
+               id="idScanUpload"
+               data-file-model="carrier.attributes.id_scan"
+               style="opacity: 0;"
+               class="file-input"
+               required/>
+      </md-input-container>
+      <div flex id="idScanImageContainer" class="form-image">
+        <img src="{{ carrier.attributes.id_scan }}" alt="National ID scan"/>
+      </div>
+    </md-list-item>
+    <md-list-item flex="50" flex-gt-sm layout="column">
+      <md-input-container flex
+                          class="md-block"
+                          id="userPhotoInputContainer">
+        <label for="idScanUpload"
+               class="md-button md-raised md-primary">Upload profile photo</label>
+        <input type="file"
+               id="userPhotoUpload"
+               data-file-model="carrier.attributes.photo"
+               style="opacity: 0;"
+               class="file-input"
+               required/>
+      </md-input-container>
+      <div flex id="userPhotoImageContainer" class="form-image">
+        <img src="{{ carrier.attributes.photo }}" alt="Profile photo"/>
+      </div>
+    </md-list-item>
+  </md-list>
+
+  <md-list layout="row">
+    <md-list-item flex flex-gt-sm>
+      <md-input-container class="md-block">
+        <label class="checkbox-label">Nationality</label>
+        <input type="text"
+               data-ng-model="carrier.attributes.nationality"
+               aria-label="Carrier's nationality"
+               name="nationality"
+               required>
+      </md-input-container>
+    </md-list-item>
+    <md-list-item flex flex-gt-sm>
+      <md-input-container class="md-block">
+        <label class="checkbox-label">National ID #</label>
+        <input type="text"
+               data-ng-model="carrier.attributes.id_number"
+               aria-label="Carrier's national ID number"
+               name="id_number"
+               required>
+      </md-input-container>
+    </md-list-item>
+  </md-list>
+
+</div>

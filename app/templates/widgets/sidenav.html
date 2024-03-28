@@ -1,0 +1,25 @@
+<md-sidenav class="md-sidenav-left md-whiteframe-z2 scroll-body"
+            slimscroll="{height: '100%'}"
+            md-component-id="left"
+            md-is-locked-open="$mdMedia('gt-sm')">
+  <div hide show-gt-sm>
+    <md-list layout="column">
+      <md-list-item
+        class="md-2-line"
+        ng-repeat="item in navigation"
+        role="link"
+        md-ink-ripple>
+        <md-icon md-svg-icon="{{item.icon}}" aria-label="{{item.title}}"></md-icon>
+        <div class="md-list-item-text">
+          <a class="md-body-2" ui-sref="{{ item.sref }}">{{item.title}}</a>
+        </div>
+      </md-list-item>
+
+    </md-list>
+  </div>
+
+</md-sidenav>
+
+
+
+

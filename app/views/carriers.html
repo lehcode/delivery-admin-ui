@@ -1,0 +1,62 @@
+<div id="carriers">
+
+  <md-toolbar class="md-accent" id="carriersToolbar">
+
+    <div class="md-toolbar-tools">
+      <h1>{{ $state.current.data.pageTitle }}</h1>
+      <span flex></span>
+      <md-button
+        class="md-fab md-primary"
+        aria-label="Tools"
+        ng-click="openFormDialog('create')">
+        <ng-md-icon icon="add"></ng-md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-content flex layout-padding
+              class="grid-container"
+              id="carriersGridContainer">
+
+    <div ui-grid="gridOptions"
+         ui-grid-selection
+         ui-grid-resize-columns
+         ng-if="gridOptions.data"
+         class="grid"></div>
+  </md-content>
+
+</div>
+
+<div style="visibility: hidden">
+  <div class="md-dialog-container" id="carrierDialogContainer">
+    <md-dialog aria-label="{{ dialogAction }} Carrier account dialog" layout-padding>
+      <md-dialog-title>
+        <h3>{{ dialogAction }} Carrier</h3>
+        <p ng-if="carrier.id">{{ carrier.id }}</p>
+      </md-dialog-title>
+
+      <md-list flex ng-show="formErrors.length">
+        <md-subheader class="md-no-sticky md-warn md-accent">Validation errors</md-subheader>
+        <md-list-item class="md-1-line" ng-repeat="err in formErrors">
+          <p class=""><em>{{ err }}</em></p>
+        </md-list-item>
+      </md-list>
+
+      <md-dialog-content layout="column" class="form">
+
+        <form name="createCarrierForm" role="form">
+          <ng-include src="'tpl/forms/carrier.html'"></ng-include>
+        </form>
+
+      </md-dialog-content>
+      <md-dialog-actions>
+        <md-button ng-click="saveCarrier($event)"
+                   class="md-primary"
+                   ng-disabled="ajaxLoading"
+                   type="submit">Save
+        </md-button>
+        <md-button ng-click="closeFormDialog()">Close</md-button>
+      </md-dialog-actions>
+    </md-dialog>
+  </div>
+</div>

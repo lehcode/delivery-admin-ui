@@ -1,0 +1,50 @@
+<div layout="row" layout-align="center center">
+  <div layout="column">
+    <p>AdminApp, v<span app-version></span></p>
+    <form name="loginForm" id="loginForm" flex layout="column">
+
+      <md-input-container>
+        <label>Username</label>
+        <input type="text"
+               ng-model="user.username"
+               name="username"
+               required
+               md-minlength="5">
+        <!--<div ng-messages="loginForm.user.email.$error">
+          <div ng-message="required">Email is required!</div>
+          <div ng-message="min-length">Email is too short!</div>
+        </div>-->
+      </md-input-container>
+
+      <!--<md-input-container>
+        <label>Phone</label>
+        <input type="text"
+               ng-model="user.phone"
+               name="phone"
+               required>
+        &lt;!&ndash;<div ng-messages="loginForm.user.phone.$error">
+          <div ng-message="required">Phone is required!</div>
+        </div>&ndash;&gt;
+      </md-input-container>-->
+
+      <md-input-container>
+        <label>Password</label>
+        <input type="password"
+               ng-model="user.password"
+               name="password"
+               required>
+        <!--<div ng-messages="loginForm.user.password.$error">
+          <div ng-message="required">Password is required!</div>
+        </div>-->
+      </md-input-container>
+
+      <md-button class="md-primary md-accent"
+                 aria-label="Login"
+                 ng-click="doLogin()">
+        Login
+      </md-button>
+
+    </form>
+  </div>
+
+</div>
