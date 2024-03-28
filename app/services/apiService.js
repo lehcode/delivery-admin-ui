@@ -2,10 +2,8 @@
  * Created by Antony Repin on 02.05.2017.
  */
 
-'use strict';
-
 angular.module('AdminApp')
-  .factory('api',
+  .factory('ApiService',
     [
       '$rootScope',
       '$http',
@@ -15,12 +13,12 @@ angular.module('AdminApp')
       'localStorageService',
 
       function ($rootScope,
-                $http,
-                settings,
-                $location,
-                $q,
-                localStorageService) {
-
+        $http,
+        settings,
+        $location,
+        $q,
+        localStorageService) {
+        'use strict';
         /**
          * Exposed variable
          * @type {{}}
@@ -58,9 +56,9 @@ angular.module('AdminApp')
           return $q(function (resolve, reject) {
             $http(params)
               .then(function (success) {
-                  console.debug(success);
-                  resolve(success);
-                },
+                console.debug(success);
+                resolve(success);
+              },
                 function (error) {
                   switch (error.status) {
                     case 401:
@@ -193,7 +191,7 @@ angular.module('AdminApp')
         api.toggleAccountState = function (id, value, prefix) {
           return $q(function (resolve, reject) {
             api.setContentType('application/json')
-              .post(prefix + '/toggle/' + id, {is_enabled: value})
+              .post(prefix + '/toggle/' + id, { is_enabled: value })
               .then(function (response) {
                 api.processResponse(response, resolve);
               })
@@ -204,4 +202,4 @@ angular.module('AdminApp')
 
       }
     ])
-;
+  ;

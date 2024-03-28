@@ -19,7 +19,7 @@ angular.module('AdminApp')
           var roles = ['admin', 'support', 'accountant'];
 
           for (var i in roles) {
-            if (roles[i] == modelValue.toLowerCase()) return true;
+            if (roles[i] == modelValue.toLowerCase()) return true
           }
 
           return false;
