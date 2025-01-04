@@ -1,27 +1,27 @@
 'use strict';
 
-var gulp = require("gulp");
-var concat = require("gulp-concat");
-var util = require('gulp-util');
-var env = require('gulp-env');
-var sourcemaps = require('gulp-sourcemaps');
-var debug = require('gulp-debug');
-var fs = require('fs');
-var fse = require('fs-extra')
-var sass = require('gulp-sass');
-var strip = require('strip-comments');
-var stripHtml = require('gulp-remove-html-comments');
-var templateCache = require('gulp-angular-templatecache');
-var autoprefixer = require('gulp-autoprefixer');
+const gulp = require("gulp");
+const concat = require("gulp-concat");
+const util = require('gulp-util');
+const env = require('gulp-env');
+const sourcemaps = require('gulp-sourcemaps');
+const debug = require('gulp-debug');
+const fs = require('fs');
+const fse = require('fs-extra')
+const sass = require('gulp-sass');
+const strip = require('strip-comments');
+const stripHtml = require('gulp-remove-html-comments');
+const templateCache = require('gulp-angular-templatecache');
+const autoprefixer = require('gulp-autoprefixer');
 
-var config = {
+const config = {
   appDir: './app',
   production: !!util.env.production,
   pub: './public',
   cssDest: "/css",
   jsDest: "/js",
   assetsDir: "./assets",
-  bowerDir: "./bower_components",
+  // bowerDir: "./bower_components",
 };
 
 /*
@@ -36,7 +36,7 @@ gulp.task('default', ['build'], function () {
  */
 gulp.task('build', function () {
 
-  var paths = [
+  const paths = [
     process.cwd() + '/' + config.pub + "/css",
     process.cwd() + '/' + config.pub + "/js",
     process.cwd() + '/' + config.pub + "/views",
@@ -117,7 +117,7 @@ gulp.task('copy:ng:icons', function () {
  */
 gulp.task('concat:js:vendor', function () {
 
-  var vendorScripts = [
+  const vendorScripts = [
     config.bowerDir + '/angular/angular.js',
     config.bowerDir + '/angular-loader/angular-loader.js',
     config.bowerDir + '/angular-mocks/angular-mocks.js',
@@ -154,7 +154,7 @@ gulp.task('concat:js:vendor', function () {
  */
 gulp.task("concat:css:vendor", function () {
 
-  var files = [
+  const files = [
     config.bowerDir + '/angular-material/angular-material.css',
     config.bowerDir + '/angular-material/layouts/angular-material.layouts.css',
     config.bowerDir + '/angular-material/layouts/angular-material.layout-attributes.css',
@@ -185,7 +185,7 @@ gulp.task("concat:css:vendor", function () {
  */
 gulp.task('sass:vendor', function () {
 
-  var styles = [
+  const styles = [
     // config.bowerDir + '/angular-material/angular-material.scss',
     // config.bowerDir + '/angular-material/layouts/angular-material.layouts.scss',
     // config.bowerDir + '/angular-material/layouts/angular-material.layout-attributes.scss',
@@ -210,7 +210,7 @@ gulp.task('sass:vendor', function () {
  */
 gulp.task('concat:js:app', function () {
 
-  var appJs = [
+  const appJs = [
     config.appDir + "/app.js",
     config.appDir + "/state.js",
     config.appDir + "/config.js",
@@ -225,7 +225,7 @@ gulp.task('concat:js:app', function () {
     config.appDir + "/widgets/**/*.js",
   ];
 
-  var path = process.cwd() + "/" + config.pub + config.jsDest;
+  const path = process.cwd() + "/" + config.pub + config.jsDest;
   console.log("concat:js:app: Writing to '%s'", path);
 
   return gulp.src(appJs)
@@ -241,12 +241,12 @@ gulp.task('concat:js:app', function () {
  */
 gulp.task('sass:app', function () {
 
-  var styles = [
+  const styles = [
     config.assetsDir + '/sass/*.scss',
     '!' + config.assetsDir + '/sass/bootstrap.scss',
   ];
 
-  var path = process.cwd() + "/" + config.pub + config.cssDest;
+  const path = process.cwd() + "/" + config.pub + config.cssDest;
   console.log("sass:app: Writing to '%s'", path);
 
   return gulp.src(styles)
@@ -292,7 +292,7 @@ gulp.watch([
   gulp.start('copy:ng:templates');
 });
 
-var checkDestination = function (path) {
+const checkDestination = function (path) {
   if (!fs.existsSync(path)) {
     console.error("Destination '%s' does not exist!", path);
     return false;

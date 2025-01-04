@@ -7,3 +7,4 @@ tmp
 .idea
 !public/index.html
 public/*
+npm-debug.log
