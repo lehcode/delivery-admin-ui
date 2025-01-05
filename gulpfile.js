@@ -1,18 +1,18 @@
 'use strict';
 
 const gulp = require("gulp");
-const concat = require("./node_modules/gulp-concat/index.js");
-const util = require('./node_modules/gulp-util/index.js');
-const env = require('./node_modules/gulp-env/index.js');
-const sourcemaps = require('./node_modules/gulp-sourcemaps/index.js');
-const debug = require('./node_modules/gulp-debug/index.js');
+const concat = require("gulp-concat");
+const util = require('gulp-util');
+const env = require('gulp-env');
+const sourcemaps = require('gulp-sourcemaps');
+const debug = require('gulp-debug');
 const fs = require('fs');
-const fse = require('./node_modules/fs-extra/lib/index.js')
-const sass = require('./node_modules/gulp-sass/index.js');
-const strip = require('./node_modules/strip-comments/index.js');
-const stripHtml = require('./node_modules/gulp-remove-html-comments/index.js');
-const templateCache = require('./node_modules/gulp-angular-templatecache/index.js');
-const autoprefixer = require('./node_modules/gulp-autoprefixer/index.js');
+const fse = require('fs-extra')
+const sass = require('gulp-sass');
+const strip = require('strip-comments');
+const stripHtml = require('gulp-remove-html-comments');
+const templateCache = require('gulp-angular-templatecache');
+const autoprefixer = require('gulp-autoprefixer');
 
 const config = {
   appDir: './app',
