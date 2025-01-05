@@ -1,12 +1,13 @@
 'use strict';
 
-// Declare app level module which depends on views, and components
-/***
- App Main Script
- ***/
-
-/* Metronic App */
-var AdminApp = angular.module("AdminApp", [
+/**
+ * This code defines an AngularJS module named "AdminApp" and includes various dependencies such as routing,
+ * sanitization, resource handling, material design components, and grid functionalities. The module is set
+ * up to facilitate a robust admin interface with features for editing, selection, and expandable grids,
+ * along with support for local storage and file input.
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const AdminApp = angular.module("AdminApp", [
   "ui.router",
   "ngSanitize",
   'ngResource',
@@ -25,7 +26,5 @@ var AdminApp = angular.module("AdminApp", [
   'LocalStorageModule',
   'ui.slimscroll',
   'lfNgMdFileInput'
-  //'kinvey',
-  //'ui-bootstrap',
 ]);
 

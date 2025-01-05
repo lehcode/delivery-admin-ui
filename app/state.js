@@ -11,17 +11,10 @@ AdminApp.config([
   function ($stateProvider,
             $urlRouterProvider) {
 
-    /**
-     * Redirect on any unmatched url
-     */
     $urlRouterProvider.when("/", "/login");
     $urlRouterProvider.otherwise("/under-construction");
 
-    /**
-     * API configuration
-     * @type {}
-     */
-    var pages = {
+    const pages = {
       "login": {
         url: "/login",
         controller: "LoginController",

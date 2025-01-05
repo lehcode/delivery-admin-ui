@@ -28,30 +28,12 @@ angular.module('AdminApp')
 
         console.log("Initializing LoginController");
 
-        //$rootScope.redirectIfAuthenticated();
-
         $scope.$on('$viewContentLoaded', function () {
-
+          console.info("Login view content loaded");
         });
 
-        /**
-         * User object container
-         * @type {{}}
-         */
         $scope.user = {};
-
-        /**
-         * Authorized user container
-         * @type {{}}
-         */
         $scope.authUser = null;
-
-        // (function(){
-        //   var token = localStorageService.get('token');
-        //   if (!!token === true){
-        //     $location.path('/dashboard');
-        //   }
-        // })();
 
         /**
          * Process user login
@@ -59,7 +41,7 @@ angular.module('AdminApp')
         $scope.doLogin = function () {
 
           if (this.loginForm.$valid) {
-            var req = {
+            const req = {
               method: 'POST',
               url: settings.apiHost + '/' + $scope.apiRoot + '/authenticate',
               data: $scope.user,
@@ -94,7 +76,7 @@ angular.module('AdminApp')
                         if (userDataResponse.status === 200) {
                           if (userDataResponse.data.status == 'success') {
 
-                            var userJson = JSON.stringify(userDataResponse.data.data[0]);
+                            const userJson = JSON.stringify(userDataResponse.data.data[0]);
                             localStorageService.set('user', userJson);
                             $rootScope.setUserData();
                             $scope.getNavigation();
@@ -107,7 +89,7 @@ angular.module('AdminApp')
               });
           } else {
             this.loginForm.$setDirty();
-            var alerts = '';
+            let alerts = '';
             $rootScope.getFormErrors(this.loginForm)
               .forEach(function (msg, idx) {
                 $scope.formAlerts.push({type: 'danger', msg: msg});

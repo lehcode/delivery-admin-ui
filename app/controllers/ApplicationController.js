@@ -44,7 +44,7 @@ angular.module('AdminApp')
          */
         $scope.getNavigation = function () {
 
-          var req = {
+          const req = {
             method: 'GET',
             url: settings.apiHost + '/api/admin/' + settings.apiVersion + '/user/navigation',
             data: null,
@@ -151,7 +151,7 @@ angular.module('AdminApp')
 
         $scope.$on('$viewContentLoaded', function () {
 
-          var token = localStorageService.get('token');
+          const token = localStorageService.get('token');
           if (!!token === false) {
             $location.path('/login');
           }
@@ -174,7 +174,7 @@ angular.module('AdminApp')
          */
         $rootScope.getFormErrors = function (angularForm) {
           $scope.alerts = [];
-          var messages = [];
+          const messages = [];
           angular.forEach(angularForm.$error, function (el, cond) {
             console.warn("Form is invalid", angularForm);
             el.forEach(function (element) {
@@ -200,7 +200,7 @@ angular.module('AdminApp')
         };
 
         /**
-         * Close alert by index
+         * Dismiss alert by index
          * @param index Number
          */
         $rootScope.closeAlert = function (index) {
@@ -212,8 +212,8 @@ angular.module('AdminApp')
          * @param response Object
          */
         $rootScope.getResponseErrors = function (response) {
-          if (response.data.hasOwnProperty('message')) {
-            var m = response.data.message;
+          if ('message' in response.data) {
+            const m = response.data.message;
             $scope.alerts = [];
             response.data.message = JSON.parse(m);
             angular.forEach(response.data.message, function (msg) {
@@ -258,7 +258,7 @@ angular.module('AdminApp')
          * Toggle sidebar navigation
          */
         $scope.toggleSidenav = function (menuId) {
-          var el = $('.slimScrollDiv');
+          const el = $('.slimScrollDiv');
           if (el.hasClass('collapse')) {
             el.removeClass('collapse');
           } else {
@@ -269,8 +269,8 @@ angular.module('AdminApp')
 
 
         $scope.showToolbarMenu = function ($event, menu) {
-          debugger;
-          var template = '' +
+          // debugger;
+          const template = '' +
             '<div class="menu-panel" md-whiteframe="4">' +
             '  <div class="menu-content">' +
             '    <div class="menu-item" ng-repeat="item in ctrl.items">' +
@@ -287,14 +287,14 @@ angular.module('AdminApp')
             '  </div>' +
             '</div>';
 
-          var position = $mdPanel.newPanelPosition()
+          const position = $mdPanel.newPanelPosition()
             .relativeTo($event.srcElement)
             .addPanelPosition(
               $mdPanel.xPosition.ALIGN_START,
               $mdPanel.yPosition.BELOW
             );
 
-          var config = {
+          const config = {
             id: 'toolbar_' + menu.name,
             attachTo: angular.element(document.body),
             controller: 'ApplicationController',
@@ -321,14 +321,13 @@ angular.module('AdminApp')
 
         $scope.closeMenu = function () {
           try {
-            mdPanelRef && mdPanelRef.close();
+            $mdPanel.close();
           } catch (err) {
             console.error(err);
           }
-
         };
 
-        var menuTemplate = '' +
+        const menuTemplate = '' +
           '<div class="menu-panel" md-whiteframe="4">' +
           '  <div class="menu-content">' +
           '    <div class="menu-item" ng-repeat="item in ctrl.items">' +
@@ -352,18 +351,18 @@ angular.module('AdminApp')
          * @param menu
          */
         $scope.showToolbarMenu = function ($event, menu) {
-          debugger;
+          // debugger;
 
-          var template = menuTemplate;
+          const template = menuTemplate;
 
-          var position = $mdPanel.newPanelPosition()
+          const position = $mdPanel.newPanelPosition()
             .relativeTo($event.srcElement)
             .addPanelPosition(
               $mdPanel.xPosition.ALIGN_START,
               $mdPanel.yPosition.BELOW
             );
 
-          var config = {
+          const config = {
             id: 'toolbar_' + menu.name,
             attachTo: angular.element(document.getElementById('carriers')),
             controller: PanelMenuCtrl,
@@ -387,7 +386,7 @@ angular.module('AdminApp')
 
         function PanelMenuCtrl(mdPanelRef) {
           $scope.closeMenu = function () {
-            mdPanelRef && mdPanelRef.close();
+            return mdPanelRef && mdPanelRef.close();
           }
         }
 
@@ -398,7 +397,7 @@ angular.module('AdminApp')
          */
         $rootScope.showDialog = function (action, aclObjectName) {
           debugger;
-          var elId = "#" + action.ucfirst() + aclObjectName.ucfirst() + 'Container';
+          const elId = "#" + action.ucfirst() + aclObjectName.ucfirst() + 'Container';
           $mdDialog.show({
             contentElement: document.querySelector(elId),
             parent: angular.element(document.body)
