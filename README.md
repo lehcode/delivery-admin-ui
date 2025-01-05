@@ -8,12 +8,11 @@ To get you started you can clone repository and install the dependencies:
 
 Node: v10.24.1
 
-You can get git from [here][https://github.com/lehcode/delivery-admin-ui.git].
+You can get application source from [here][https://github.com/lehcode/delivery-admin-ui.git].
 
 ### Clone `angular-seed`
 
-
-```
+```shell
 git clone https://github.com/lehcode/delivery-admin-ui.git
 cd delivery-admin-ui
 ```
@@ -28,9 +27,15 @@ We have two kinds of dependencies in this project: tools and Angular framework c
   [Java Development Kit (JDK)][jdk] installed on your machine. Check out the section on
   [end-to-end testing](#e2e-testing) for more info.
 
+Be sure to install `bower` globally:
+
+```shell
+npm install -g bower
+```
+
 We have preconfigured `npm` to automatically run `bower` so we can simply do:
 
-```
+```shell
 npm install
 ```
 
@@ -38,7 +43,7 @@ Behind the scenes this will also call `bower install`. After that, you should fi
 two new folders in your project.
 
 * `node_modules` - contains the npm packages for the tools we need
-* `app/bower_components` - contains the Angular framework files
+* `bower_components` - contains the Angular framework files
 
 *Note that the `bower_components` folder would normally be installed in the root folder but
 `angular-seed` changes this location through the `.bowerrc` file. Putting it in the `app` folder
@@ -54,7 +59,6 @@ npm start
 ```
 
 Now browse to the app at [`localhost:8000/index.html`][local-app-url].
-
 
 ## Directory Layout
 
@@ -85,7 +89,6 @@ e2e-tests/            --> end-to-end tests
   protractor-conf.js    --> Protractor config file
   scenarios.js          --> end-to-end scenarios to be run by Protractor
 ```
-
 
 ## Testing
 
@@ -120,8 +123,8 @@ predefined script to do this:
 npm run test-single-run
 ```
 
-
 <a name="e2e-testing"></a>
+
 ### Running End-to-End Tests
 
 The `angular-seed` app comes with end-to-end tests, again written in [Jasmine][jasmine]. These tests
@@ -167,7 +170,6 @@ the [Java Development Kit (JDK)][jdk] to be installed on your local machine. Che
 
 If JDK is not already installed, you can download it [here][jdk-download].
 
-
 ## Updating Angular
 
 Since the Angular framework library code and tools are acquired through package managers (npm and
@@ -182,7 +184,6 @@ This will call `npm update` and `bower update`, which in turn will find and inst
 versions that match the version ranges specified in the `package.json` and `bower.json` files
 respectively.
 
-
 ## Loading Angular Asynchronously
 
 The `angular-seed` project supports loading the framework and application scripts asynchronously.
@@ -196,7 +197,6 @@ npm run update-index-async
 
 This will copy the contents of the `angular-loader.js` library file into the `index-async.html`
 page. You can run this every time you update the version of Angular that you are using.
-
 
 ## Serving the Application Files
 
@@ -239,7 +239,6 @@ what is the best way to host the static files to comply with the same origin pol
 Usually this is done by hosting the files by the backend server or through reverse-proxying the
 backend server(s) and web server(s).
 
-
 ## Continuous Integration
 
 ### Travis CI
@@ -252,22 +251,18 @@ tests when you push to GitHub.
 You will need to enable the integration between Travis and GitHub. See the
 [Travis website][travis-docs] for instructions on how to do this.
 
-
 ## Contact
 
 For more information on AngularJS please check out [angularjs.org][angularjs].
 
-
 [angularjs]: https://angularjs.org/
 [bower]: http://bower.io/
-[git]: https://git-scm.com/
 [http-server]: https://github.com/indexzero/http-server
 [jasmine]: https://jasmine.github.io/
 [jdk]: https://wikipedia.org/wiki/Java_Development_Kit
 [jdk-download]: http://www.oracle.com/technetwork/java/javase/downloads
 [karma]: https://karma-runner.github.io/
 [local-app-url]: http://localhost:8000/index.html
-[node]: https://nodejs.org/
 [npm]: https://www.npmjs.org/
 [protractor]: http://www.protractortest.org/
 [selenium]: http://docs.seleniumhq.org/
