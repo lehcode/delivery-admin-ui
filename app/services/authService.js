@@ -15,7 +15,7 @@ angular.module('AdminApp')
 
         return {
           getAuthData: function () {
-            return $q(function(resove, reject){
+            return $q(function(resolve, reject){
               // Implementation
             });
           }
