@@ -4,7 +4,7 @@ AdminApp.run(['$rootScope', 'settings', '$state', '$location', 'localStorageServ
     $rootScope.$state = $state;
     $rootScope.$settings = settings;
 
-    console.log(localStorageService.get('token'));
+    console.log("Auth token exists:", !!localStorageService.get('token'));
 
     if (!localStorageService.get('token')) {
       $location.path('/');
