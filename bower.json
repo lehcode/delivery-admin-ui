@@ -2,7 +2,6 @@
   "name": "barq-admin",
   "description": "Admin frontend for Barq project",
   "version": "0.0.1",
-  "homepage": "https://bitbucket.org/zeesofts/barq-admin-webapp",
   "license": "NA",
   "private": true,
   "dependencies": {},
